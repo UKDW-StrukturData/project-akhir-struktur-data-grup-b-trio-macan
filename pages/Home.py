@@ -1,106 +1,106 @@
 import streamlit as st
-import pandas as pd
+
+# Konfigurasi halaman
+st.set_page_config(page_title="Aplikasi Cuaca", page_icon="🌤️")
 
 # Judul aplikasi
-st.title("🌤️ Weather Forecast Dashboard")
+st.title("🌤️ Aplikasi Prakiraan Cuaca")
 
-# Data untuk 5 hari forecast
-st.header("📅 5 Days Forecast")
-forecast_data = {
-    "Day": ["Friday", "Saturday", "Sunday", "Monday", "Tuesday"],
-    "Date": ["1 Sep", "2 Sep", "3 Sep", "4 Sep", "5 Sep"],
-    "Temperature": ["20°C", "22°C", "27°C", "18°C", "16°C"]
-}
+# Search bar
+kota_pencarian = st.text_input("🔍 Cari kota", placeholder="Masukkan nama kota...")
 
-# Tampilkan data forecast dalam tabel
-forecast_df = pd.DataFrame(forecast_data)
-st.dataframe(forecast_df, use_container_width=True)
+# Kota default (jika tidak ada input)
+if not kota_pencarian:
+    kota_pencarian = "Madrid"
 
-# Garis pemisah
-st.divider()
+# Header dengan nama kota
+st.header(f"{kota_pencarian}")
+st.write("Kemungkinan hujan: 0%")
 
-# Weather Details
-st.header("📊 Weather Details")
-
-# Buat 4 kolom untuk details
-col1, col2, col3, col4 = st.columns(4)
-
-with col1:
-    st.metric("Fahrenheit", "72°")
-with col2:
-    st.metric("Pressure", "134 mph")
-with col3:
-    st.metric("UV Index", "0.2")
-with col4:
-    st.metric("Humidity", "48%")
+# Suhu saat ini
+st.metric(label="Suhu Saat Ini", value="31°C")
 
 # Garis pemisah
 st.divider()
 
-# Calendar Section
-st.header("📆 Calendar - August 2020")
+# PRAKIRAAN HARI INI
+st.subheader("PRAKIRAAN HARI INI")
 
-# Info cuaca hari ini
-st.write("⛅ Partly Cloudy - 72°F")
+# Data untuk prakiraan hari ini
+waktu = ["6:00 Pagi", "9:00 Pagi", "12:00 Siang", "3:00 Sore", "6:00 Sore", "9:00 Malam"]
+suhu = ["25°", "28°", "33°", "34°", "32°", "30°"]
 
-# Tampilkan kalender sederhana
-calendar_data = {
-    "Mon": ["3", "7", "14", "21", "28"],
-    "Tue": ["1", "8", "15", "22", "29"],
-    "Wed": ["2", "9", "16", "23", "30"],
-    "Thu": ["3", "10", "17", "24", "1"],
-    "Fri": ["4", "11", "18", "25", "2"],
-    "Sat": ["5", "12", "19", "26", ""],
-    "Sun": ["6", "13", "20", "27", ""]
-}
-
-# Tampilkan kalender sebagai tabel
-calendar_df = pd.DataFrame(calendar_data)
-st.table(calendar_df)
-
-# Tandai tanggal hari ini
-st.caption("Note: Today is August 15, 2020")
+# Tampilkan dalam kolom
+kolom = st.columns(6)
+for i in range(6):
+    with kolom[i]:
+        st.write(f"**{waktu[i]}**")
+        st.write(f"**{suhu[i]}**")
 
 # Garis pemisah
 st.divider()
 
-# Hourly Forecast
-st.header("🕒 Hourly Forecast")
+# KONDISI UDARA
+st.subheader("KONDISI UDARA")
 
-# Data hourly forecast
-hourly_data = {
-    "Time": ["10:00", "12:00", "14:00", "16:00", "18:00", "20:00"],
-    "Temperature": ["24°C", "28°C", "27°C", "27°C", "25°C", "22°C"],
-    "Wind Speed": ["2 km/h", "3 km/h", "2 km/h", "2 km/h", "3 km/h", "3 km/h"]
-}
+# Buat 2 kolom untuk kondisi udara
+kol1, kol2 = st.columns(2)
 
-# Tampilkan hourly forecast dalam tabel
-hourly_df = pd.DataFrame(hourly_data)
-st.dataframe(hourly_df, use_container_width=True)
+with kol1:
+    st.metric("Terasa Seperti", "30°")
+    st.metric("Kemungkinan hujan", "0%")
 
-# Tambahkan chart sederhana untuk suhu per jam
-st.subheader("📈 Temperature Chart")
-chart_data = pd.DataFrame({
-    "Time": [10, 12, 14, 16, 18, 20],
-    "Temperature": [24, 28, 27, 27, 25, 22]
-})
-st.line_chart(chart_data.set_index("Time"))
+with kol2:
+    st.metric("Angin", "0.2 km/jam")
+    st.metric("Indeks UV", "3")
 
-# Informasi tambahan
-st.sidebar.title("About This App")
-st.sidebar.write("""
-This is a simple weather dashboard built with Streamlit.
+# Garis pemisah
+st.divider()
 
-**Features:**
-- 5-day weather forecast
-- Current weather details
-- Calendar view
-- Hourly temperature predictions
+# PRAKIRAAN 7 HARI
+st.subheader("PRAKIRAAN 7 HARI")
 
-**Built with:**
-- Python
-- Streamlit
-- Pandas
-""")
+# Data untuk prakiraan 7 hari
+data_prakiraan = [
+    {"Hari": "Hari Ini", "Cuaca": "Cerah", "Suhu": "36/22"},
+    {"Hari": "Selasa", "Cuaca": "Cerah", "Suhu": "37/21"},
+    {"Hari": "Rabu", "Cuaca": "Cerah", "Suhu": "37/21"},
+    {"Hari": "Kamis", "Cuaca": "Berawan", "Suhu": "37/21"},
+    {"Hari": "Jumat", "Cuaca": "Berawan", "Suhu": "37/21"},
+    {"Hari": "Sabtu", "Cuaca": "Hujan", "Suhu": "37/21"},
+    {"Hari": "Minggu", "Cuaca": "Badai", "Suhu": "37/21"}
+]
 
-st.sidebar.info("Made with ❤️ using Streamlit")
+# Tampilkan prakiraan 7 hari
+for data in data_prakiraan:
+    kol1, kol2, kol3 = st.columns([1, 2, 1])
+    
+    with kol1:
+        st.write(f"**{data['Hari']}**")
+    
+    with kol2:
+        # Tambahkan emoji berdasarkan cuaca
+        if data['Cuaca'] == 'Cerah':
+            st.write(f"☀️ {data['Cuaca']}")
+        elif data['Cuaca'] == 'Berawan':
+            st.write(f"☁️ {data['Cuaca']}")
+        elif data['Cuaca'] == 'Hujan':
+            st.write(f"🌧️ {data['Cuaca']}")
+        elif data['Cuaca'] == 'Badai':
+            st.write(f"⛈️ {data['Cuaca']}")
+    
+    with kol3:
+        st.write(f"**{data['Suhu']}°**")
+
+# Sidebar dengan informasi tambahan
+with st.sidebar:
+    st.title("Tentang")
+    st.write("Aplikasi Cuaca Sederhana")
+    st.write("Fitur:")
+    st.write("• Pencarian kota")
+    st.write("• Prakiraan hari ini")
+    st.write("• Kondisi udara")
+    st.write("• Prakiraan 7 hari")
+    
+    st.divider()
+    st.write("Dibuat dengan Streamlit ❤️")
