@@ -1,5 +1,12 @@
 import streamlit as st
 
+status = False
+if ('sudah_login' in st.session_state and st.session_state['sudah_login'] is True):
+    status = True
+
+if (status is False):
+    st.switch_page('pages/Masuk.py')
+
 # Konfigurasi halaman
 st.set_page_config(page_title="Aplikasi Cuaca", page_icon="🌤️")
 

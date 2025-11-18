@@ -6,4 +6,8 @@ password_input = st.text_input('Password Baru', type= 'password')
 confirm_password = st.text_input('Konfirmasi Password', type= 'password')
 
 if st.button('Mendaftar'):
+    st.session_state['email'] = email_input
+    st.session_state['username'] = username_input
+    st.session_state['password'] = password_input
+    st.session_state['sudah_daftar'] = True
     st.switch_page('pages/Masuk.py')
