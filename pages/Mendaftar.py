@@ -6,4 +6,4 @@ password_input = st.text_input('Password Baru', type= 'password')
 confirm_password = st.text_input('Konfirmasi Password', type= 'password')
 
 if st.button('Mendaftar'):
-    st.switch_page('pages/Login.py')
+    st.switch_page('pages/Masuk.py')
