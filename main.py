@@ -1,6 +1,6 @@
-def main():
-    print("Hello from project-akhir-struktur-data-grup-b-trio-macan!")
+import streamlit as st
 
-
-if __name__ == "__main__":
-    main()
+col1, col2, col3 = st.columns([1, 1, 1])
+with col2:
+    st.title('Hawa')
+    st.write('Prakiraan Cuaca Indonesia dan Lokal')
