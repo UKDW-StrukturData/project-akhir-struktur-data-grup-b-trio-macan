@@ -8,7 +8,7 @@ with col2:
     btn_col1, btn_col2 = st.columns(2)
     with btn_col1:
         if st.button('Masuk'):
-            st.switch_page('pages/Login.py')
+            st.switch_page('pages/Masuk.py')
     with btn_col2:
         if st.button('Mendaftar'):
-            st.switch_page('pages/Sign_Up.py')
+            st.switch_page('pages/Mendaftar.py')
