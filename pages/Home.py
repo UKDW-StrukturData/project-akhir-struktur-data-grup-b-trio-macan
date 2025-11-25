@@ -22,7 +22,7 @@ try:
     model = genai.GenerativeModel('gemini-pro')
     ai_connected = True
 except Exception as e:
-    st.error(f"❌ Error koneksi Gemini AI: {e}")
+    st.error(f"Error koneksi Gemini AI: {e}")
     ai_connected = False
 
 # Fungsi untuk mendapatkan tips sederhana dari Gemini
@@ -44,7 +44,7 @@ def get_simple_tips(kota, suhu, kondisi):
         response = model.generate_content(prompt)
         return response.text.strip()
     except Exception as e:
-        return f"❌ Error: {str(e)}"
+        return f"Error: {str(e)}"
 
 # Judul aplikasi
 st.title("🌤️ Weather Tips")
