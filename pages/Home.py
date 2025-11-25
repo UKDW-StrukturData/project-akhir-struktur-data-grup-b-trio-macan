@@ -1,106 +1,110 @@
 import streamlit as st
+import random
+import google.generativeai as genai
+from datetime import datetime
+
+# Konfigurasi API Key Gemini AI
+API_KEY = "AIzaSyBJTxjRoVcI5jYI63AQZ1mt8rmY_CXFvrM"
 
 # Konfigurasi halaman
-st.set_page_config(page_title="Aplikasi Cuaca", page_icon="🌤️")
+st.set_page_config(page_title="Weather Tips AI", page_icon="💡", layout="centered")
+
+# Inisialisasi Gemini AI
+try:
+    genai.configure(api_key=API_KEY)
+    model = genai.GenerativeModel('gemini-pro')
+    ai_connected = True
+except Exception as e:
+    st.error(f"❌ Error koneksi Gemini AI: {e}")
+    ai_connected = False
+
+# Fungsi untuk mendapatkan tips sederhana dari Gemini
+def get_simple_tips(kota, suhu, kondisi):
+    prompt = f"""
+    Berikan satu kalimat tips singkat dan friendly dalam bahasa Indonesia untuk cuaca di {kota} dengan suhu {suhu}°C dan kondisi {kondisi}.
+    
+    Format: 
+    [emoji] [kalimat tips singkat dan positif]
+    
+    Contoh:
+    ☀️ Perfect untuk jalan-jalan di taman!
+    🌧️ Cocok untuk nonton film di rumah dengan hot chocolate!
+    
+    Buat hanya SATU kalimat saja, maksimal 10 kata. Gunakan tone yang positif dan friendly.
+    """
+    
+    try:
+        response = model.generate_content(prompt)
+        return response.text.strip()
+    except Exception as e:
+        return f"❌ Error: {str(e)}"
 
 # Judul aplikasi
-st.title("🌤️ Aplikasi Prakiraan Cuaca")
+st.title("🌤️ Weather Tips")
+st.caption("Dapatkan tips sederhana untuk aktivitas harianmu")
 
-# Search bar
-kota_pencarian = st.text_input("🔍 Cari kota", placeholder="Masukkan nama kota...")
+# Data cuaca sederhana
+kota = st.selectbox("Pilih kota:", ["Jakarta", "Bandung", "Surabaya", "Bali", "Yogyakarta"])
+suhu = random.randint(25, 35)
+kondisi = random.choice(["Cerah", "Berawan", "Hujan", "Panas"])
 
-# Kota default (jika tidak ada input)
-if not kota_pencarian:
-    kota_pencarian = "Madrid"
+# Tampilkan info cuaca sederhana
+col1, col2, col3 = st.columns(3)
+with col1:
+    st.metric("Suhu", f"{suhu}°C")
+with col2:
+    st.metric("Kota", kota)
+with col3:
+    st.metric("Kondisi", kondisi)
 
-# Header dengan nama kota
-st.header(f"{kota_pencarian}")
-st.write("Kemungkinan hujan: 0%")
+st.markdown("---")
 
-# Suhu saat ini
-st.metric(label="Suhu Saat Ini", value="31°C")
+# Container untuk Tips AI
+st.subheader("💡 Tips")
 
-# Garis pemisah
-st.divider()
+if ai_connected:
+    if st.button("🎯 Dapatkan Tips", type="primary", use_container_width=True):
+        with st.spinner("AI sedang memberikan tips..."):
+            tips = get_simple_tips(kota, suhu, kondisi)
+            
+            # Tampilkan tips dalam box yang clean
+            st.markdown(
+                f"""
+                <div style='
+                    background-color: #f0f8ff;
+                    padding: 20px;
+                    border-radius: 10px;
+                    border-left: 5px solid #4CAF50;
+                    margin: 10px 0;
+                '>
+                    <h3 style='margin: 0; color: #2c3e50;'>{tips}</h3>
+                </div>
+                """, 
+                unsafe_allow_html=True
+            )
+            
+            # Tombol untuk tips baru
+            st.button("🔄 Tips Lain", use_container_width=True)
+else:
+    st.error("Gemini AI tidak terhubung. Periksa API key Anda.")
 
-# PRAKIRAAN HARI INI
-st.subheader("PRAKIRAAN HARI INI")
+# Contoh tips default (jika AI tidak aktif)
+if not ai_connected:
+    st.info(
+        """
+        <div style='
+            background-color: #e8f5e8;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #4CAF50;
+            margin: 10px 0;
+        '>
+            <h3 style='margin: 0; color: #2c3e50;'>🌞 Perfect untuk hangout dengan teman!</h3>
+        </div>
+        """, 
+        unsafe_allow_html=True
+    )
 
-# Data untuk prakiraan hari ini
-waktu = ["6:00 Pagi", "9:00 Pagi", "12:00 Siang", "3:00 Sore", "6:00 Sore", "9:00 Malam"]
-suhu = ["25°", "28°", "33°", "34°", "32°", "30°"]
-
-# Tampilkan dalam kolom
-kolom = st.columns(6)
-for i in range(6):
-    with kolom[i]:
-        st.write(f"**{waktu[i]}**")
-        st.write(f"**{suhu[i]}**")
-
-# Garis pemisah
-st.divider()
-
-# KONDISI UDARA
-st.subheader("KONDISI UDARA")
-
-# Buat 2 kolom untuk kondisi udara
-kol1, kol2 = st.columns(2)
-
-with kol1:
-    st.metric("Terasa Seperti", "30°")
-    st.metric("Kemungkinan hujan", "0%")
-
-with kol2:
-    st.metric("Angin", "0.2 km/jam")
-    st.metric("Indeks UV", "3")
-
-# Garis pemisah
-st.divider()
-
-# PRAKIRAAN 7 HARI
-st.subheader("PRAKIRAAN 7 HARI")
-
-# Data untuk prakiraan 7 hari
-data_prakiraan = [
-    {"Hari": "Hari Ini", "Cuaca": "Cerah", "Suhu": "36/22"},
-    {"Hari": "Selasa", "Cuaca": "Cerah", "Suhu": "37/21"},
-    {"Hari": "Rabu", "Cuaca": "Cerah", "Suhu": "37/21"},
-    {"Hari": "Kamis", "Cuaca": "Berawan", "Suhu": "37/21"},
-    {"Hari": "Jumat", "Cuaca": "Berawan", "Suhu": "37/21"},
-    {"Hari": "Sabtu", "Cuaca": "Hujan", "Suhu": "37/21"},
-    {"Hari": "Minggu", "Cuaca": "Badai", "Suhu": "37/21"}
-]
-
-# Tampilkan prakiraan 7 hari
-for data in data_prakiraan:
-    kol1, kol2, kol3 = st.columns([1, 2, 1])
-    
-    with kol1:
-        st.write(f"**{data['Hari']}**")
-    
-    with kol2:
-        # Tambahkan emoji berdasarkan cuaca
-        if data['Cuaca'] == 'Cerah':
-            st.write(f"☀️ {data['Cuaca']}")
-        elif data['Cuaca'] == 'Berawan':
-            st.write(f"☁️ {data['Cuaca']}")
-        elif data['Cuaca'] == 'Hujan':
-            st.write(f"🌧️ {data['Cuaca']}")
-        elif data['Cuaca'] == 'Badai':
-            st.write(f"⛈️ {data['Cuaca']}")
-    
-    with kol3:
-        st.write(f"**{data['Suhu']}°**")
-
-# Sidebar dengan informasi tambahan
-with st.sidebar:
-    st.title("Tentang")
-    st.write("Aplikasi Cuaca Sederhana")
-    st.write("Fitur:")
-    st.write("• Pencarian kota")
-    st.write("• Prakiraan hari ini")
-    st.write("• Kondisi udara")
-    st.write("• Prakiraan 7 hari")
-    
-    st.divider()
-    st.write("Dibuat dengan Streamlit ❤️")
+# Footer
+st.markdown("---")
+st.caption(f"🕐 Diperbarui: {datetime.now().strftime('%H:%M')}")
