@@ -2,9 +2,17 @@ import streamlit as st
 import random
 import google.generativeai as genai
 from datetime import datetime
+from PIL import Image
+logo = Image.open("image.png")
+icon = Image.open("image.png")
+st.logo(
+    image=logo,
+    size="large",
+    icon_image=icon)
+
 
 # Konfigurasi API Key Gemini AI
-API_KEY = "AIzaSyBJTxjRoVcI5jYI63AQZ1mt8rmY_CXFvrM"
+API_KEY = "AIzaSyCeAfT7Z9unRCshEKMwNwXSmwsRimTgpeI"
 
 status = False
 if ('sudah_login' in st.session_state and st.session_state['sudah_login'] is True):

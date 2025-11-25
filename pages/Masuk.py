@@ -1,4 +1,12 @@
 import streamlit as st
+from PIL import Image
+logo = Image.open("image.png")
+icon = Image.open("image.png")
+st.logo(
+    image=logo,
+    size="large",
+    icon_image=icon)
+
 
 username_input = st.text_input('Nama Pengguna')
 password_input = st.text_input('Kata Sandi', type= 'password')

@@ -1,4 +1,12 @@
 import streamlit as st
+from PIL import Image
+logo = Image.open("image.png")
+icon = Image.open("image.png")
+st.logo(
+    image=logo,
+    size="large",
+    icon_image=icon)
+
 
 email_input = st.text_input('Masukkan Email anda')
 username_input = st.text_input('Buat Username ')
