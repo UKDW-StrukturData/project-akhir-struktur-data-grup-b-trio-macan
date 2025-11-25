@@ -1,4 +1,5 @@
 import streamlit as st
+import base64
 from PIL import Image
 logo = Image.open("image.png")
 icon = Image.open("image.png")
