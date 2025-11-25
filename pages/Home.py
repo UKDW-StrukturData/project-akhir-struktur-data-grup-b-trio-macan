@@ -156,7 +156,7 @@ st.markdown("---")
 st.subheader("💡 Tips")
 
 if ai_connected:
-    if st.button("🎯 Dapatkan Tips", type="primary", use_container_width=True):
+    if st.button("✨ Dapatkan Tips", type="primary", use_container_width=True):
         with st.spinner("AI sedang memberikan tips..."):
             tips = get_simple_tips(kota, suhu, kondisi)
             
