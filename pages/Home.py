@@ -6,6 +6,13 @@ from datetime import datetime
 # Konfigurasi API Key Gemini AI
 API_KEY = "AIzaSyBJTxjRoVcI5jYI63AQZ1mt8rmY_CXFvrM"
 
+status = False
+if ('sudah_login' in st.session_state and st.session_state['sudah_login'] is True):
+    status = True
+
+if (status is False):
+    st.switch_page('pages/Masuk.py')
+
 # Konfigurasi halaman
 st.set_page_config(page_title="Weather Tips AI", page_icon="💡", layout="centered")
 
