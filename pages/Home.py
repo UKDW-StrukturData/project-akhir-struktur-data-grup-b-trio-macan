@@ -4,7 +4,10 @@ import pandas as pd
 import requests
 import google.generativeai as genai
 from datetime import datetime
+from zoneinfo import ZoneInfo
 from PIL import Image
+
+
 logo = Image.open("image.png")
 icon = Image.open("image.png")
 st.logo(
@@ -15,7 +18,6 @@ st.logo(
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
     st.image(logo, width=250)
-
 
 st.set_page_config(page_title="Cuaca BMKG (ADM4)", page_icon="⛅", layout="centered")
 st.title("Prakiraan Cuaca BMKG (3 hari, per 3 jam)")
