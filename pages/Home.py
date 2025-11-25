@@ -83,9 +83,17 @@ st.divider()
 
 
 # Konfigurasi API Key Gemini AI
-API_KEY = "AIzaSyCeAfT7Z9unRCshEKMwNwXSmwsRimTgpeI"
-
+API_KEY = "AIzaSyA1drR9VfdSivtKCxWNpi9WHGOaJCZ4raM" 
+try:
+    genai.configure(api_key=API_KEY)
+    model = genai.GenerativeModel("gemini-2.5-flash-preview-09-2025")
+    ai_connected = True
+except:
+    ai_connected = False
+    
+# Cek status login
 status = False
+
 if ('sudah_login' in st.session_state and st.session_state['sudah_login'] is True):
     status = True
 
@@ -98,7 +106,7 @@ st.set_page_config(page_title="Weather Tips AI", page_icon="💡", layout="cente
 # Inisialisasi Gemini AI
 try:
     genai.configure(api_key=API_KEY)
-    model = genai.GenerativeModel('gemini-pro')
+    model = genai.GenerativeModel("gemini-2.5-flash-preview-09-2025")
     ai_connected = True
 except Exception as e:
     st.error(f"Error koneksi Gemini AI: {e}")
@@ -107,23 +115,20 @@ except Exception as e:
 # Fungsi untuk mendapatkan tips sederhana dari Gemini
 def get_simple_tips(kota, suhu, kondisi):
     prompt = f"""
-    Berikan satu kalimat tips singkat dan friendly dalam bahasa Indonesia untuk cuaca di {kota} dengan suhu {suhu}°C dan kondisi {kondisi}.
+    Berikan beberapa tips singkat dan friendly dalam bahasa Indonesia untuk cuaca di {kota} 
+    dengan suhu {suhu}°C dan kondisi {kondisi}, berikan cocok dilakukan: dan Tidak cocok untuk: dalam cuaca tersebut.
     
-    Format: 
-    [emoji] [kalimat tips singkat dan positif]
+    Format:
+    [emoji] [kalimat tips singkat]
     
-    Contoh:
-    ☀️ Perfect untuk jalan-jalan di taman!
-    🌧️ Cocok untuk nonton film di rumah dengan hot chocolate!
-    
-    Buat hanya SATU kalimat saja, maksimal 10 kata. Gunakan tone yang positif dan friendly.
+    Maksimal 50 kata.
     """
-    
+
     try:
-        response = model.generate_content(prompt)
-        return response.text.strip()
+        result = model.generate_content(prompt)
+        return result.text.strip()
     except Exception as e:
-        return f"Error: {str(e)}"
+        return f"Error: {e}"
 
 # Judul aplikasi
 st.title("Hawa")
