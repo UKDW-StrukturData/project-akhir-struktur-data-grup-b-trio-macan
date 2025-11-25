@@ -7,7 +7,9 @@ st.logo(
     size="large",
     icon_image=icon)
 
-
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    st.image(logo, width=250)
 email_input = st.text_input('Masukkan Email anda')
 username_input = st.text_input('Buat Username ')
 password_input = st.text_input('Password Baru', type= 'password')
