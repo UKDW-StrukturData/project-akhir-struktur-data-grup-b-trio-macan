@@ -112,7 +112,6 @@ if wilayah_pilihan:
 
 st.divider()
 
-
 # Konfigurasi API Key Gemini AI
 API_KEY = st.secrets["GEMINI_API_KEY"]
 try:
