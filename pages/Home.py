@@ -4,7 +4,9 @@ import pandas as pd
 import requests
 import google.generativeai as genai
 from datetime import datetime
+from zoneinfo import ZoneInfo
 from PIL import Image
+
 
 #PAGE CONFIG!
 st.set_page_config(page_title="Hawa - Cuaca & Tips AI", page_icon="🌤️", layout="centered")
@@ -13,12 +15,18 @@ if "sudah_login" not in st.session_state or st.session_state["sudah_login"] is n
     st.switch_page("pages/Masuk.py")
 
 #LOGO!
+
+
+
 logo = Image.open("image.png")
 icon = Image.open("image.png")
 st.logo(image=logo,size="large",icon_image=icon)
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
     st.image(logo, width=250)
+
+
+st.set_page_config(page_title="Cuaca BMKG (ADM4)", page_icon="⛅", layout="centered")
 
 st.title("Prakiraan Cuaca BMKG (3 hari, per 3 jam)")
 
