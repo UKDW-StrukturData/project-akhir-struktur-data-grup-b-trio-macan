@@ -5,34 +5,51 @@ import requests
 import google.generativeai as genai
 from datetime import datetime
 from PIL import Image
+
+#PAGE CONFIG!
+st.set_page_config(page_title="Hawa - Cuaca & Tips AI", page_icon="🌤️", layout="centered")
+
+if "sudah_login" not in st.session_state or st.session_state["sudah_login"] is not True:
+    st.switch_page("pages/Masuk.py")
+
+#LOGO!
 logo = Image.open("image.png")
 icon = Image.open("image.png")
-st.logo(
-    image=logo,
-    size="large",
-    icon_image=icon)
-
+st.logo(image=logo,size="large",icon_image=icon)
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
     st.image(logo, width=250)
 
-
-st.set_page_config(page_title="Cuaca BMKG (ADM4)", page_icon="⛅", layout="centered")
 st.title("Prakiraan Cuaca BMKG (3 hari, per 3 jam)")
 
-st.caption("Masukkan kode wilayah ADM4 (Kelurahan/Desa). Contoh: 31.71.03.1001 untuk Kelurahan Kemayoran.")
-adm4 = st.text_input("Kode ADM4", value="")
+# Input wilayah
+df_kode = pd.read_csv("kode_wilayah.csv", header=None, names=["kode", "nama"])
+st.caption("Masukkan wilayah Desa/Kelurahan yang anda inginkan. Contoh: Kemayoran.")
+wilayah_pilihan = st.selectbox(
+    "Pilih Desa/Kelurahan", 
+    df_kode["nama"].tolist(),
+    index=None,
+    placeholder="Pilih wilayah..."
+)
 
-if adm4:
+kota = "-"
+suhu = "-"
+kondisi = "-"
+
+if wilayah_pilihan:
+    adm4 = df_kode[df_kode["nama"] == wilayah_pilihan]["kode"].values[0]
+    st.success(f"Kode ADM4 otomatis: **{adm4}**")
     url = f"https://api.bmkg.go.id/publik/prakiraan-cuaca?adm4={adm4}"
     try:
         r = requests.get(url, timeout=15)
         r.raise_for_status()
         data = r.json()
 
-        # Tampilkan informasi lokasi jika tersedia
+        # Menampilkan info lokasi
         lokasi = data.get("lokasi", {})
+        forecast = data.get("data", [])
         if lokasi:
+            kota = lokasi.get("desa", "-")
             st.subheader("Lokasi")
             col1, col2 = st.columns(2)
             with col1:
@@ -46,29 +63,40 @@ if adm4:
                 st.write(f"**Analysis Date (UTC)**: {data.get('analysis_date', '-')}")
 
         # Koleksi elemen prakiraan
-        forecast = data.get("data", [])
         if forecast:
             # Normalisasi list of dicts → DataFrame
-            df = pd.DataFrame(forecast)
-            # Ubah nama kolom agar lebih ramah
-            rename_map = {
-                "utc_datetime": "UTC",
-                "local_datetime": "Lokal",
-                "t": "Suhu (°C)",
-                "hu": "RH (%)",
-                "weather_desc": "Cuaca",
-                "ws": "Angin (km/jam)",
-                "wd": "Arah Angin",
-                "tcc": "Awan (%)",
-                "vs_text": "Jarak Pandang (km)"
-            }
-            df = df.rename(columns=rename_map)
-            # Sort berdasarkan waktu lokal (jika ada)
-            if "Lokal" in df.columns:
-                df = df.sort_values("Lokal")
+            forecast_clean = [
+                item for item in forecast 
+                if isinstance(item, dict) and ("local_datetime" in item or "t" in item)]
+    
+            if not forecast_clean:
+                st.warning("BMKG tidak menyediakan data prakiraan per 3 jam untuk wilayah ini.")
+            else:
+                df = pd.DataFrame(forecast_clean)
+                # Ubah nama kolom agar lebih ramah
+                rename_map = {
+                    "utc_datetime": "UTC",
+                    "local_datetime": "Lokal",
+                    "t": "Suhu (°C)",
+                    "hu": "RH (%)",
+                    "weather_desc": "Cuaca",
+                    "ws": "Angin (km/jam)",
+                    "wd": "Arah Angin",
+                    "tcc": "Awan (%)",
+                    "vs_text": "Jarak Pandang (km)"
+                }
+                df = df.rename(columns=rename_map)
+                st.write(df.columns)
 
-            st.subheader("Prakiraan per 3 jam")
-            st.dataframe(df, use_container_width=True)
+                # Sort berdasarkan waktu lokal (jika ada)
+                if "Lokal" in df.columns:
+                    df = df.sort_values("Lokal")
+
+                st.subheader("Prakiraan per 3 jam")
+                st.dataframe(df, use_container_width=True)
+                row0 = df.iloc[0]
+                suhu = row0["Suhu (°C)"] if "Suhu (°C)" in df.columns else "-"
+                kondisi = row0["Cuaca"] if "Cuaca" in df.columns else "-"
         else:
             st.info("Data prakiraan tidak tersedia untuk kode ADM4 tersebut.")
 
@@ -83,13 +111,14 @@ st.divider()
 
 
 # Konfigurasi API Key Gemini AI
-API_KEY = "AIzaSyA1drR9VfdSivtKCxWNpi9WHGOaJCZ4raM" 
+API_KEY = st.secrets["GEMINI_API_KEY"]
 try:
     genai.configure(api_key=API_KEY)
     model = genai.GenerativeModel("gemini-2.5-flash-preview-09-2025")
     ai_connected = True
-except:
+except Exception as e:
     ai_connected = False
+    st.error(f"Gagal konek Gemini: {e}")
     
 # Cek status login
 status = False
@@ -116,39 +145,25 @@ except Exception as e:
 def get_simple_tips(kota, suhu, kondisi):
     prompt = f"""
     Berikan beberapa tips singkat dan friendly dalam bahasa Indonesia untuk cuaca di {kota} 
-    dengan suhu {suhu}°C dan kondisi {kondisi}, berikan cocok dilakukan: dan Tidak cocok untuk: dalam cuaca tersebut.
+    dengan suhu {suhu}°C dan kondisi {kondisi}. 
     
-    Format:
-    [emoji] [kalimat tips singkat]
-    
-    Maksimal 50 kata.
+    Sertakan:
+    - Cocok dilakukan:
+    - Tidak cocok dilakukan:
+
+    Beri 1 baris kosong sebelum pindah bagian. Pakai bullet.
+    Maksimal 60 kata.
     """
 
     try:
-        result = model.generate_content(prompt)
-        return result.text.strip()
+        response = model.generate_content(prompt)
+        if hasattr(response, "text") and response.text:
+            return response.text.strip()
+        if hasattr(response, "candidates"):
+            return response.candidates[0].content.parts[0].text.strip()
+        return "AI tidak memberikan output."
     except Exception as e:
         return f"Error: {e}"
-
-# Judul aplikasi
-st.title("Hawa")
-st.caption("Dapatkan tips sederhana untuk aktivitas harianmu")
-
-# Data cuaca sederhana
-kota = st.selectbox("Pilih kota:", ["Jakarta", "Bandung", "Surabaya", "Bali", "Yogyakarta"])
-suhu = random.randint(25, 35)
-kondisi = random.choice(["Cerah", "Berawan", "Hujan", "Panas"])
-
-# Tampilkan info cuaca sederhana
-col1, col2, col3 = st.columns(3)
-with col1:
-    st.metric("Suhu", f"{suhu}°C")
-with col2:
-    st.metric("Kota", kota)
-with col3:
-    st.metric("Kondisi", kondisi)
-
-st.markdown("---")
 
 # Container untuk Tips AI
 st.subheader("💡 Tips")
@@ -178,23 +193,6 @@ if ai_connected:
             st.button("🔄 Tips Lain", use_container_width=True)
 else:
     st.error("Gemini AI tidak terhubung. Periksa API key Anda.")
-
-# Contoh tips default (jika AI tidak aktif)
-if not ai_connected:
-    st.info(
-        """
-        <div style='
-            background-color: #e8f5e8;
-            padding: 20px;
-            border-radius: 10px;
-            border-left: 5px solid #4CAF50;
-            margin: 10px 0;
-        '>
-            <h3 style='margin: 0; color: #2c3e50;'>🌞 Perfect untuk hangout dengan teman!</h3>
-        </div>
-        """, 
-        unsafe_allow_html=True
-    )
 
 # Footer
 st.markdown("---")
