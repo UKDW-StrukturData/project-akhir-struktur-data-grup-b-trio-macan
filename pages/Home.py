@@ -6,6 +6,7 @@ import google.generativeai as genai
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from PIL import Image
+import csv
 
 #PAGE CONFIG!
 st.set_page_config(page_title="Hawa - Cuaca & Tips AI", page_icon="🌤️", layout="centered")
@@ -23,7 +24,7 @@ with col2:
 
 st.set_page_config(page_title="Cuaca BMKG (ADM4)", page_icon="⛅", layout="centered")
 
-st.title("Prakiraan Cuaca BMKG (3 hari, per 3 jam)")
+st.title("Prakiraan Cuaca Indonesia dan Lokal")
 
 # Input wilayah
 df_kode = pd.read_csv("kode_wilayah.csv", header=None, names=["kode", "nama"])
@@ -132,7 +133,7 @@ if (status is False):
     st.switch_page('pages/Masuk.py')
 
 # Konfigurasi halaman
-st.set_page_config(page_title="Weather Tips AI", page_icon="💡", layout="centered")
+st.set_page_config(page_title="Hawa", layout="centered")
 
 # Inisialisasi Gemini AI
 try:
