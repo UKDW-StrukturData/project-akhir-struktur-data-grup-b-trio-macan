@@ -22,7 +22,7 @@ col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
     st.image(logo, width=250)
 
-st.set_page_config(page_title="Cuaca BMKG (ADM4)", page_icon="⛅", layout="centered")
+st.set_page_config(page_title="Hawa", layout="centered")
 
 st.title("Prakiraan Cuaca Indonesia dan Lokal")
 
