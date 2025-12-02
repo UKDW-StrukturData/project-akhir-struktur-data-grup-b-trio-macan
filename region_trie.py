@@ -1,3 +1,4 @@
+import os, inspect
 import re
 import csv
 import heapq
@@ -125,7 +126,7 @@ class TrieNode:
 
 class RegionTrie:
     def _init_(self, k_per_node: int = 10):  
-        self.root = TrieNode()
+        self.root = RegionTrieNode()
         self.k_per_node = k_per_node
         self._uid = 0
 
@@ -237,12 +238,11 @@ def build_trie_from_regions(regions: Dict[str, Dict[str, Any]], k_per_node: int 
     Bangun Trie dari dict regions, termasuk alias untuk variasi penulisan.
     Skor: provinsi (level=1) > kab/kota (2) > kecamatan (3) > desa (4+).
     """
-    trie = RegionTrie(k_per_node=k_per_node)
+    trie = RegionTrie()
     for code, item in regions.items():
         name = item["name"]
         wtype = item["type"]
         level = item["level"]
-
         base_score = 100 - (level - 1) * 10
 
         # Nama utama + label breadcrumb
