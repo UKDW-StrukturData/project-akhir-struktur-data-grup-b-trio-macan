@@ -6,7 +6,7 @@ import google.generativeai as genai
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from PIL import Image
-import csv
+from region_trie import load_regions_from_csv, build_breadcrumbs, build_trie_from_regions
 
 #PAGE CONFIG!
 st.set_page_config(page_title="Hawa - Cuaca & Tips AI", page_icon="🌤️", layout="centered")
@@ -27,23 +27,30 @@ st.set_page_config(page_title="Hawa", layout="centered")
 st.title("Prakiraan Cuaca Indonesia dan Lokal")
 
 # Input wilayah
-df_kode = pd.read_csv("kode_wilayah.csv", header=None, names=["kode", "nama"])
-st.caption("Masukkan wilayah Desa/Kelurahan yang anda inginkan. Contoh: Kemayoran.")
-wilayah_pilihan = st.selectbox(
-    "Pilih Desa/Kelurahan", 
-    df_kode["nama"].tolist(),
-    index=None,
-    placeholder="Pilih wilayah..."
-)
+def init_trie():
+    regions = load_regions_from_csv("kode_wilayah.csv")
+    build_breadcrumbs(regions)
+    return build_trie_from_regions(regions)
+
+trie = init_trie()
+
+prefix = st.text_input("Cari daerah:", "")
+selected = None
+if prefix:
+    results = trie.suggest(prefix, k=10)
+    for r in results:
+        st.write(f"**{r['display_label']}** ({r['type']}, kode: {r['code']})")
 
 kota = "-"
 suhu = "-"
 kondisi = "-"
 
-if wilayah_pilihan:
-    adm4 = df_kode[df_kode["nama"] == wilayah_pilihan]["kode"].values[0]
-    st.success(f"Kode ADM4 otomatis: **{adm4}**")
+
+if selected:
+    adm4 = selected["code"]
+    st.success(f"Kode ADM4: **{adm4}**")
     url = f"https://api.bmkg.go.id/publik/prakiraan-cuaca?adm4={adm4}"
+    st.write(f"URL API BMKG: {url}")
     try:
         r = requests.get(url, timeout=15)
         r.raise_for_status()
