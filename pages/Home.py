@@ -44,6 +44,7 @@ kondisi = "-"
 if wilayah_pilihan:
     adm4 = df_kode[df_kode["nama"] == wilayah_pilihan]["kode"].values[0]
     url = f"https://api.bmkg.go.id/publik/prakiraan-cuaca?adm4={adm4}"
+    st.success(f'Berhasil menampilkan untuk wilayah {wilayah_pilihan}')
     try:
         r = requests.get(url, timeout=15)
         r.raise_for_status()
@@ -252,3 +253,4 @@ else:
 # Footer
 st.markdown("---")
 st.caption(f"🕐 Diperbarui: {datetime.now().strftime('%H:%M')}")
+st.caption('Sumber API : BMKG (Badan Meteorologi, Klimatologi, dan Geofisika)')
