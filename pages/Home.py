@@ -239,3 +239,4 @@ else:
 # Footer
 st.markdown("---")
 st.caption(f"🕐 Diperbarui: {datetime.now().strftime('%H:%M')}")
+st.caption('Credit API : BMKG (Badan Meteorologi, Klimatologi, dan Geofisika)')
