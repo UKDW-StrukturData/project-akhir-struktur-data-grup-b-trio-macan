@@ -68,7 +68,7 @@ if wilayah_pilihan:
 
         # Koleksi elemen prakiraan
         if forecast:
-             st.subheader("Detail Prakiraan Cuaca per Hari")
+             st.subheader("Detail Prakiraan Cuaca per 3 Jam")
              
              if isinstance(forecast, list) and len(forecast) > 0:
 
