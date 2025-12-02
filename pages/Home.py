@@ -6,7 +6,7 @@ import google.generativeai as genai
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from PIL import Image
-from region_trie import load_regions_from_csv, build_breadcrumbs, build_trie_from_regions
+import csv
 
 #PAGE CONFIG!
 st.set_page_config(page_title="Hawa - Cuaca & Tips AI", page_icon="🌤️", layout="centered")
@@ -27,30 +27,23 @@ st.set_page_config(page_title="Hawa", layout="centered")
 st.title("Prakiraan Cuaca Indonesia dan Lokal")
 
 # Input wilayah
-def init_trie():
-    regions = load_regions_from_csv("kode_wilayah.csv")
-    build_breadcrumbs(regions)
-    return build_trie_from_regions(regions)
-
-trie = init_trie()
-
-prefix = st.text_input("Cari daerah:", "")
-selected = None
-if prefix:
-    results = trie.suggest(prefix, k=10)
-    for r in results:
-        st.write(f"**{r['display_label']}** ({r['type']}, kode: {r['code']})")
+df_kode = pd.read_csv("kode_wilayah.csv", header=None, names=["kode", "nama"])
+st.caption("Masukkan wilayah Desa/Kelurahan yang anda inginkan. Contoh: Kemayoran.")
+wilayah_pilihan = st.selectbox(
+    "Pilih Desa/Kelurahan", 
+    df_kode["nama"].tolist(),
+    index=None,
+    placeholder="Pilih wilayah..."
+)
 
 kota = "-"
 suhu = "-"
 kondisi = "-"
 
-
-if selected:
-    adm4 = selected["code"]
-    st.success(f"Kode ADM4: **{adm4}**")
+if wilayah_pilihan:
+    adm4 = df_kode[df_kode["nama"] == wilayah_pilihan]["kode"].values[0]
+    st.success(f"Kode ADM4 otomatis: **{adm4}**")
     url = f"https://api.bmkg.go.id/publik/prakiraan-cuaca?adm4={adm4}"
-    st.write(f"URL API BMKG: {url}")
     try:
         r = requests.get(url, timeout=15)
         r.raise_for_status()
@@ -75,47 +68,41 @@ if selected:
 
         # Koleksi elemen prakiraan
         if forecast:
-             st.subheader("Detail Prakiraan Cuaca per 3 Jam")
-             
-             if isinstance(forecast, list) and len(forecast) > 0:
+            # Normalisasi list of dicts → DataFrame
+            forecast_clean = [
+                item for item in forecast 
+                if isinstance(item, dict) and ("local_datetime" in item or "t" in item)]
+    
+            if not forecast_clean:
+                st.warning("BMKG tidak menyediakan data prakiraan per 3 jam untuk wilayah ini.")
+            else:
+                df = pd.DataFrame(forecast_clean)
+                # Ubah nama kolom agar lebih ramah
+                rename_map = {
+                    "utc_datetime": "UTC",
+                    "local_datetime": "Lokal",
+                    "t": "Suhu (°C)",
+                    "hu": "RH (%)",
+                    "weather_desc": "Cuaca",
+                    "ws": "Angin (km/jam)",
+                    "wd": "Arah Angin",
+                    "tcc": "Awan (%)",
+                    "vs_text": "Jarak Pandang (km)"
+                }
+                df = df.rename(columns=rename_map)
+                st.write(df.columns)
 
-                    cuaca_harian = forecast[0].get("cuaca", [])
+                # Sort berdasarkan waktu lokal (jika ada)
+                if "Lokal" in df.columns:
+                    df = df.sort_values("Lokal")
 
-                    if isinstance(cuaca_harian, list) and len(cuaca_harian) > 0:
-
-                        for index_hari, prakiraan_harian in enumerate(cuaca_harian):
-
-                            st.markdown(f"### Hari ke-{index_hari + 1}")
-
-                            if isinstance(prakiraan_harian, list):
-
-                                for prakiraan in prakiraan_harian:
-
-                                    waktu_lokal = prakiraan.get("local_datetime", "N/A")
-                                    deskripsi = prakiraan.get("weather_desc", "N/A")
-                                    suhu_val = prakiraan.get("t", "N/A")
-                                    kelembapan = prakiraan.get("hu", "N/A")
-                                    kec_angin = prakiraan.get("ws", "N/A")
-                                    arah_angin = prakiraan.get("wd", "N/A")
-                                    jarak_pandang = prakiraan.get("vs_text", "N/A")
-
-                                    raw_img = prakiraan.get("image", "")
-                                    img_url = raw_img.replace(" ", "%20") if raw_img else None
-
-                                    with st.container(border=True):
-                                        st.write(f"**Jam:** {waktu_lokal}")
-                                        st.write(f"**Cuaca:** {deskripsi}")
-
-                                        if img_url:
-                                            st.image(img_url, width=60)
-
-                                        st.write(f"**Suhu:** {suhu_val}°C")
-                                        st.write(f"**Kelembapan:** {kelembapan}%")
-                                        st.write(f"**Kecepatan Angin:** {kec_angin} km/j")
-                                        st.write(f"**Arah Angin:** dari {arah_angin}")
-                                        st.write(f"**Jarak Pandang:** {jarak_pandang}")
-                    else:
-                        st.info("Data cuaca harian tidak ada.")
+                st.subheader("Prakiraan per 3 jam")
+                st.dataframe(df, use_container_width=True)
+                row0 = df.iloc[0]
+                suhu = row0["Suhu (°C)"] if "Suhu (°C)" in df.columns else "-"
+                kondisi = row0["Cuaca"] if "Cuaca" in df.columns else "-"
+        else:
+            st.info("Data prakiraan tidak tersedia untuk kode ADM4 tersebut.")
 
     except requests.exceptions.HTTPError as e:
         st.error(f"HTTP error: {e}")
