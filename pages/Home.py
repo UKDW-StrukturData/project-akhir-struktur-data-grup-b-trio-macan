@@ -7,6 +7,7 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 from PIL import Image
 import csv
+import altair
 
 #PAGE CONFIG!
 st.set_page_config(page_title="Hawa - Cuaca & Tips AI", page_icon="🌤️", layout="centered")
@@ -68,10 +69,6 @@ if wilayah_pilihan:
 
         # Koleksi elemen prakiraan
         if forecast:
-
-            # ------------------------------
-            # 1) TAMPILKAN PRAKIRAAN PER 3 JAM
-            # ------------------------------
             forecast3jam = []
 
             for entry in forecast:
@@ -93,6 +90,23 @@ if wilayah_pilihan:
             df = pd.DataFrame(forecast3jam)
             st.subheader("Prakiraan Per 3 Jam")
             st.dataframe(df, use_container_width=True)
+            # Setelah selesai mengisi forecast3jam
+            df3 = pd.DataFrame(forecast3jam)
+
+            import altair as alt
+
+            chart = alt.Chart(df3).mark_line(point=True).encode(
+            x="Jam:T",
+            y="Suhu (°C):Q",
+            tooltip=["Jam", "Suhu (°C)"]
+            ).properties(
+            width="container",
+            height=300,
+            title="Perubahan Suhu per 3 Jam"
+)
+
+            st.altair_chart(chart, use_container_width=True)
+
 
             # Ambil data baris pertama untuk Tips AI
             if len(df) > 0:
