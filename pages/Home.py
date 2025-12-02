@@ -68,42 +68,81 @@ if wilayah_pilihan:
 
         # Koleksi elemen prakiraan
         if forecast:
-            # Normalisasi list of dicts → DataFrame
-            forecast_clean = [
-                item for item in forecast 
-                if isinstance(item, dict) and ("local_datetime" in item or "t" in item)]
-    
-            if not forecast_clean:
-                st.warning("BMKG tidak menyediakan data prakiraan per 3 jam untuk wilayah ini.")
-            else:
-                df = pd.DataFrame(forecast_clean)
-                # Ubah nama kolom agar lebih ramah
-                rename_map = {
-                    "utc_datetime": "UTC",
-                    "local_datetime": "Lokal",
-                    "t": "Suhu (°C)",
-                    "hu": "RH (%)",
-                    "weather_desc": "Cuaca",
-                    "ws": "Angin (km/jam)",
-                    "wd": "Arah Angin",
-                    "tcc": "Awan (%)",
-                    "vs_text": "Jarak Pandang (km)"
-                }
-                df = df.rename(columns=rename_map)
-                st.write(df.columns)
 
-                # Sort berdasarkan waktu lokal (jika ada)
-                if "Lokal" in df.columns:
-                    df = df.sort_values("Lokal")
+            # ------------------------------
+            # 1) TAMPILKAN PRAKIRAAN PER 3 JAM
+            # ------------------------------
+            forecast3jam = []
 
-                st.subheader("Prakiraan per 3 jam")
-                st.dataframe(df, use_container_width=True)
+            for entry in forecast:
+                cuaca = entry.get("cuaca", [])
+                if isinstance(cuaca, list) and len(cuaca) > 0:
+                    for hari in cuaca:
+                        if isinstance(hari, list):
+                            for x in hari:
+                                if isinstance(x, dict):
+                                    forecast3jam.append({
+                                        "Jam": x.get("local_datetime", "-"),
+                                        "Cuaca": x.get("weather_desc", "-"),
+                                        "Suhu (°C)": x.get("t", "-"),
+                                        "Kelembapan (%)": x.get("hu", "-"),
+                                        "Angin (km/j)": x.get("ws", "-"),
+                                        "Arah Angin": x.get("wd", "-"),
+                                    })
+
+            df = pd.DataFrame(forecast3jam)
+            st.subheader("Prakiraan Per 3 Jam")
+            st.dataframe(df, use_container_width=True)
+
+            # Ambil data baris pertama untuk Tips AI
+            if len(df) > 0:
                 row0 = df.iloc[0]
-                suhu = row0["Suhu (°C)"] if "Suhu (°C)" in df.columns else "-"
-                kondisi = row0["Cuaca"] if "Cuaca" in df.columns else "-"
-        else:
-            st.info("Data prakiraan tidak tersedia untuk kode ADM4 tersebut.")
+                suhu = row0.get("Suhu (°C)", "-")
+                kondisi = row0.get("Cuaca", "-")
 
+            # ------------------------------
+            # 2) TAMPILKAN PRAKIRAAN PER HARI
+            # ------------------------------
+            st.subheader("Detail Prakiraan Cuaca per Hari")
+
+            cuaca_harian = forecast[0].get("cuaca", [])
+
+            if isinstance(cuaca_harian, list) and len(cuaca_harian) > 0:
+
+                for index_hari, prakiraan_harian in enumerate(cuaca_harian):
+
+                    st.markdown(f"### Hari ke-{index_hari + 1}")
+
+                    if isinstance(prakiraan_harian, list):
+
+                        for prakiraan in prakiraan_harian:
+
+                            waktu_lokal = prakiraan.get("local_datetime", "N/A")
+                            deskripsi = prakiraan.get("weather_desc", "N/A")
+                            suhu_val = prakiraan.get("t", "N/A")
+                            kelembapan = prakiraan.get("hu", "N/A")
+                            kec_angin = prakiraan.get("ws", "N/A")
+                            arah_angin = prakiraan.get("wd", "N/A")
+                            jarak_pandang = prakiraan.get("vs_text", "N/A")
+
+                            raw_img = prakiraan.get("image", "")
+                            img_url = raw_img.replace(" ", "%20") if raw_img else None
+
+                            with st.container(border=True):
+                                st.write(f"**Jam:** {waktu_lokal}")
+                                st.write(f"**Cuaca:** {deskripsi}")
+
+                                if img_url:
+                                    st.image(img_url, width=60)
+
+                                st.write(f"**Suhu:** {suhu_val}°C")
+                                st.write(f"**Kelembapan:** {kelembapan}%")
+                                st.write(f"**Kecepatan Angin:** {kec_angin} km/j")
+                                st.write(f"**Arah Angin:** dari {arah_angin}")
+                                st.write(f"**Jarak Pandang:** {jarak_pandang}")
+
+            else:
+                st.info("Data cuaca harian tidak ada.")
     except requests.exceptions.HTTPError as e:
         st.error(f"HTTP error: {e}")
     except requests.exceptions.RequestException as e:
@@ -154,7 +193,7 @@ def get_simple_tips(kota, suhu, kondisi):
     - Cocok dilakukan:
     - Tidak cocok dilakukan:
 
-    Beri 1 baris kosong sebelum pindah bagian. Pakai bullet.
+    Beri 1 baris kosong sebelum pindah bagian. Pakai bullet dan emoji yang relevan.
     Maksimal 60 kata.
     """
 
