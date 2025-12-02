@@ -92,18 +92,14 @@ if wilayah_pilihan:
             # Setelah selesai mengisi forecast3jam
             df3 = pd.DataFrame(forecast3jam)
 
+            
             import altair as alt
-
-            chart = alt.Chart(df3).mark_line(point=True).encode(
-            x="Jam:T",
-            y="Suhu (°C):Q",
-            tooltip=["Jam", "Suhu (°C)"]
-            ).properties(
-            width="container",
-            height=300,
-            title="Perubahan Suhu per 3 Jam"
-)
-
+            df3["Jam"] = pd.to_datetime(df3["Jam"], errors="coerce")
+            chart = alt.Chart(df3).mark_area(
+                opacity=0.4,
+                interpolate="monotone").encode(
+                    x=alt.X("Jam:T", title="Waktu"),
+                    y=alt.Y("Suhu (°C):Q", title="Suhu (°C)"), tooltip=["Jam", "Suhu (°C)"]).properties(width="container", height=300, title="Perubahan Suhu per 3 Jam (Area Chart)")
             st.altair_chart(chart, use_container_width=True)
 
 
