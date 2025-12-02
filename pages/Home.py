@@ -43,7 +43,6 @@ kondisi = "-"
 
 if wilayah_pilihan:
     adm4 = df_kode[df_kode["nama"] == wilayah_pilihan]["kode"].values[0]
-    st.success(f"Kode ADM4 otomatis: **{adm4}**")
     url = f"https://api.bmkg.go.id/publik/prakiraan-cuaca?adm4={adm4}"
     try:
         r = requests.get(url, timeout=15)
