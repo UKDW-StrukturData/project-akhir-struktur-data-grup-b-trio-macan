@@ -166,7 +166,8 @@ if wilayah_pilihan:
 st.divider()
 
 # Konfigurasi API Key Gemini AI
-API_KEY = st.secrets["GEMINI_API_KEY"]
+# API_KEY = st.secrets["GEMINI_API_KEY"]
+API_KEY = st.session_state['token_api']
 try:
     genai.configure(api_key=API_KEY)
     model = genai.GenerativeModel("gemini-2.5-flash-preview-09-2025")

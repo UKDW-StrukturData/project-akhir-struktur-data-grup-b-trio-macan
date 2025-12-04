@@ -1,5 +1,20 @@
 import streamlit as st
 from PIL import Image
+import sqlite3
+import time
+
+def login(username, password):
+    # Cek apakah username dan password cocok
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
+    user = c.fetchone()
+    conn.close()
+    
+    if (user is not None):
+        return True
+    return False
+
 logo = Image.open("image.png")
 icon = Image.open("image.png")
 st.logo(
@@ -15,9 +30,11 @@ password_input = st.text_input('Kata Sandi', type= 'password')
 
 
 if st.button('Masuk'):
-    if username_input == "admin" and password_input == "admin123":
-
+    if (login(username_input, password_input)):
         st.session_state['sudah_login'] = True
+        st.success("Berhasil masuk!")
+        
+        time.sleep(3)
         st.switch_page('pages/Home.py')
     else:
-        st.error("username atau password salah")
+        st.error("Username atau password salah!")

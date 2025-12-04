@@ -1,6 +1,27 @@
 import streamlit as st
 from PIL import Image
 import re
+import sqlite3
+
+def daftar_baru(username, email, password):
+    # Simpan data ke database
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    c.execute("INSERT INTO users (username, email, password) VALUES (?, ?, ?)", (username, email, password))
+    conn.commit()
+    conn.close()
+    
+
+
+conn = sqlite3.connect('database.db')
+c = conn.cursor()
+# Membuat tabel jika belum ada
+c.execute('''CREATE TABLE IF NOT EXISTS users (
+                username TEXT NOT NULL,
+                email TEXT NOT NULL,
+                password TEXT NOT NULL
+            )''')
+
 
 # Contoh daftar username yang sudah ada (bisa diganti database)
 daftar_username = ["admin", "user123", "testakun"]
@@ -27,30 +48,32 @@ with col2:
 
     if st.button('Mendaftar'):
 
-        # === VALIDASI EMAIL ===
-        if not email_valid(email_input):
-            st.error("Format email tidak valid! Contoh: nama@gmail.com")
+        daftar_baru(username_input, email_input, password_input)
+        st.success(f"Registrasi berhasil! Username **{username_input}** telah dibuat.")
+        # # === VALIDASI EMAIL ===
+        # if not email_valid(email_input):
+        #     st.error("Format email tidak valid! Contoh: nama@gmail.com")
         
-        # === VALIDASI FIELD KOSONG ===
-        elif not email_input or not username_input or not password_input:
-            st.warning("Semua field wajib diisi!")
+        # # === VALIDASI FIELD KOSONG ===
+        # elif not email_input or not username_input or not password_input:
+        #     st.warning("Semua field wajib diisi!")
 
-        # === CEK USERNAME APAKAH SUDAH TERPAKAI ===
-        elif username_input in daftar_username:
-            st.error("Username sudah dipakai! Silakan gunakan username lain.")
+        # # === CEK USERNAME APAKAH SUDAH TERPAKAI ===
+        # elif username_input in daftar_username:
+        #     st.error("Username sudah dipakai! Silakan gunakan username lain.")
         
-        # === CEK PASSWORD SAMA ===
-        elif password_input != confirm_password:
-            st.error("Password dan konfirmasi password tidak cocok!")
+        # # === CEK PASSWORD SAMA ===
+        # elif password_input != confirm_password:
+        #     st.error("Password dan konfirmasi password tidak cocok!")
         
-        else:
-            # Simpan ke session state
-            st.session_state['email'] = email_input
-            st.session_state['username'] = username_input
-            st.session_state['password'] = password_input
-            st.session_state['sudah_daftar'] = True
+        # else:
+        #     # Simpan ke session state
+        #     st.session_state['email'] = email_input
+        #     st.session_state['username'] = username_input
+        #     st.session_state['password'] = password_input
+        #     st.session_state['sudah_daftar'] = True
 
-            st.success(f"Registrasi berhasil! Username **{username_input}** telah dibuat.")
+        #     st.success(f"Registrasi berhasil! Username **{username_input}** telah dibuat.")
 
-            # Berpindah ke halaman login
-            st.switch_page('pages/Masuk.py')
+        #     # Berpindah ke halaman login
+        #     st.switch_page('pages/Masuk.py')

@@ -3,6 +3,9 @@ import base64
 from PIL import Image
 import requests
 import base64
+from apikey import keykey
+
+st.session_state['token_api'] = keykey
 
 # Fungsi background sederhana
 def set_simple_background(image_url):
