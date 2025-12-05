@@ -6,6 +6,7 @@ import google.generativeai as genai
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from PIL import Image
+from hash import load_user
 import csv
 import altair
 
