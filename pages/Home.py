@@ -119,6 +119,108 @@ if wilayah_pilihan:
 
             cuaca_harian = forecast[0].get("cuaca", [])
 
+                    # ================================
+        #   STRUKTUR DATA LINKED LIST
+        # ================================
+        class Node:
+            def __init__(self, data):
+                self.data = data      # isi: list prakiraan cuaca per hari
+                self.next = None
+                self.prev = None
+
+        class LinkedList:
+            def __init__(self, items):
+                self.head = None
+                self.tail = None
+                self.size = 0
+                self._build(items)
+
+            def _build(self, items):
+                prev_node = None
+                for item in items:
+                    node = Node(item)
+                    if not self.head:
+                        self.head = node
+                    if prev_node:
+                        prev_node.next = node
+                        node.prev = prev_node
+                    prev_node = node
+                self.tail = prev_node
+                self.size = len(items)
+
+            def get(self, index):
+                """Ambil node ke-index (0-based)"""
+                if index < 0 or index >= self.size:
+                    return None
+                current = self.head
+                for _ in range(index):
+                    current = current.next
+                return current
+
+
+        # ================================
+        #   INISIALISASI LINKED LIST HARIAN
+        # ================================
+        if isinstance(cuaca_harian, list) and len(cuaca_harian) > 0:
+
+            # Buat linked list cuaca tiap hari
+            hari_list = LinkedList(cuaca_harian)
+
+            # Session state untuk index hari
+            if "hari_index" not in st.session_state:
+                st.session_state["hari_index"] = 0  # default hari pertama
+
+            # Navigasi
+            col_nav1, col_nav2 = st.columns(2)
+            with col_nav1:
+                if st.button("⬅️ Prev", use_container_width=True):
+                    if st.session_state["hari_index"] > 0:
+                        st.session_state["hari_index"] -= 1
+                        st.rerun()
+
+            with col_nav2:
+                if st.button("Next ➡️", use_container_width=True):
+                    if st.session_state["hari_index"] < hari_list.size - 1:
+                        st.session_state["hari_index"] += 1
+                        st.rerun()
+
+            # Ambil data hari aktif dari linked list
+            hari_ke = st.session_state["hari_index"]
+            node_hari = hari_list.get(hari_ke)
+
+            st.markdown(f"### Hari ke-{hari_ke + 1}")
+
+            # Menampilkan isi hari
+            if node_hari and isinstance(node_hari.data, list):
+                for prakiraan in node_hari.data:
+
+                    waktu_lokal = prakiraan.get("local_datetime", "N/A")
+                    deskripsi = prakiraan.get("weather_desc", "N/A")
+                    suhu_val = prakiraan.get("t", "N/A")
+                    kelembapan = prakiraan.get("hu", "N/A")
+                    kec_angin = prakiraan.get("ws", "N/A")
+                    arah_angin = prakiraan.get("wd", "N/A")
+                    jarak_pandang = prakiraan.get("vs_text", "N/A")
+
+                    raw_img = prakiraan.get("image", "")
+                    img_url = raw_img.replace(" ", "%20") if raw_img else None
+
+                    with st.container(border=True):
+                        st.write(f"**Jam:** {waktu_lokal}")
+                        st.write(f"**Cuaca:** {deskripsi}")
+
+                        if img_url:
+                            st.image(img_url, width=60)
+
+                        st.write(f"**Suhu:** {suhu_val}°C")
+                        st.write(f"**Kelembapan:** {kelembapan}%")
+                        st.write(f"**Kecepatan Angin:** {kec_angin} km/j")
+                        st.write(f"**Arah Angin:** dari {arah_angin}")
+                        st.write(f"**Jarak Pandang:** {jarak_pandang}")
+        else:
+            st.info("Data cuaca harian tidak ada.")
+
+
             if isinstance(cuaca_harian, list) and len(cuaca_harian) > 0:
 
                 for index_hari, prakiraan_harian in enumerate(cuaca_harian):
