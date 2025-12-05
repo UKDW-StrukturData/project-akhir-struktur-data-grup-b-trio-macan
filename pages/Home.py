@@ -1,12 +1,10 @@
 import streamlit as st
-import random
 import pandas as pd
 import requests
 import google.generativeai as genai
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from PIL import Image
-from hash import load_user
 import csv
 import altair
 
@@ -45,6 +43,10 @@ kondisi = "-"
 if wilayah_pilihan:
     adm4 = df_kode[df_kode["nama"] == wilayah_pilihan]["kode"].values[0]
     url = f"https://api.bmkg.go.id/publik/prakiraan-cuaca?adm4={adm4}"
+    if url in wilayah_pilihan: 
+        st.success(f'Berhasil menampilkan untuk wilayah {wilayah_pilihan}')
+    else:
+        st.error('Masukkan wilayah yang spesifik')
     try:
         r = requests.get(url, timeout=15)
         r.raise_for_status()
