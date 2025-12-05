@@ -34,7 +34,7 @@ if st.button('Masuk'):
         st.session_state['sudah_login'] = True
         st.success("Berhasil masuk!")
         
-        time.sleep(3)
+        time.sleep(2)
         st.switch_page('pages/Home.py')
     else:
         st.error("Username atau password salah!")
