@@ -43,7 +43,7 @@ kondisi = "-"
 if wilayah_pilihan:
     adm4 = df_kode[df_kode["nama"] == wilayah_pilihan]["kode"].values[0]
     url = f"https://api.bmkg.go.id/publik/prakiraan-cuaca?adm4={adm4}"
-    if url in wilayah_pilihan: 
+    if adm4 not in wilayah_pilihan: 
         st.success(f'Berhasil menampilkan untuk wilayah {wilayah_pilihan}')
     else:
         st.error('Masukkan wilayah yang spesifik')
