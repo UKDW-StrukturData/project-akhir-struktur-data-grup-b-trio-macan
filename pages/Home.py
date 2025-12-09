@@ -166,7 +166,7 @@ if wilayah_pilihan:
             # Buat linked list cuaca tiap hari
             hari_list = LinkedList(cuaca_harian)
 
-            # Session state untuk index hari
+            # Session state untuk indepx hari
             if "hari_index" not in st.session_state:
                 st.session_state["hari_index"] = 0  # default hari pertama
 
