@@ -11,7 +11,7 @@ from io import BytesIO
 # --- KONFIGURASI HALAMAN ---
 st.set_page_config(page_title="Perbandingan Cuaca", page_icon="🌤️")
 
-if 'sudah_login' not in st.session_state or st.session_state['is_logged_in'] == False:
+if 'sudah_login' not in st.session_state or st.session_state['sudah_login'] == False:
     st.error("🔒 Akses Ditolak")
     st.markdown("### Maaf, halaman ini khusus untuk member.")
     st.markdown("Silakan login terlebih dahulu untuk membandingkan cuaca.")
@@ -248,6 +248,9 @@ if st.button("Bandingkan Cuaca Saat Ini", type="primary"):
                 mime="application/pdf",
                 use_container_width=True
             )
+
+if st.button("Kembali", type="primary"):
+    st.switch_page("main.py")
 
 st.markdown(
     """
