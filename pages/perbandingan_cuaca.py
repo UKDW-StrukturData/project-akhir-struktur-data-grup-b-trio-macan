@@ -13,14 +13,14 @@ BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
 
 st.set_page_config(page_title="Perbandingan Cuaca", page_icon="🌦")
 
-# ======== MODE DARK/LIGHT =========
+# MODE DARK/LIGHT
 mode = st.sidebar.radio("🌗 Mode Tampilan", ["Light", "Dark"])
 if mode == "Dark":
     st.markdown("<style>body{background-color:#1E1E1E;color:white;}</style>", unsafe_allow_html=True)
 
 st.title("🌦️ Perbandingan Cuaca Dua Kota")
 
-# ======== PILIH KOTA DARI CSV =========
+#  PILIH KOTA DARI CSV 
 df_kota = pd.read_csv("kode_wilayah.csv")
 list_kota = df_kota["nama_kota"].tolist()
 
@@ -42,7 +42,7 @@ def format_time(timestamp, offset):
     return datetime.utcfromtimestamp(timestamp).astimezone(tz).strftime("%H:%M:%S")
 
 
-# ======== ACTION BUTTON =========
+# ACTION BUTTON
 if st.button("Bandingkan Cuaca"):
     data1 = get_weather(city1)
     data2 = get_weather(city2)
@@ -99,7 +99,7 @@ if st.button("Bandingkan Cuaca"):
 
         st.markdown("---")
 
-        # ======== EXPORT PDF =========
+        #  EXPORT PDF 
         pdf_buffer = BytesIO()
         c = canvas.Canvas(pdf_buffer, pagesize=A4)
 

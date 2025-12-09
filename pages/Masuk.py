@@ -17,24 +17,24 @@ def login(username, password):
 
 logo = Image.open("image.png")
 icon = Image.open("image.png")
-st.logo(
-    image=logo,
-    size="large",
-    icon_image=icon)
+st.logo( image=logo, size="large", icon_image=icon)
 
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
-    st.image(logo, width=250)
-username_input = st.text_input('Nama Pengguna')
-password_input = st.text_input('Kata Sandi', type= 'password')
-
-
-if st.button('Masuk'):
-    if (login(username_input, password_input)):
-        st.session_state['sudah_login'] = True
-        st.success("Berhasil masuk!")
-        
-        time.sleep(2)
-        st.switch_page('pages/Home.py')
-    else:
-        st.error("Username atau password salah!")
+    c_img_1, c_img_2, c_img_3 = st.columns([1, 2, 1])
+    with c_img_2:
+        if 'logo' in locals():
+            st.image(logo, use_container_width=True)
+    st.markdown("<h2 style='text-align:center;'>Halaman Masuk</h2>", unsafe_allow_html=True)
+    username_input = st.text_input('Username')
+    password_input = st.text_input('Kata Sandi', type= 'password')
+    
+    if st.button('Masuk'):
+        if (login(username_input, password_input)):
+            st.session_state['sudah_login'] = True
+            st.success("Berhasil masuk!")
+            st.success("Selamat datang, {}!".format(username_input))
+            time.sleep(2)
+            st.switch_page('pages/Home.py')
+        else:
+            st.error("Username atau password salah!")

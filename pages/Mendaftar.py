@@ -22,10 +22,6 @@ c.execute('''CREATE TABLE IF NOT EXISTS users (
                 password TEXT NOT NULL
             )''')
 
-
-# Contoh daftar username yang sudah ada (bisa diganti database)
-daftar_username = ["admin", "user123", "testakun"]
-
 # Fungsi validasi email sederhana
 def email_valid(email):
     pola = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
@@ -34,9 +30,9 @@ def email_valid(email):
 # Load logo & icon
 logo = Image.open("image.png")
 icon = Image.open("image.png")
-st.logo(image=logo, size="large", icon_image=icon)
+st.markdown("<h2 style='text-align:center;'>Pendaftaran Akun</h2>", unsafe_allow_html=True)
 
-col1, col2, col3 = st.columns([1, 2, 1])
+col1, col2, col3 = st.columns([1, 3, 1])
 
 with col2:
     st.image(logo, width=250)
@@ -45,35 +41,22 @@ with col2:
     username_input = st.text_input('Buat Username')
     password_input = st.text_input('Password Baru', type='password')
     confirm_password = st.text_input('Konfirmasi Password', type='password')
+    
+    st.write("")
 
-    if st.button('Mendaftar'):
-
-        daftar_baru(username_input, email_input, password_input)
-        st.success(f"Registrasi berhasil! Username **{username_input}** telah dibuat.")
-        # # === VALIDASI EMAIL ===
-        # if not email_valid(email_input):
-        #     st.error("Format email tidak valid! Contoh: nama@gmail.com")
-        
-        # # === VALIDASI FIELD KOSONG ===
-        # elif not email_input or not username_input or not password_input:
-        #     st.warning("Semua field wajib diisi!")
-
-        # # === CEK USERNAME APAKAH SUDAH TERPAKAI ===
-        # elif username_input in daftar_username:
-        #     st.error("Username sudah dipakai! Silakan gunakan username lain.")
-        
-        # # === CEK PASSWORD SAMA ===
-        # elif password_input != confirm_password:
-        #     st.error("Password dan konfirmasi password tidak cocok!")
-        
-        # else:
-        #     # Simpan ke session state
-        #     st.session_state['email'] = email_input
-        #     st.session_state['username'] = username_input
-        #     st.session_state['password'] = password_input
-        #     st.session_state['sudah_daftar'] = True
-
-        #     st.success(f"Registrasi berhasil! Username **{username_input}** telah dibuat.")
-
-        #     # Berpindah ke halaman login
-        #     st.switch_page('pages/Masuk.py')
+    bcol1, bcol2, bcol3 = st.columns([1, 1, 1])
+    with bcol1:
+        if st.button('Kembali'):
+            st.switch_page('pages/Masuk.py')
+    with bcol2:
+        daftar = st.button('Daftar')
+        if daftar:
+            if not email_valid(email_input):
+                st.error("Format email tidak valid.")
+            elif password_input != confirm_password:
+                st.error("Password dan konfirmasi password tidak sesuai.")
+            elif len(password_input) < 6:
+                st.error("Password harus terdiri dari minimal 6 karakter.")
+            else:
+                daftar_baru(username_input, email_input, password_input)
+                st.success("Akun berhasil dibuat! Silakan klik kembali dan masuk.")
