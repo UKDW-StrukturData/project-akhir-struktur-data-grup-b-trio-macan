@@ -3,7 +3,6 @@ import pandas as pd
 import requests
 import google.generativeai as genai
 import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
 from datetime import datetime
 from PIL import Image
 from io import BytesIO
@@ -174,14 +173,6 @@ if wilayah_pilihan:
             ax.grid(True)
             # Simpan grafik untuk dikirim ke PDF
             gambar_grafik = fig
-
-            pdf_buffer =  buat_pdf_lengkap(df, kota, gambar_grafik)
-            st.download_button(
-            label="Unduh Data",
-            data=pdf_buffer,
-            file_name="prakiraan_cuaca/3 jam.pdf",
-            mime="application/pdf",
-            )
             
             st.divider()
             
@@ -194,25 +185,37 @@ if wilayah_pilihan:
                     y=alt.Y("Suhu (°C):Q", title="Suhu (°C)"), tooltip=["Jam", "Suhu (°C)"]).properties(width="container", height=300, title="Perubahan Suhu per 3 Jam (Area Chart)")
             st.altair_chart(chart, use_container_width=True)
 
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    pdf_buffer =  buat_pdf_lengkap(df, kota, gambar_grafik)
+    st.download_button(
+    label="Unduh Data",
+    data=pdf_buffer,
+    file_name="prakiraan_cuaca/3 jam.pdf",
+    mime="application/pdf",
+    use_container_width=True)
+            
+st.divider()
+
 
             # Ambil data baris pertama untuk Tips AI
-            if len(df) > 0:
-                row0 = df.iloc[0]
-                suhu = row0.get("Suhu (°C)", "-")
-                kondisi = row0.get("Cuaca", "-")
+if len(df) > 0:
+    row0 = df.iloc[0]
+    suhu = row0.get("Suhu (°C)", "-")
+    kondisi = row0.get("Cuaca", "-")
 
             # ------------------------------
             # 2) TAMPILKAN PRAKIRAAN PER HARI
             # ------------------------------
-            st.subheader("Detail Prakiraan Cuaca per Hari")
+    st.subheader("Detail Prakiraan Cuaca per Hari")
 
-            cuaca_harian = forecast[0].get("cuaca", [])
+    cuaca_harian = forecast[0].get("cuaca", [])
 
                     # ================================
         #   STRUKTUR DATA LINKED LIST
         # ================================
-        class Node:
-            def __init__(self, data):
+    class Node:
+        def __init__(self, data):
                 self.data = data      # isi: list prakiraan cuaca per hari
                 self.next = None
                 self.prev = None
@@ -355,11 +358,7 @@ if wilayah_pilihan:
 
 st.divider()
 
-# Konfigurasi API Key Gemini AI
-# API_KEY = st.secrets["GEMINI_API_KEY"]
-
-API_KEY = st.session_state['token_api'] #Lokal
-#API_KEY = st.secrets['GEMINI_KEY'] #Streamlit Online
+API_KEY = st.session_state['token_api']
 
 try:
     genai.configure(api_key=API_KEY)
