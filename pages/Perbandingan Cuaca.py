@@ -167,7 +167,7 @@ if st.button("Bandingkan Cuaca Saat Ini", type="primary"):
             img_buffer.seek(0)
 
             st.markdown("---")
-            st.subheader("🏆 Analisis Singkat")
+            st.subheader("Analisis Singkat")
 
             # Variabel untuk menampung teks analisis (biar bisa diprint ke PDF)
             analisis_text = []
@@ -247,7 +247,7 @@ if st.button("Bandingkan Cuaca Saat Ini", type="primary"):
             
             st.markdown("---")
             st.download_button(
-                label="📥 Download Laporan PDF (Data + Grafik)",
+                label="Unduh Data Perbandingan Cuaca",
                 data=pdf_buffer,
                 file_name=f"Laporan_{wilayah1}_{wilayah2}.pdf",
                 mime="application/pdf",
