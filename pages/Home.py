@@ -375,3 +375,29 @@ else:
 st.markdown("---")
 st.caption(f"🕐 Diperbarui: {datetime.now().strftime('%H:%M')}")
 st.caption('Sumber API : BMKG (Badan Meteorologi, Klimatologi, dan Geofisika)')
+
+st.divider()
+col_pindah1, col_pindah2 = st.columns([3, 1])
+
+with col_pindah1:
+    st.markdown("Layanan Perbandingan Cuaca")
+    st.caption("Ingin tahu perbedaan cuaca di sini dengan daerah lain? Cek selisih suhu dan kelembapannya.")
+
+with col_pindah2:
+    # Spacer agar tombol agak turun ke tengah vertikal
+    st.write("") 
+    if st.button("Bandingkan \nSekarang ➡️", use_container_width=True):
+        try:
+            # Pastikan nama file di dalam folder pages sesuai
+            st.switch_page("pages/Perbandingan Cuaca.py") 
+        except Exception as e:
+            st.error(f"Halaman tidak ditemukan: {e}")
+
+st.markdown(
+    """
+    <div style='text-align: center; color: grey; font-size: 0.8em; margin-top: 50px;'>
+        © 2025 HAWA Trio Macan. All rights reserved.
+    </div>
+    """, 
+    unsafe_allow_html=True
+)

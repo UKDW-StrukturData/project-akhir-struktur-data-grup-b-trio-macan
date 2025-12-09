@@ -38,3 +38,11 @@ with col2:
             st.switch_page('pages/Home.py')
         else:
             st.error("Username atau password salah!")
+st.markdown(
+    """
+    <div style='text-align: center; color: grey; font-size: 0.8em; margin-top: 50px;'>
+        © 2025 HAWA Trio Macan. All rights reserved.
+    </div>
+    """, 
+    unsafe_allow_html=True
+)

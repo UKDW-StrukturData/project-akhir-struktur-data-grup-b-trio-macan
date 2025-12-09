@@ -60,3 +60,11 @@ with col2:
             else:
                 daftar_baru(username_input, email_input, password_input)
                 st.success("Akun berhasil dibuat! Silakan klik kembali dan masuk.")
+st.markdown(
+    """
+    <div style='text-align: center; color: grey; font-size: 0.8em; margin-top: 50px;'>
+        © 2025 HAWA Trio Macan. All rights reserved.
+    </div>
+    """, 
+    unsafe_allow_html=True
+)
