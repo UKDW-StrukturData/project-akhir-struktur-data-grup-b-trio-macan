@@ -2,123 +2,218 @@ import streamlit as st
 import requests
 import pandas as pd
 from datetime import datetime
-import pytz
 import matplotlib.pyplot as plt
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from io import BytesIO
 
-API_KEY = "MASUKKAN_API_KEY_KAMU"
-BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
-
+# --- KONFIGURASI HALAMAN ---
 st.set_page_config(page_title="Perbandingan Cuaca", page_icon="🌦")
+st.title("🌦️ Perbandingan Cuaca Dua Wilayah")
+st.caption("Membandingkan prakiraan cuaca (Waktu Terdekat dengan Saat Ini) dari dua wilayah.")
 
-# MODE DARK/LIGHT
-mode = st.sidebar.radio("🌗 Mode Tampilan", ["Light", "Dark"])
-if mode == "Dark":
-    st.markdown("<style>body{background-color:#1E1E1E;color:white;}</style>", unsafe_allow_html=True)
+# --- 1. LOAD DATA WILAYAH ---
+try:
+    df_kode = pd.read_csv(
+        "kode_wilayah.csv", 
+        header=None, 
+        names=["kode", "nama", "level"], 
+        dtype={"kode": str},
+        on_bad_lines='skip' 
+    )
+    # Filter hanya Desa/Kelurahan (adm4)
+    df_kode = df_kode[df_kode["level"] == "adm4"]
+    list_wilayah = df_kode["nama"].tolist()
 
-st.title("🌦️ Perbandingan Cuaca Dua Kota")
+except Exception as e:
+    st.error(f"Gagal memuat database wilayah: {e}")
+    list_wilayah = []
 
-#  PILIH KOTA DARI CSV 
-df_kota = pd.read_csv("kode_wilayah.csv")
-list_kota = df_kota["nama_kota"].tolist()
+# --- 2. INPUT USER ---
+col_input1, col_input2 = st.columns(2)
 
-city1 = st.selectbox("Pilih Kota Pertama:", list_kota, index=0)
-city2 = st.selectbox("Pilih Kota Kedua:", list_kota, index=1)
+with col_input1:
+    wilayah1 = st.selectbox(
+        "Pilih Wilayah Pertama", 
+        list_wilayah, 
+        index=0 if list_wilayah else None,
+        placeholder="Cari Desa/Kelurahan..."
+    )
 
+with col_input2:
+    default_idx_2 = 1 if len(list_wilayah) > 1 else 0
+    wilayah2 = st.selectbox(
+        "Pilih Wilayah Kedua", 
+        list_wilayah, 
+        index=default_idx_2,
+        placeholder="Cari Desa/Kelurahan..."
+    )
 
-def get_weather(city):
-    params = {
-        "q": city,
-        "appid": API_KEY,
-        "units": "metric"
-    }
-    return requests.get(BASE_URL, params=params).json()
+# --- FUNGSI LOGIKA "CUACA SAAT INI" ---
+def get_current_weather_bmkg(nama_wilayah):
+    """
+    Mengambil data dari BMKG, lalu mencari slot waktu yang
+    PALING DEKAT dengan waktu sekarang (Real-time).
+    """
+    try:
+        # 1. Cari Kode Wilayah
+        row = df_kode[df_kode["nama"] == nama_wilayah]
+        if row.empty:
+            return None
+        
+        adm4 = row["kode"].values[0]
+        url = f"https://api.bmkg.go.id/publik/prakiraan-cuaca?adm4={adm4}"
+        
+        # 2. Request API
+        r = requests.get(url, timeout=10)
+        r.raise_for_status()
+        data = r.json()
+        
+        forecast_data = data.get("data", [])
+        if not forecast_data:
+            return None
 
+        # 3. Logika Mencari Waktu Terdekat
+        waktu_sekarang = datetime.now()
+        data_terdekat = None
+        selisih_terkecil = float('inf') # Set ke angka sangat besar dulu
 
-def format_time(timestamp, offset):
-    tz = pytz.FixedOffset(offset // 60)
-    return datetime.utcfromtimestamp(timestamp).astimezone(tz).strftime("%H:%M:%S")
+        # Loop semua data cuaca yang ada di response
+        for entry in forecast_data:
+            cuaca_list = entry.get("cuaca", [])
+            for hari in cuaca_list:
+                for jam in hari:
+                    if isinstance(jam, dict):
+                        # Ambil string waktu lokal dari API (Contoh: "2024-12-09 12:00:00")
+                        str_waktu = jam.get("local_datetime")
+                        if str_waktu:
+                            # Ubah string jadi object datetime
+                            try:
+                                waktu_prakiraan = datetime.strptime(str_waktu, "%Y-%m-%d %H:%M:%S")
+                                
+                                # Hitung selisih detik (absolute)
+                                selisih = abs((waktu_sekarang - waktu_prakiraan).total_seconds())
+                                
+                                # Jika ini lebih dekat dari data sebelumnya, simpan ini
+                                if selisih < selisih_terkecil:
+                                    selisih_terkecil = selisih
+                                    data_terdekat = jam
+                            except ValueError:
+                                continue
+        
+        # 4. Return Data Terpilih
+        if data_terdekat:
+            return {
+                "Jam Referensi": data_terdekat.get("local_datetime", "-"),
+                "Cuaca": data_terdekat.get("weather_desc", "-"),
+                "Suhu (°C)": float(data_terdekat.get("t", 0)),
+                "Kelembapan (%)": float(data_terdekat.get("hu", 0)),
+                "Kecepatan Angin (km/j)": float(data_terdekat.get("ws", 0)),
+                "Arah Angin": data_terdekat.get("wd", "-"),
+            }
+        return None
 
+    except Exception as e:
+        st.error(f"Error pada {nama_wilayah}: {e}")
+        return None
 
-# ACTION BUTTON
-if st.button("Bandingkan Cuaca"):
-    data1 = get_weather(city1)
-    data2 = get_weather(city2)
-
-    if data1.get("cod") != 200 or data2.get("cod") != 200:
-        st.error("Data kota tidak ditemukan!")
+# --- 3. EKSEKUSI TOMBOL ---
+if st.button("Bandingkan Cuaca Saat Ini", type="primary"):
+    if not wilayah1 or not wilayah2:
+        st.warning("Mohon pilih kedua wilayah terlebih dahulu.")
     else:
-        cuaca1 = {
-            "Jam Lokal": format_time(data1["dt"], data1["timezone"]),
-            "Suhu (°C)": data1["main"]["temp"],
-            "Kelembapan (%)": data1["main"]["humidity"],
-            "Kecepatan Angin (m/s)": data1["wind"]["speed"],
-            "Jarak Pandang (m)": data1.get("visibility", "-")
-        }
+        with st.spinner(f"Mencari data terdekat dengan waktu sekarang..."):
+            data_w1 = get_current_weather_bmkg(wilayah1)
+            data_w2 = get_current_weather_bmkg(wilayah2)
 
-        cuaca2 = {
-            "Jam Lokal": format_time(data2["dt"], data2["timezone"]),
-            "Suhu (°C)": data2["main"]["temp"],
-            "Kelembapan (%)": data2["main"]["humidity"],
-            "Kecepatan Angin (m/s)": data2["wind"]["speed"],
-            "Jarak Pandang (m)": data2.get("visibility", "-")
-        }
+        if not data_w1 or not data_w2:
+            st.error("Data cuaca tidak ditemukan atau gagal terhubung ke BMKG.")
+        else:
+            # --- TAMPILKAN HASIL ---
+            st.success(f"Menampilkan data untuk estimasi waktu: {data_w1['Jam Referensi']}")
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                st.subheader(wilayah1)
+                st.dataframe(pd.DataFrame([data_w1]), hide_index=True)
+            with col2:
+                st.subheader(wilayah2)
+                st.dataframe(pd.DataFrame([data_w2]), hide_index=True)
 
-        col1, col2 = st.columns(2)
-        col1.subheader(city1)
-        col1.table(pd.DataFrame(cuaca1, index=[0]))
-        col2.subheader(city2)
-        col2.table(pd.DataFrame(cuaca2, index=[0]))
+            st.markdown("---")
+            st.subheader("📊 Grafik Perbandingan")
 
-        st.markdown("---")
-        st.subheader("📊 Grafik Perbandingan")
+            # --- GRAFIK ---
+            numeric_params = ["Suhu (°C)", "Kelembapan (%)", "Kecepatan Angin (km/j)"]
+            fig, axs = plt.subplots(1, 3, figsize=(15, 5))
+            colors = ['#FF9999', '#66B2FF']
 
-        numeric_params = ["Suhu (°C)", "Kelembapan (%)", "Kecepatan Angin (m/s)", "Jarak Pandang (m)"]
+            for i, param in enumerate(numeric_params):
+                ax = axs[i]
+                nilai1 = data_w1[param]
+                nilai2 = data_w2[param]
+                
+                ax.bar([wilayah1, wilayah2], [nilai1, nilai2], color=colors)
+                ax.set_title(param)
+                ax.grid(axis='y', linestyle='--', alpha=0.5)
+                # Label angka
+                ax.text(0, nilai1, f"{nilai1}", ha='center', va='bottom', fontsize=10, fontweight='bold')
+                ax.text(1, nilai2, f"{nilai2}", ha='center', va='bottom', fontsize=10, fontweight='bold')
 
-        for param in numeric_params:
-            fig, ax = plt.subplots()
-            ax.bar([city1, city2], [cuaca1[param], cuaca2[param]])
-            ax.set_title(param)
             st.pyplot(fig)
 
-        st.markdown("---")
-        st.subheader("🏆 Analisis Pemenang")
-        def winner(p1, p2, text, higher=True):
-            if p1 == p2:
-                st.info(f"- {text}: Sama")
-            else:
-                pemenang = city1 if (p1 > p2) == higher else city2
-                st.success(f"- {text}: **{pemenang} lebih unggul**")
+            st.markdown("---")
+            st.subheader("🏆 Analisis Singkat")
 
-        winner(cuaca1["Suhu (°C)"], cuaca2["Suhu (°C)"], "Suhu")
-        winner(cuaca1["Kelembapan (%)"], cuaca2["Kelembapan (%)"], "Kelembapan", False)
-        winner(cuaca1["Kecepatan Angin (m/s)"], cuaca2["Kecepatan Angin (m/s)"], "Kecepatan Angin")
-        winner(cuaca1["Jarak Pandang (m)"], cuaca2["Jarak Pandang (m)"], "Jarak Pandang")
+            # --- ANALISIS ---
+            def compare_stats(val1, val2, label, higher_is_better=True):
+                v1, v2 = float(val1), float(val2)
+                if v1 == v2:
+                    st.info(f"- **{label}**: Setara ({v1})")
+                else:
+                    is_w1_better = (v1 > v2) if higher_is_better else (v1 < v2)
+                    winner = wilayah1 if is_w1_better else wilayah2
+                    diff = abs(v1 - v2)
+                    st.success(f"- **{label}**: {winner} lebih unggul (Selisih {diff:.1f})")
 
-        st.markdown("---")
+            compare_stats(data_w1["Suhu (°C)"], data_w2["Suhu (°C)"], "Suhu (Lebih Panas)")
+            compare_stats(data_w1["Kelembapan (%)"], data_w2["Kelembapan (%)"], "Kelembapan (Lebih Rendah)", higher_is_better=False)
+            compare_stats(data_w1["Kecepatan Angin (km/j)"], data_w2["Kecepatan Angin (km/j)"], "Angin (Lebih Kencang)")
 
-        #  EXPORT PDF 
-        pdf_buffer = BytesIO()
-        c = canvas.Canvas(pdf_buffer, pagesize=A4)
+            # --- PDF EXPORT ---
+            st.markdown("---")
+            pdf_buffer = BytesIO()
+            c = canvas.Canvas(pdf_buffer, pagesize=A4)
+            width, height = A4
+            
+            c.setFont("Helvetica-Bold", 16)
+            c.drawString(50, height - 50, "Laporan Perbandingan Cuaca (BMKG)")
+            c.setFont("Helvetica", 10)
+            c.drawString(50, height - 70, f"Waktu Cetak: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+            
+            y_pos = height - 100
+            
+            # Helper function print PDF
+            def print_wilayah_pdf(nama, data, y):
+                c.setFont("Helvetica-Bold", 12)
+                c.drawString(50, y, f"Wilayah: {nama}")
+                y -= 20
+                c.setFont("Helvetica", 10)
+                for k, v in data.items():
+                    c.drawString(70, y, f"{k}: {v}")
+                    y -= 15
+                return y - 10
 
-        c.drawString(50, 800, f"Laporan Perbandingan Cuaca {city1} vs {city2}")
-        y = 770
-        for k, v in cuaca1.items():
-            c.drawString(50, y, f"{k} {city1}: {v}")
-            y -= 15
-        y -= 10
-        for k, v in cuaca2.items():
-            c.drawString(50, y, f"{k} {city2}: {v}")
-            y -= 15
+            y_pos = print_wilayah_pdf(wilayah1, data_w1, y_pos)
+            y_pos = print_wilayah_pdf(wilayah2, data_w2, y_pos)
 
-        c.save()
-        pdf_buffer.seek(0)
-
-        st.download_button(
-            label="📥 Download Laporan PDF",
-            data=pdf_buffer,
-            file_name=f"Cuaca_{city1}_vs_{city2}.pdf",
-            mime="application/pdf"
-        )
+            c.save()
+            pdf_buffer.seek(0)
+            
+            st.download_button(
+                label="📥 Download PDF",
+                data=pdf_buffer,
+                file_name=f"Perbandingan_{wilayah1}_{wilayah2}.pdf",
+                mime="application/pdf",
+                use_container_width=True
+            )

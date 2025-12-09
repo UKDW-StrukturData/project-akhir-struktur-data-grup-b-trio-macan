@@ -22,8 +22,6 @@ col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
     st.image(logo, width=250)
 
-
-
 st.title("Prakiraan Cuaca Indonesia dan Lokal")
 
 try:
