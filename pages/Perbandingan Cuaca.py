@@ -11,6 +11,20 @@ from io import BytesIO
 # --- KONFIGURASI HALAMAN ---
 st.set_page_config(page_title="Perbandingan Cuaca", page_icon="🌤️")
 
+if 'is_logged_in' not in st.session_state or st.session_state['is_logged_in'] == False:
+    st.error("🔒 Akses Ditolak")
+    st.markdown("### Maaf, halaman ini khusus untuk member.")
+    st.markdown("Silakan login terlebih dahulu untuk membandingkan cuaca.")
+    col_b1, col_b2 = st.columns([1, 4])
+    with col_b1:
+        if st.button("🔑 Masuk Sekarang", type="primary"):
+            try:
+                st.switch_page("pages/Masuk.py") 
+            except:
+                st.warning("Halaman login tidak ditemukan.")
+    
+    st.stop()
+
 # Style CSS agar mirip screenshot (Dark Mode support)
 st.markdown("""
 <style>

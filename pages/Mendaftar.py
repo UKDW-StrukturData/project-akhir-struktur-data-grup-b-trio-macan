@@ -32,10 +32,10 @@ logo = Image.open("image.png")
 icon = Image.open("image.png")
 st.markdown("<h2 style='text-align:center;'>Pendaftaran Akun</h2>", unsafe_allow_html=True)
 
-col1, col2, col3 = st.columns([1, 3, 1])
+col1, col2, col3 = st.columns([1, 2, 1])
 
 with col2:
-    st.image(logo, width=200)
+    st.image(logo, use_container_width=True)
 
     email_input = st.text_input('Masukkan Email anda')
     username_input = st.text_input('Buat Username')
