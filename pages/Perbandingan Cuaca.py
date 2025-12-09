@@ -16,9 +16,6 @@ col1, col2, col3 = st.columns([1, 1, 1])
 with col2:
     st.image(logo, use_container_width=True)
 
-col_kiri, col_tengah, col_kanan = st.columns([1, 3, 1])
-with col_tengah:
-    st.markdown("<h2 style='text-align:center;'>Bandingkan Cuaca Dua Wilayah</h2>", unsafe_allow_html=True)
 
 if 'sudah_login' not in st.session_state or st.session_state['sudah_login'] == False:
     st.error("Akses Ditolak!")
@@ -42,7 +39,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.title("🌦️ Perbandingan Cuaca Dua Wilayah")
+st.title("Perbandingan Cuaca Dua Wilayah")
 st.caption("Membandingkan prakiraan cuaca (Waktu Terdekat dengan Saat Ini) dari dua wilayah.")
 
 # --- 1. LOAD DATA WILAYAH ---

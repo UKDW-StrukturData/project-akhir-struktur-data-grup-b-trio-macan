@@ -26,11 +26,13 @@ except:
 if hasattr(st, "logo") and logo_img:
     st.logo(image=logo_img, icon_image=logo_img)
 
-col_spacer1, col_content, col_spacer2 = st.columns([0.5, 3, 0.5])
+logo = Image.open("image.png")
+icon = Image.open("image.png")
+st.logo(image=logo,size="large",icon_image=icon)
+col1, col2, col3 = st.columns([1, 2, 1])
 
-with col_content:
-    # Menampilkan Logo di tengah
-    st.image(logo_img, width=250)
+with col2:
+    st.image(logo, width=250)
     
     st.title('Prakiraan Cuaca ID')
     st.markdown("""
