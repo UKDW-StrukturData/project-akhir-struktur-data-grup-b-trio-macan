@@ -2,12 +2,16 @@ import streamlit as st
 import pandas as pd
 import requests
 import google.generativeai as genai
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 from datetime import datetime
-from zoneinfo import ZoneInfo
 from PIL import Image
-import csv
-import altair
-
+from io import BytesIO
+from reportlab.lib.pagesizes import A4
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image as RLImage
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.units import inch
 #PAGE CONFIG!
 st.set_page_config(page_title="Hawa - Cuaca & Tips AI", page_icon="🌤️", layout="centered")
 
@@ -50,6 +54,62 @@ except Exception as e:
 kota = "-"
 suhu = "-"
 kondisi = "-"
+
+def buat_pdf_lengkap(dataframe, nama_kota, gambar_grafik):
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=A4)
+    elements = []
+    styles = getSampleStyleSheet()
+
+    # 1. Judul PDF
+    title = Paragraph(f"Laporan Prakiraan Cuaca - {nama_kota}", styles['Title'])
+    elements.append(title)
+    elements.append(Spacer(1, 10))
+    
+    # 2. Subjudul Waktu
+    waktu_str = datetime.now().strftime('%d %B %Y, %H:%M WIB')
+    subtitle = Paragraph(f"Dicetak pada: {waktu_str}", styles['Normal'])
+    elements.append(subtitle)
+    elements.append(Spacer(1, 20))
+
+    # 3. Masukkan Grafik (Gambar)
+    if gambar_grafik:
+        # Simpan gambar matplotlib ke memory agar bisa dibaca reportlab
+        img_buffer = BytesIO()
+        gambar_grafik.savefig(img_buffer, format='png', dpi=100, bbox_inches='tight')
+        img_buffer.seek(0)
+        
+        # Buat object Image reportlab
+        im = RLImage(img_buffer, width=6*inch, height=3*inch)
+        elements.append(im)
+        elements.append(Spacer(1, 20))
+
+    # 4. Tabel Data
+    # Mengambil header kolom dan data isinya
+    data_tabel = [dataframe.columns.to_list()] + dataframe.astype(str).values.tolist()
+
+    t = Table(data_tabel)
+
+    # Styling Tabel
+    style = TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.darkcyan), # Header
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 9),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 10),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ])
+    t.setStyle(style)
+
+    elements.append(t)
+    
+    # Build PDF
+    doc.build(elements)
+    buffer.seek(0)
+    return buffer
+
 
 if wilayah_pilihan:
     adm4 = df_kode[df_kode["nama"] == wilayah_pilihan]["kode"].values[0]
@@ -108,7 +168,7 @@ if wilayah_pilihan:
 
             csv_data = df.to_csv(index=False).encode("utf-8")
             st.download_button(
-            label="📥 Download CSV",
+            label="Unduh Data",
             data=csv_data,
             file_name="prakiraan_cuaca/3 jam.csv",
             mime="text/csv",
