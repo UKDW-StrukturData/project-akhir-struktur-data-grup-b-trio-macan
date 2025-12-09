@@ -9,7 +9,7 @@ from reportlab.lib.utils import ImageReader
 from io import BytesIO
 
 # --- KONFIGURASI HALAMAN ---
-st.set_page_config(page_title="Perbandingan Cuaca", page_icon="🌦")
+st.set_page_config(page_title="Perbandingan Cuaca", page_icon="🌤️")
 
 # Style CSS agar mirip screenshot (Dark Mode support)
 st.markdown("""
