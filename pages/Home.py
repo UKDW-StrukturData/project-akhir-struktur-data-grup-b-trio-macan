@@ -3,30 +3,79 @@ import pandas as pd
 import requests
 import google.generativeai as genai
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 from datetime import datetime
 from PIL import Image
 from io import BytesIO
+
+# --- LIBRARY PDF REPORTLAB ---
 from reportlab.lib.pagesizes import A4
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image as RLImage
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import inch
-#PAGE CONFIG!
+
+# --- KONFIGURASI HALAMAN ---
 st.set_page_config(page_title="Hawa - Cuaca & Tips AI", page_icon="🌤️", layout="centered")
 
-if "sudah_login" not in st.session_state or st.session_state["sudah_login"] is not True:
-    st.switch_page("pages/Masuk.py")
+# --- KELAS STRUKTUR DATA (Dipindah ke atas biar aman) ---
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+        self.prev = None
 
-#LOGO!
-logo = Image.open("image.png")
-icon = Image.open("image.png")
-st.logo(image=logo,size="large",icon_image=icon)
+class LinkedList:
+    def __init__(self, items):
+        self.head = None
+        self.tail = None
+        self.size = 0
+        self._build(items)
+
+    def _build(self, items):
+        prev_node = None
+        for item in items:
+            node = Node(item)
+            if not self.head:
+                self.head = node
+            if prev_node:
+                prev_node.next = node
+                node.prev = prev_node
+            prev_node = node
+        self.tail = prev_node
+        self.size = len(items)
+
+    def get(self, index):
+        if index < 0 or index >= self.size:
+            return None
+        current = self.head
+        for _ in range(index):
+            current = current.next
+        return current
+
+# --- CEK LOGIN ---
+if "sudah_login" not in st.session_state or st.session_state["sudah_login"] is not True:
+    try:
+        st.switch_page("pages/Masuk.py")
+    except:
+        st.stop()
+
+# --- LOGO ---
+try:
+    logo = Image.open("image.png")
+    icon = Image.open("image.png")
+    st.logo(image=logo,size="large",icon_image=icon)
+except:
+    logo = None
+
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
-    st.image(logo, width=250)
+    if logo:
+        st.image(logo, width=250)
 
 st.title("Prakiraan Cuaca Indonesia dan Lokal")
 
+# --- LOAD DATA WILAYAH ---
 try:
     df_kode = pd.read_csv(
         "kode_wilayah.csv", 
@@ -35,7 +84,6 @@ try:
         dtype={"kode": str},
         on_bad_lines='skip' 
     )
-    # Filter hanya Desa/Kelurahan (adm4)
     df_kode = df_kode[df_kode["level"] == "adm4"]
     
     st.caption("Masukkan wilayah Desa/Kelurahan yang anda inginkan. Contoh: Kemayoran.")
@@ -54,6 +102,7 @@ kota = "-"
 suhu = "-"
 kondisi = "-"
 
+# --- FUNGSI PEMBUAT PDF ---
 def buat_pdf_lengkap(dataframe, nama_kota, gambar_grafik):
     buffer = BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=A4)
@@ -73,25 +122,18 @@ def buat_pdf_lengkap(dataframe, nama_kota, gambar_grafik):
 
     # 3. Masukkan Grafik (Gambar)
     if gambar_grafik:
-        # Simpan gambar matplotlib ke memory agar bisa dibaca reportlab
         img_buffer = BytesIO()
         gambar_grafik.savefig(img_buffer, format='png', dpi=100, bbox_inches='tight')
         img_buffer.seek(0)
-        
-        # Buat object Image reportlab
         im = RLImage(img_buffer, width=6*inch, height=3*inch)
         elements.append(im)
         elements.append(Spacer(1, 20))
 
     # 4. Tabel Data
-    # Mengambil header kolom dan data isinya
     data_tabel = [dataframe.columns.to_list()] + dataframe.astype(str).values.tolist()
-
     t = Table(data_tabel)
-
-    # Styling Tabel
     style = TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.darkcyan), # Header
+        ('BACKGROUND', (0, 0), (-1, 0), colors.darkcyan),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
@@ -101,28 +143,28 @@ def buat_pdf_lengkap(dataframe, nama_kota, gambar_grafik):
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
     ])
     t.setStyle(style)
-
     elements.append(t)
     
-    # Build PDF
     doc.build(elements)
     buffer.seek(0)
     return buffer
 
-
+# --- LOGIKA UTAMA ---
 if wilayah_pilihan:
     adm4 = df_kode[df_kode["nama"] == wilayah_pilihan]["kode"].values[0]
     url = f"https://api.bmkg.go.id/publik/prakiraan-cuaca?adm4={adm4}"
+    
     if adm4 not in wilayah_pilihan: 
         st.success(f'Berhasil menampilkan untuk wilayah {wilayah_pilihan}')
     else:
         st.error('Masukkan wilayah yang spesifik')
+        
     try:
         r = requests.get(url, timeout=15)
         r.raise_for_status()
         data = r.json()
 
-        # Menampilkan info lokasi
+        # Info Lokasi
         lokasi = data.get("lokasi", {})
         forecast = data.get("data", [])
         if lokasi:
@@ -139,10 +181,9 @@ if wilayah_pilihan:
                 st.write(f"**Zona Waktu**: {lokasi.get('timezone', '-')}")
                 st.write(f"**Analysis Date (UTC)**: {data.get('analysis_date', '-')}")
 
-        # Koleksi elemen prakiraan
+        # Prakiraan Per 3 Jam
         if forecast:
             forecast3jam = []
-
             for entry in forecast:
                 cuaca = entry.get("cuaca", [])
                 if isinstance(cuaca, list) and len(cuaca) > 0:
@@ -153,202 +194,99 @@ if wilayah_pilihan:
                                     forecast3jam.append({
                                         "Jam": x.get("local_datetime", "-"),
                                         "Cuaca": x.get("weather_desc", "-"),
-                                        "Suhu (°C)": x.get("t", "-"),
-                                        "Kelembapan (%)": x.get("hu", "-"),
-                                        "Angin (km/j)": x.get("ws", "-"),
-                                        "Arah Angin": x.get("wd", "-"),
+                                        "Suhu": float(x.get("t", 0)),
+                                        "Kelembapan": x.get("hu", "-"),
+                                        "Angin": x.get("ws", "-"),
                                     })
 
             df = pd.DataFrame(forecast3jam)
+            df_tampil = df.copy()
+            df_tampil.columns = ["Jam", "Cuaca", "Suhu (°C)", "Kelembapan (%)", "Angin (km/j)"]
+
             st.subheader("Prakiraan Per 3 Jam")
-            st.dataframe(df, use_container_width=True)
-            # Setelah selesai mengisi forecast3jam
-            df3 = pd.DataFrame(forecast3jam)
+            st.dataframe(df_tampil, use_container_width=True)
             
-            fig, ax = plt.subplots(figsize=(6, 3))
-            ax.plot(df3["Jam"], df3["Suhu (°C)"], marker="o")
-            ax.set_title("Perubahan Suhu per 3 Jam")
+            # Grafik Matplotlib
+            st.write("---")
+            df["Jam_dt"] = pd.to_datetime(df["Jam"], errors='coerce')
+            
+            fig, ax = plt.subplots(figsize=(8, 3.5))
+            ax.plot(df["Jam_dt"], df["Suhu"], marker="o", color='teal', linestyle='-')
+            ax.fill_between(df["Jam_dt"], df["Suhu"], color="teal", alpha=0.3)
+            
+            ax.set_title(f"Grafik Suhu di {kota}")
             ax.set_xlabel("Waktu")
             ax.set_ylabel("Suhu (°C)")
-            ax.grid(True)
-            # Simpan grafik untuk dikirim ke PDF
-            gambar_grafik = fig
+            ax.grid(True, linestyle='--', alpha=0.6)
+            ax.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
+            fig.autofmt_xdate()
+            
+            st.pyplot(fig)
+            
+            # Tombol Download PDF
+            pdf_bytes = buat_pdf_lengkap(df_tampil, kota, fig)
+            st.download_button(
+                label="Unduh Laporan Cuaca",
+                data=pdf_bytes,
+                file_name=f"Laporan_Cuaca_{kota}.pdf",
+                mime="application/pdf",
+                type="primary"
+            )
             
             st.divider()
-            
-            import altair as alt
-            df3["Jam"] = pd.to_datetime(df3["Jam"], errors="coerce")
-            chart = alt.Chart(df3).mark_area(
-                opacity=0.4,
-                interpolate="monotone").encode(
-                    x=alt.X("Jam:T", title="Waktu"),
-                    y=alt.Y("Suhu (°C):Q", title="Suhu (°C)"), tooltip=["Jam", "Suhu (°C)"]).properties(width="container", height=300, title="Perubahan Suhu per 3 Jam (Area Chart)")
-            st.altair_chart(chart, use_container_width=True)
 
-col1, col2, col3 = st.columns([1, 2, 1])
-with col2:
-    pdf_buffer =  buat_pdf_lengkap(df, kota, gambar_grafik)
-    st.download_button(
-    label="Unduh Data",
-    data=pdf_buffer,
-    file_name="prakiraan_cuaca/3 jam.pdf",
-    mime="application/pdf",
-    use_container_width=True)
-            
-st.divider()
+            if len(df) > 0:
+                row0 = df.iloc[0]
+                suhu = row0.get("Suhu", "-")
+                kondisi = row0.get("Cuaca", "-")
 
-
-            # Ambil data baris pertama untuk Tips AI
-if len(df) > 0:
-    row0 = df.iloc[0]
-    suhu = row0.get("Suhu (°C)", "-")
-    kondisi = row0.get("Cuaca", "-")
-
-            # ------------------------------
-            # 2) TAMPILKAN PRAKIRAAN PER HARI
-            # ------------------------------
-    st.subheader("Detail Prakiraan Cuaca per Hari")
-
-    cuaca_harian = forecast[0].get("cuaca", [])
-
-                    # ================================
-        #   STRUKTUR DATA LINKED LIST
-        # ================================
-    class Node:
-        def __init__(self, data):
-                self.data = data      # isi: list prakiraan cuaca per hari
-                self.next = None
-                self.prev = None
-
-        class LinkedList:
-            def __init__(self, items):
-                self.head = None
-                self.tail = None
-                self.size = 0
-                self._build(items)
-
-            def _build(self, items):
-                prev_node = None
-                for item in items:
-                    node = Node(item)
-                    if not self.head:
-                        self.head = node
-                    if prev_node:
-                        prev_node.next = node
-                        node.prev = prev_node
-                    prev_node = node
-                self.tail = prev_node
-                self.size = len(items)
-
-            def get(self, index):
-                """Ambil node ke-index (0-based)"""
-                if index < 0 or index >= self.size:
-                    return None
-                current = self.head
-                for _ in range(index):
-                    current = current.next
-                return current
-
-
-        # ================================
-        #   INISIALISASI LINKED LIST HARIAN
-        # ================================
-        if isinstance(cuaca_harian, list) and len(cuaca_harian) > 0:
-
-            # Buat linked list cuaca tiap hari
-            hari_list = LinkedList(cuaca_harian)
-
-            # Session state untuk indepx hari
-            if "hari_index" not in st.session_state:
-                st.session_state["hari_index"] = 0  # default hari pertama
-
-            # Navigasi
-            col_nav1, col_nav2 = st.columns(2)
-            with col_nav1:
-                if st.button("⬅️ Prev", use_container_width=True):
-                    if st.session_state["hari_index"] > 0:
-                        st.session_state["hari_index"] -= 1
-                        st.rerun()
-
-            with col_nav2:
-                if st.button("Next ➡️", use_container_width=True):
-                    if st.session_state["hari_index"] < hari_list.size - 1:
-                        st.session_state["hari_index"] += 1
-                        st.rerun()
-
-            # Ambil data hari aktif dari linked list
-            hari_ke = st.session_state["hari_index"]
-            node_hari = hari_list.get(hari_ke)
-
-            st.markdown(f"### Hari ke-{hari_ke + 1}")
-
-            # Menampilkan isi hari
-            if node_hari and isinstance(node_hari.data, list):
-                for prakiraan in node_hari.data:
-
-                    waktu_lokal = prakiraan.get("local_datetime", "N/A")
-                    deskripsi = prakiraan.get("weather_desc", "N/A")
-                    suhu_val = prakiraan.get("t", "N/A")
-                    kelembapan = prakiraan.get("hu", "N/A")
-                    kec_angin = prakiraan.get("ws", "N/A")
-                    arah_angin = prakiraan.get("wd", "N/A")
-                    jarak_pandang = prakiraan.get("vs_text", "N/A")
-
-                    raw_img = prakiraan.get("image", "")
-                    img_url = raw_img.replace(" ", "%20") if raw_img else None
-
-                    with st.container(border=True):
-                        st.write(f"**Jam:** {waktu_lokal}")
-                        st.write(f"**Cuaca:** {deskripsi}")
-
-                        if img_url:
-                            st.image(img_url, width=60)
-
-                        st.write(f"**Suhu:** {suhu_val}°C")
-                        st.write(f"**Kelembapan:** {kelembapan}%")
-                        st.write(f"**Kecepatan Angin:** {kec_angin} km/j")
-                        st.write(f"**Arah Angin:** dari {arah_angin}")
-                        st.write(f"**Jarak Pandang:** {jarak_pandang}")
-        else:
-            st.info("Data cuaca harian tidak ada.")
-
+            # Prakiraan Per Hari (Linked List)
+            st.subheader("Detail Prakiraan Cuaca per Hari")
+            cuaca_harian = forecast[0].get("cuaca", [])
 
             if isinstance(cuaca_harian, list) and len(cuaca_harian) > 0:
+                # INISIALISASI LINKED LIST DI SINI (SUDAH AMAN)
+                hari_list = LinkedList(cuaca_harian)
 
-                for index_hari, prakiraan_harian in enumerate(cuaca_harian):
+                if "hari_index" not in st.session_state:
+                    st.session_state["hari_index"] = 0 
 
-                    st.markdown(f"### Hari ke-{index_hari + 1}")
+                col_nav1, col_nav2 = st.columns(2)
+                with col_nav1:
+                    if st.button("⬅️ Hari Sebelumnya", use_container_width=True):
+                        if st.session_state["hari_index"] > 0:
+                            st.session_state["hari_index"] -= 1
+                            st.rerun()
+                with col_nav2:
+                    if st.button("Hari Berikutnya ➡️", use_container_width=True):
+                        if st.session_state["hari_index"] < len(cuaca_harian) - 1:
+                            st.session_state["hari_index"] += 1
+                            st.rerun()
 
-                    if isinstance(prakiraan_harian, list):
+                hari_ke = st.session_state["hari_index"]
+                node_hari = hari_list.get(hari_ke)
+                
+                st.markdown(f"##### Prakiraan Hari ke-{hari_ke + 1}")
 
-                        for prakiraan in prakiraan_harian:
-
-                            waktu_lokal = prakiraan.get("local_datetime", "N/A")
-                            deskripsi = prakiraan.get("weather_desc", "N/A")
-                            suhu_val = prakiraan.get("t", "N/A")
-                            kelembapan = prakiraan.get("hu", "N/A")
-                            kec_angin = prakiraan.get("ws", "N/A")
-                            arah_angin = prakiraan.get("wd", "N/A")
-                            jarak_pandang = prakiraan.get("vs_text", "N/A")
-
-                            raw_img = prakiraan.get("image", "")
-                            img_url = raw_img.replace(" ", "%20") if raw_img else None
-
-                            with st.container(border=True):
-                                st.write(f"**Jam:** {waktu_lokal}")
-                                st.write(f"**Cuaca:** {deskripsi}")
-
-                                if img_url:
-                                    st.image(img_url, width=60)
-
-                                st.write(f"**Suhu:** {suhu_val}°C")
-                                st.write(f"**Kelembapan:** {kelembapan}%")
-                                st.write(f"**Kecepatan Angin:** {kec_angin} km/j")
-                                st.write(f"**Arah Angin:** dari {arah_angin}")
-                                st.write(f"**Jarak Pandang:** {jarak_pandang}")
-
+                if node_hari and isinstance(node_hari.data, list):
+                    for prakiraan in node_hari.data:
+                        jam = prakiraan.get("local_datetime", "")
+                        ket = prakiraan.get("weather_desc", "")
+                        temp = prakiraan.get("t", "")
+                        icon_url = prakiraan.get("image", "").replace(" ", "%20")
+                        
+                        with st.container(border=True):
+                            c1, c2, c3 = st.columns([1, 1, 2])
+                            with c1:
+                                if icon_url: st.image(icon_url, width=50)
+                            with c2:
+                                st.write(f"**{temp}°C**")
+                            with c3:
+                                st.write(f"{jam}")
+                                st.caption(ket)
             else:
-                st.info("Data cuaca harian tidak ada.")
+                st.info("Data harian tidak tersedia.")
+
     except requests.exceptions.HTTPError as e:
         st.error(f"HTTP error: {e}")
     except requests.exceptions.RequestException as e:
@@ -358,108 +296,62 @@ if len(df) > 0:
 
 st.divider()
 
-API_KEY = st.session_state['token_api']
-
+# --- GEMINI AI TIPS ---
+API_KEY = st.session_state.get('token_api', '') 
+ai_connected = False
 try:
-    genai.configure(api_key=API_KEY)
-    model = genai.GenerativeModel("gemini-2.5-flash-preview-09-2025")
-    ai_connected = True
-except Exception as e:
-    ai_connected = False
-    st.error(f"Gagal konek Gemini: {e}")
-    
-# Cek status login
-status = False
+    if API_KEY:
+        genai.configure(api_key=API_KEY)
+        model = genai.GenerativeModel("gemini-2.5-flash-preview-09-2025")
+        ai_connected = True
+except:
+    pass
 
-if ('sudah_login' in st.session_state and st.session_state['sudah_login'] is True):
-    status = True
-
-if (status is False):
-    st.switch_page('pages/Masuk.py')
-
-# Inisialisasi Gemini AI
-try:
-    genai.configure(api_key=API_KEY)
-    model = genai.GenerativeModel("gemini-2.5-flash-preview-09-2025")
-    ai_connected = True
-except Exception as e:
-    st.error(f"Error koneksi Gemini AI: {e}")
-    ai_connected = False
-
-# Fungsi untuk mendapatkan tips sederhana dari Gemini
 def get_simple_tips(kota, suhu, kondisi):
     prompt = f"""
-    Berikan beberapa tips singkat dan friendly dalam bahasa Indonesia untuk cuaca di {kota} 
-    dengan suhu {suhu}°C dan kondisi {kondisi}. 
-    
-    Sertakan:
-    - Cocok dilakukan:
-    - Tidak cocok dilakukan:
-
-    Beri 1 baris kosong sebelum pindah bagian. Pakai bullet dan emoji yang relevan.
-    Maksimal 60 kata.
+    Berikan tips singkat bahasa Indonesia untuk cuaca di {kota}, suhu {suhu}°C, kondisi {kondisi}.
+    Format:
+    - Cocok dilakukan: [aktivitas]
+    - Tidak cocok: [aktivitas]
+    Gunakan emoji. Maksimal 50 kata.
     """
-
     try:
         response = model.generate_content(prompt)
-        if hasattr(response, "text") and response.text:
-            return response.text.strip()
-        if hasattr(response, "candidates"):
-            return response.candidates[0].content.parts[0].text.strip()
-        return "AI tidak memberikan output."
-    except Exception as e:
-        return f"Error: {e}"
+        return response.text if response.text else "AI tidak merespons."
+    except:
+        return "Gagal terhubung ke AI."
 
-# Container untuk Tips AI
-st.subheader("💡 Tips")
+st.subheader("💡 Tips AI")
 
 if ai_connected:
-    if st.button("✨ Dapatkan Tips", type="primary", use_container_width=True):
-        with st.spinner("AI sedang memberikan tips..."):
+    if st.button("✨ Minta Tips Cuaca", use_container_width=True):
+        with st.spinner("Sedang membuat tips..."):
             tips = get_simple_tips(kota, suhu, kondisi)
-            
-            # Tampilkan tips dalam box yang clean
             st.markdown(
                 f"""
-                <div style='
-                    background-color: #f0f8ff;
-                    padding: 20px;
-                    border-radius: 10px;
-                    border-left: 5px solid #4CAF50;
-                    margin: 10px 0;
-                '>
-                    <h3 style='margin: 0; color: #2c3e50;'>{tips}</h3>
+                <div style='background-color:#e8f5e9;padding:15px;border-radius:10px;border-left:5px solid #2e7d32;'>
+                {tips}
                 </div>
-                """, 
-                unsafe_allow_html=True
+                """, unsafe_allow_html=True
             )
-            
-            # Tombol untuk tips baru
-            st.button("🔄 Tips Lain", use_container_width=True)
 else:
-    st.error("Gemini AI tidak terhubung. Periksa API key Anda.")
+    st.warning("Gemini AI belum terhubung (Cek API Key).")
 
-# Footer
+# --- FOOTER ---
 st.markdown("---")
-st.caption(f"🕐 Diperbarui: {datetime.now().strftime('%H:%M')}")
-st.caption('Sumber API : BMKG (Badan Meteorologi, Klimatologi, dan Geofisika)')
-
-st.divider()
 col_pindah1, col_pindah2 = st.columns([3, 1])
 
 with col_pindah1:
-    st.markdown("Layanan Perbandingan Cuaca")
-    st.caption("Ingin tahu perbedaan cuaca di sini dengan daerah lain? Cek selisih suhu dan kelembapannya.")
+    st.markdown("### Bandingkan Cuaca")
+    st.caption("Cek selisih suhu dan kelembapan dengan kota lain.")
 
 with col_pindah2:
-    # Spacer agar tombol agak turun ke tengah vertikal
     st.write("") 
-    if st.button("Bandingkan \nSekarang ➡️", use_container_width=True):
+    if st.button("Bandingkan \nSekarang", use_container_width=True):
         try:
-            # Pastikan nama file di dalam folder pages sesuai
             st.switch_page("pages/Perbandingan Cuaca.py") 
         except Exception as e:
-            st.error(f"Halaman tidak ditemukan: {e}")
+            st.error(f"Halaman tidak ditemukan.")
 
 st.markdown(
     """
