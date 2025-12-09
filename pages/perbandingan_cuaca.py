@@ -5,6 +5,7 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
+from reportlab.lib.utils import ImageReader  # <-- Tambahan Import
 from io import BytesIO
 
 # --- KONFIGURASI HALAMAN ---
@@ -51,12 +52,7 @@ with col_input2:
 
 # --- FUNGSI LOGIKA "CUACA SAAT INI" ---
 def get_current_weather_bmkg(nama_wilayah):
-    """
-    Mengambil data dari BMKG, lalu mencari slot waktu yang
-    PALING DEKAT dengan waktu sekarang (Real-time).
-    """
     try:
-        # 1. Cari Kode Wilayah
         row = df_kode[df_kode["nama"] == nama_wilayah]
         if row.empty:
             return None
@@ -64,7 +60,6 @@ def get_current_weather_bmkg(nama_wilayah):
         adm4 = row["kode"].values[0]
         url = f"https://api.bmkg.go.id/publik/prakiraan-cuaca?adm4={adm4}"
         
-        # 2. Request API
         r = requests.get(url, timeout=10)
         r.raise_for_status()
         data = r.json()
@@ -73,35 +68,26 @@ def get_current_weather_bmkg(nama_wilayah):
         if not forecast_data:
             return None
 
-        # 3. Logika Mencari Waktu Terdekat
         waktu_sekarang = datetime.now()
         data_terdekat = None
-        selisih_terkecil = float('inf') # Set ke angka sangat besar dulu
+        selisih_terkecil = float('inf')
 
-        # Loop semua data cuaca yang ada di response
         for entry in forecast_data:
             cuaca_list = entry.get("cuaca", [])
             for hari in cuaca_list:
                 for jam in hari:
                     if isinstance(jam, dict):
-                        # Ambil string waktu lokal dari API (Contoh: "2024-12-09 12:00:00")
                         str_waktu = jam.get("local_datetime")
                         if str_waktu:
-                            # Ubah string jadi object datetime
                             try:
                                 waktu_prakiraan = datetime.strptime(str_waktu, "%Y-%m-%d %H:%M:%S")
-                                
-                                # Hitung selisih detik (absolute)
                                 selisih = abs((waktu_sekarang - waktu_prakiraan).total_seconds())
-                                
-                                # Jika ini lebih dekat dari data sebelumnya, simpan ini
                                 if selisih < selisih_terkecil:
                                     selisih_terkecil = selisih
                                     data_terdekat = jam
                             except ValueError:
                                 continue
         
-        # 4. Return Data Terpilih
         if data_terdekat:
             return {
                 "Jam Referensi": data_terdekat.get("local_datetime", "-"),
@@ -127,10 +113,10 @@ if st.button("Bandingkan Cuaca Saat Ini", type="primary"):
             data_w2 = get_current_weather_bmkg(wilayah2)
 
         if not data_w1 or not data_w2:
-            st.error("Data cuaca tidak ditemukan atau gagal terhubung ke BMKG.")
+            st.error("Data cuaca tidak ditemukan.")
         else:
-            # --- TAMPILKAN HASIL ---
-            st.success(f"Menampilkan data untuk estimasi waktu: {data_w1['Jam Referensi']}")
+            # --- TAMPILAN SCREEN ---
+            st.success(f"Estimasi Waktu Data: {data_w1['Jam Referensi']}")
             
             col1, col2 = st.columns(2)
             with col1:
@@ -143,7 +129,7 @@ if st.button("Bandingkan Cuaca Saat Ini", type="primary"):
             st.markdown("---")
             st.subheader("📊 Grafik Perbandingan")
 
-            # --- GRAFIK ---
+            # --- GRAFIK (MATPLOTLIB) ---
             numeric_params = ["Suhu (°C)", "Kelembapan (%)", "Kecepatan Angin (km/j)"]
             fig, axs = plt.subplots(1, 3, figsize=(15, 5))
             colors = ['#FF9999', '#66B2FF']
@@ -156,16 +142,21 @@ if st.button("Bandingkan Cuaca Saat Ini", type="primary"):
                 ax.bar([wilayah1, wilayah2], [nilai1, nilai2], color=colors)
                 ax.set_title(param)
                 ax.grid(axis='y', linestyle='--', alpha=0.5)
-                # Label angka
                 ax.text(0, nilai1, f"{nilai1}", ha='center', va='bottom', fontsize=10, fontweight='bold')
                 ax.text(1, nilai2, f"{nilai2}", ha='center', va='bottom', fontsize=10, fontweight='bold')
 
+            # Tampilkan grafik di layar
             st.pyplot(fig)
 
-            st.markdown("---")
-            st.subheader("🏆 Analisis Singkat")
+            # --- SIMPAN GRAFIK KE BUFFER (UNTUK PDF) ---
+            img_buffer = BytesIO()
+            fig.savefig(img_buffer, format='png', dpi=150, bbox_inches='tight')
+            img_buffer.seek(0)
 
             # --- ANALISIS ---
+            st.markdown("---")
+            st.subheader("🏆 Analisis Singkat")
+            
             def compare_stats(val1, val2, label, higher_is_better=True):
                 v1, v2 = float(val1), float(val2)
                 if v1 == v2:
@@ -180,12 +171,13 @@ if st.button("Bandingkan Cuaca Saat Ini", type="primary"):
             compare_stats(data_w1["Kelembapan (%)"], data_w2["Kelembapan (%)"], "Kelembapan (Lebih Rendah)", higher_is_better=False)
             compare_stats(data_w1["Kecepatan Angin (km/j)"], data_w2["Kecepatan Angin (km/j)"], "Angin (Lebih Kencang)")
 
-            # --- PDF EXPORT ---
+            # --- PDF GENERATION ---
             st.markdown("---")
             pdf_buffer = BytesIO()
             c = canvas.Canvas(pdf_buffer, pagesize=A4)
             width, height = A4
             
+            # Header
             c.setFont("Helvetica-Bold", 16)
             c.drawString(50, height - 50, "Laporan Perbandingan Cuaca (BMKG)")
             c.setFont("Helvetica", 10)
@@ -193,7 +185,7 @@ if st.button("Bandingkan Cuaca Saat Ini", type="primary"):
             
             y_pos = height - 100
             
-            # Helper function print PDF
+            # Fungsi print teks
             def print_wilayah_pdf(nama, data, y):
                 c.setFont("Helvetica-Bold", 12)
                 c.drawString(50, y, f"Wilayah: {nama}")
@@ -207,11 +199,31 @@ if st.button("Bandingkan Cuaca Saat Ini", type="primary"):
             y_pos = print_wilayah_pdf(wilayah1, data_w1, y_pos)
             y_pos = print_wilayah_pdf(wilayah2, data_w2, y_pos)
 
+            # --- MASUKKAN GAMBAR GRAFIK KE PDF ---
+            # y_pos sekarang ada di bawah teks terakhir
+            # Kita turunkan sedikit lagi untuk gambar
+            y_pos -= 20 
+            
+            try:
+                # Menggunakan ImageReader dari ReportLab
+                img_chart = ImageReader(img_buffer)
+                
+                # Menghitung posisi gambar (Center)
+                img_width = 500  # Lebar gambar di PDF
+                img_height = 200 # Tinggi gambar di PDF
+                x_img = (width - img_width) / 2
+                y_img = y_pos - img_height # Posisi Y (bottom-up)
+
+                c.drawImage(img_chart, x_img, y_img, width=img_width, height=img_height, preserveAspectRatio=True)
+                
+            except Exception as e:
+                c.drawString(50, y_pos, f"Gagal memuat grafik: {e}")
+
             c.save()
             pdf_buffer.seek(0)
             
             st.download_button(
-                label="📥 Download PDF",
+                label="📥 Download PDF (+Grafik)",
                 data=pdf_buffer,
                 file_name=f"Perbandingan_{wilayah1}_{wilayah2}.pdf",
                 mime="application/pdf",
