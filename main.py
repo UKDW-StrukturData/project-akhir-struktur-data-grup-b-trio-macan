@@ -54,8 +54,10 @@ with col_content:
         if st.button('Mendaftar', use_container_width=True):
             try:
                 st.switch_page('pages/Mendaftar.py')
-            except:
+            except StreamlitAPIException:
                  st.warning("Halaman 'pages/Mendaftar.py' belum dibuat.")
+            except Exception as e:
+                st.error(f"Terjadi kesalahan: {e}")
 
 # Footer Sederhana
 st.markdown(
