@@ -165,13 +165,22 @@ if wilayah_pilihan:
             st.dataframe(df, use_container_width=True)
             # Setelah selesai mengisi forecast3jam
             df3 = pd.DataFrame(forecast3jam)
+            
+            fig, ax = plt.subplots(figsize=(6, 3))
+            ax.plot(df3["Jam"], df3["Suhu (°C)"], marker="o")
+            ax.set_title("Perubahan Suhu per 3 Jam")
+            ax.set_xlabel("Waktu")
+            ax.set_ylabel("Suhu (°C)")
+            ax.grid(True)
+            # Simpan grafik untuk dikirim ke PDF
+            gambar_grafik = fig
 
-            csv_data = df.to_csv(index=False).encode("utf-8")
+            pdf_buffer =  buat_pdf_lengkap(df, kota, gambar_grafik)
             st.download_button(
             label="Unduh Data",
-            data=csv_data,
-            file_name="prakiraan_cuaca/3 jam.csv",
-            mime="text/csv",
+            data=pdf_buffer,
+            file_name="prakiraan_cuaca/3 jam.pdf",
+            mime="application/pdf",
             )
             
             st.divider()
