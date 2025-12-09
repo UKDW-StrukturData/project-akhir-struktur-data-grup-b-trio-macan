@@ -22,20 +22,33 @@ col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
     st.image(logo, width=250)
 
-st.set_page_config(page_title="Hawa", layout="centered")
+
 
 st.title("Prakiraan Cuaca Indonesia dan Lokal")
 
-# Input wilayah
-df_kode = pd.read_csv("kode_wilayah.csv", header=None, names=["kode", "nama"])
-st.caption("Masukkan wilayah Desa/Kelurahan yang anda inginkan. Contoh: Kemayoran.")
-wilayah_pilihan = st.selectbox(
-    "Pilih Desa/Kelurahan", 
-    df_kode["nama"].tolist(),
-    index=None,
-    placeholder="Pilih wilayah..."
-)
+try:
+    df_kode = pd.read_csv(
+        "kode_wilayah.csv", 
+        header=None, 
+        names=["kode", "nama", "level"], 
+        dtype={"kode": str},
+        on_bad_lines='skip' 
+    )
+    # Filter hanya Desa/Kelurahan (adm4)
+    df_kode = df_kode[df_kode["level"] == "adm4"]
+    
+    st.caption("Masukkan wilayah Desa/Kelurahan yang anda inginkan. Contoh: Kemayoran.")
+    wilayah_pilihan = st.selectbox(
+        "Pilih Desa/Kelurahan", 
+        df_kode["nama"].tolist(),
+        index=None,
+        placeholder="Pilih wilayah..."
+    )
+except Exception as e:
+    st.error(f"Gagal memuat database wilayah: {e}")
+    wilayah_pilihan = None
 
+# Inisialisasi variabel default
 kota = "-"
 suhu = "-"
 kondisi = "-"
@@ -268,7 +281,10 @@ st.divider()
 
 # Konfigurasi API Key Gemini AI
 # API_KEY = st.secrets["GEMINI_API_KEY"]
-API_KEY = st.session_state['token_api']
+
+API_KEY = st.session_state['token_api'] #Lokal
+#API_KEY = st.secrets['GEMINI_KEY'] #Streamlit Online
+
 try:
     genai.configure(api_key=API_KEY)
     model = genai.GenerativeModel("gemini-2.5-flash-preview-09-2025")
@@ -285,9 +301,6 @@ if ('sudah_login' in st.session_state and st.session_state['sudah_login'] is Tru
 
 if (status is False):
     st.switch_page('pages/Masuk.py')
-
-# Konfigurasi halaman
-st.set_page_config(page_title="Hawa", layout="centered")
 
 # Inisialisasi Gemini AI
 try:
