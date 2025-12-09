@@ -35,7 +35,7 @@ st.markdown("<h2 style='text-align:center;'>Pendaftaran Akun</h2>", unsafe_allow
 col1, col2, col3 = st.columns([1, 3, 1])
 
 with col2:
-    st.image(logo, width=250)
+    st.image(logo, width=200)
 
     email_input = st.text_input('Masukkan Email anda')
     username_input = st.text_input('Buat Username')
