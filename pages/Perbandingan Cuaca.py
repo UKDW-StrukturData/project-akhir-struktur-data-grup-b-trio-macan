@@ -12,15 +12,16 @@ from PIL import Image
 logo = Image.open("image.png")
 icon = Image.open("image.png")
 st.logo(image=logo,size="large",icon_image=icon)
-col1, col2, col3 = st.columns([1, 2, 1])
+col1, col2, col3 = st.columns([1, 1, 1])
 with col2:
-    st.image(logo, width=250)
-# --- KONFIGURASI HALAMAN ---
-st.set_page_config(page_title="Perbandingan Cuaca", page_icon="🌤️")
+    st.image(logo, use_container_width=True)
+
+col_kiri, col_tengah, col_kanan = st.columns([1, 3, 1])
+with col_tengah:
+    st.markdown("<h2 style='text-align:center;'>Bandingkan Cuaca Dua Wilayah</h2>", unsafe_allow_html=True)
 
 if 'sudah_login' not in st.session_state or st.session_state['sudah_login'] == False:
-    st.error("🔒 Akses Ditolak")
-    st.markdown("### Maaf, halaman ini khusus untuk member.")
+    st.error("Akses Ditolak!")
     st.markdown("Silakan login terlebih dahulu untuk membandingkan cuaca.")
     col_b1, col_b2 = st.columns([1, 4])
     with col_b1:

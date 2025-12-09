@@ -30,13 +30,14 @@ def email_valid(email):
 # Load logo & icon
 logo = Image.open("image.png")
 icon = Image.open("image.png")
-st.markdown("<h2 style='text-align:center;'>Pendaftaran Akun</h2>", unsafe_allow_html=True)
-
-col1, col2, col3 = st.columns([1, 2, 1])
-
+st.logo(image=logo,size="large",icon_image=icon)
+col1, col2, col3 = st.columns([1, 1, 1])
 with col2:
     st.image(logo, use_container_width=True)
 
+col_kiri, col_tengah, col_kanan = st.columns([1, 3, 1])
+with col_tengah:
+    st.markdown("<h2 style='text-align:center;'>Pendaftaran Akun</h2>", unsafe_allow_html=True)
     email_input = st.text_input('Masukkan Email anda')
     username_input = st.text_input('Buat Username')
     password_input = st.text_input('Password Baru', type='password')
