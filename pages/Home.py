@@ -106,6 +106,15 @@ if wilayah_pilihan:
             # Setelah selesai mengisi forecast3jam
             df3 = pd.DataFrame(forecast3jam)
 
+            csv_data = df.to_csv(index=False).encode("utf-8")
+            st.download_button(
+            label="📥 Download CSV",
+            data=csv_data,
+            file_name="prakiraan_cuaca/3 jam.csv",
+            mime="text/csv",
+            )
+            
+            st.divider()
             
             import altair as alt
             df3["Jam"] = pd.to_datetime(df3["Jam"], errors="coerce")
