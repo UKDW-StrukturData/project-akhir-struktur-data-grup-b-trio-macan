@@ -313,7 +313,7 @@ def get_simple_tips(kota, suhu, kondisi):
     Format:
     - Cocok dilakukan: [aktivitas]
     - Tidak cocok: [aktivitas]
-    Gunakan emoji. Maksimal 50 kata.
+    Gunakan emoji. Maksimal 70 kata.
     """
     try:
         response = model.generate_content(prompt)
