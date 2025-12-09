@@ -138,7 +138,7 @@ if st.button("Bandingkan Cuaca Saat Ini", type="primary"):
                 st.dataframe(pd.DataFrame([data_w2]), hide_index=True)
 
             st.markdown("---")
-            st.subheader("📊 Grafik Perbandingan")
+            st.subheader("Grafik Perbandingan")
 
             # === MEMBUAT GRAFIK ===
             numeric_params = ["Suhu (°C)", "Kelembapan (%)", "Kecepatan Angin (km/j)"]
