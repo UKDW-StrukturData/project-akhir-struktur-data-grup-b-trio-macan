@@ -1,124 +1,115 @@
 import streamlit as st
-import requests
 import pandas as pd
-from datetime import datetime
-import pytz
+import requests
 import matplotlib.pyplot as plt
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import A4
 from io import BytesIO
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+from reportlab.lib.utils import ImageReader
 
-API_KEY = "MASUKKAN_API_KEY_KAMU"
-BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
+st.title("📊 Perbandingan Data Cuaca")
 
-st.set_page_config(page_title="Perbandingan Cuaca", page_icon="🌦")
+# === LOAD DROPDOWN KOTA ===
+csv_path = "kode_wilayah.csv"
 
-# MODE DARK/LIGHT
-mode = st.sidebar.radio("🌗 Mode Tampilan", ["Light", "Dark"])
-if mode == "Dark":
-    st.markdown("<style>body{background-color:#1E1E1E;color:white;}</style>", unsafe_allow_html=True)
+# CSV kamu TIDAK punya header → buat header manual
+df_kota = pd.read_csv(csv_path, header=None, names=["adm4", "nama"])
 
-st.title("🌦️ Perbandingan Cuaca Dua Kota")
+city_names = df_kota["nama"].tolist()
+st.write("Pilih kota untuk perbandingan:")
 
-#  PILIH KOTA DARI CSV 
-df_kota = pd.read_csv("kode_wilayah.csv")
-list_kota = df_kota["nama_kota"].tolist()
+kota1 = st.selectbox("Kota Pertama", city_names, key="kota1")
+kota2 = st.selectbox("Kota Kedua", city_names, key="kota2")
 
-city1 = st.selectbox("Pilih Kota Pertama:", list_kota, index=0)
-city2 = st.selectbox("Pilih Kota Kedua:", list_kota, index=1)
+# Mapping adm4 dari CSV
+def get_adm4(kota):
+    return df_kota[df_kota["nama"] == kota]["adm4"].values[0]
 
-
-def get_weather(city):
-    params = {
-        "q": city,
-        "appid": API_KEY,
-        "units": "metric"
-    }
-    return requests.get(BASE_URL, params=params).json()
-
-
-def format_time(timestamp, offset):
-    tz = pytz.FixedOffset(offset // 60)
-    return datetime.utcfromtimestamp(timestamp).astimezone(tz).strftime("%H:%M:%S")
-
-
-# ACTION BUTTON
-if st.button("Bandingkan Cuaca"):
-    data1 = get_weather(city1)
-    data2 = get_weather(city2)
-
-    if data1.get("cod") != 200 or data2.get("cod") != 200:
-        st.error("Data kota tidak ditemukan!")
+# === FETCH DATA cuaca ===
+def get_weather(adm4):
+    url = f"https://api.bmkg.go.id/publik/prakiraan-cuaca?adm4={adm4}"
+    r = requests.get(url)
+    if r.status_code == 200:
+        data = r.json()["data"][0]["cuaca"][0]
+        return {
+            "Suhu": data["t"],
+            "Kelembaban": data["hu"],
+            "Kecepatan Angin": data["ws"]
+        }
     else:
-        cuaca1 = {
-            "Jam Lokal": format_time(data1["dt"], data1["timezone"]),
-            "Suhu (°C)": data1["main"]["temp"],
-            "Kelembapan (%)": data1["main"]["humidity"],
-            "Kecepatan Angin (m/s)": data1["wind"]["speed"],
-            "Jarak Pandang (m)": data1.get("visibility", "-")
-        }
+        st.error("Gagal mengambil data dari API")
+        return None
 
-        cuaca2 = {
-            "Jam Lokal": format_time(data2["dt"], data2["timezone"]),
-            "Suhu (°C)": data2["main"]["temp"],
-            "Kelembapan (%)": data2["main"]["humidity"],
-            "Kecepatan Angin (m/s)": data2["wind"]["speed"],
-            "Jarak Pandang (m)": data2.get("visibility", "-")
-        }
+btn = st.button("Bandingkan Cuaca")
 
-        col1, col2 = st.columns(2)
-        col1.subheader(city1)
-        col1.table(pd.DataFrame(cuaca1, index=[0]))
-        col2.subheader(city2)
-        col2.table(pd.DataFrame(cuaca2, index=[0]))
+if btn:
+    data1 = get_weather(get_adm4(kota1))
+    data2 = get_weather(get_adm4(kota2))
 
-        st.markdown("---")
-        st.subheader("📊 Grafik Perbandingan")
+    if data1 and data2:
+        st.subheader("📌 Hasil Perbandingan Cuaca")
 
-        numeric_params = ["Suhu (°C)", "Kelembapan (%)", "Kecepatan Angin (m/s)", "Jarak Pandang (m)"]
+        df_compare = pd.DataFrame([data1, data2], index=[kota1, kota2])
+        st.table(df_compare)
 
-        for param in numeric_params:
+        # === Grafik per parameter ===
+        for parameter in df_compare.columns:
             fig, ax = plt.subplots()
-            ax.bar([city1, city2], [cuaca1[param], cuaca2[param]])
-            ax.set_title(param)
+            ax.bar(df_compare.index, df_compare[parameter])
+            ax.set_title(f"Perbandingan {parameter}")
             st.pyplot(fig)
 
-        st.markdown("---")
-        st.subheader("🏆 Analisis Pemenang")
-        def winner(p1, p2, text, higher=True):
-            if p1 == p2:
-                st.info(f"- {text}: Sama")
-            else:
-                pemenang = city1 if (p1 > p2) == higher else city2
-                st.success(f"- {text}: **{pemenang} lebih unggul**")
+        # ========= EXPORT PDF ==========  
+        def generate_pdf():
+            buffer = BytesIO()
+            c = canvas.Canvas(buffer, pagesize=A4)
+            width, height = A4
 
-        winner(cuaca1["Suhu (°C)"], cuaca2["Suhu (°C)"], "Suhu")
-        winner(cuaca1["Kelembapan (%)"], cuaca2["Kelembapan (%)"], "Kelembapan", False)
-        winner(cuaca1["Kecepatan Angin (m/s)"], cuaca2["Kecepatan Angin (m/s)"], "Kecepatan Angin")
-        winner(cuaca1["Jarak Pandang (m)"], cuaca2["Jarak Pandang (m)"], "Jarak Pandang")
+            c.setFont("Helvetica-Bold", 16)
+            c.drawString(30, height - 40, "Laporan Perbandingan Cuaca BMKG")
+            c.setFont("Helvetica", 10)
+            c.drawString(30, height - 60, f"{kota1} vs {kota2}")
 
-        st.markdown("---")
+            y = height - 100
+            c.setFont("Helvetica", 11)
 
-        #  EXPORT PDF 
-        pdf_buffer = BytesIO()
-        c = canvas.Canvas(pdf_buffer, pagesize=A4)
+            for param in df_compare.columns:
+                val1 = df_compare[param][kota1]
+                val2 = df_compare[param][kota2]
+                c.drawString(30, y, f"{param}:")
+                y -= 15
+                c.drawString(50, y, f"{kota1}: {val1}")
+                y -= 15
+                c.drawString(50, y, f"{kota2}: {val2}")
+                y -= 25
 
-        c.drawString(50, 800, f"Laporan Perbandingan Cuaca {city1} vs {city2}")
-        y = 770
-        for k, v in cuaca1.items():
-            c.drawString(50, y, f"{k} {city1}: {v}")
-            y -= 15
-        y -= 10
-        for k, v in cuaca2.items():
-            c.drawString(50, y, f"{k} {city2}: {v}")
-            y -= 15
+            # Screenshot grafik terakhir
+            img_buffer = BytesIO()
+            fig.savefig(img_buffer, format="png")
+            img_buffer.seek(0)
+            c.drawImage(ImageReader(img_buffer), 30, 100, width=350, preserveAspectRatio=True)
 
-        c.save()
-        pdf_buffer.seek(0)
+            c.showPage()
+            c.save()
+            buffer.seek(0)
+            return buffer
 
+        pdf_buffer = generate_pdf()
         st.download_button(
-            label="📥 Download Laporan PDF",
+            label="📥 Download PDF",
             data=pdf_buffer,
-            file_name=f"Cuaca_{city1}_vs_{city2}.pdf",
+            file_name="laporan_cuaca.pdf",
             mime="application/pdf"
         )
+
+        # === Notifikasi indikator warna ===
+        def warning_color(temp):
+            if temp > 32:
+                return "🔥 Suhu tinggi"
+            elif temp < 24:
+                return "❄ Suhu rendah"
+            else:
+                return "🌤 Normal"
+
+        st.info(f"{kota1}: {warning_color(data1['Suhu'])}")
+        st.info(f"{kota2}: {warning_color(data2['Suhu'])}")
