@@ -350,6 +350,7 @@ else:
     st.warning("Gemini AI belum terhubung (Cek API Key).")
 
 #Untuk LogOut
+st.write('')
 @st.dialog('Konfirmasi Logout')
 def logut_dialog():
     st.write('Apakah anda yakin ingin keluar?')
