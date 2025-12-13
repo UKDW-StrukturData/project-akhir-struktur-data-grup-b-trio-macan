@@ -75,6 +75,11 @@ with col2:
 
 st.title("Prakiraan Cuaca Indonesia dan Lokal")
 
+# Selamat datang ke aplikasi
+if "show_welcome" in st.session_state and st.session_state.show_welcome:
+    st.success(f"Selamat datang {st.session_state.username}, semoga harimu menyenangkan.")
+    st.session_state.show_welcome = False
+
 # --- LOAD DATA WILAYAH ---
 try:
     df_kode = pd.read_csv(

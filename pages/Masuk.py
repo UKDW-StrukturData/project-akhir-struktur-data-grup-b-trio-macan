@@ -32,8 +32,9 @@ with col2:
     if st.button('Masuk'):
         if (login(username_input, password_input)):
             st.session_state['sudah_login'] = True
+            st.session_state.username = username_input
+            st.session_state.show_welcome = True
             st.success("Berhasil masuk!")
-            st.success("Selamat datang, {}!".format(username_input))
             time.sleep(2)
             st.switch_page('pages/Home.py')
         else:
