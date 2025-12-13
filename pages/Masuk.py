@@ -28,7 +28,6 @@ with col2:
     st.markdown("<h2 style='text-align:center;'>Halaman Masuk</h2>", unsafe_allow_html=True)
     username_input = st.text_input('Username')
     password_input = st.text_input('Kata Sandi', type= 'password')
-    
     if st.button('Masuk'):
         if (login(username_input, password_input)):
             st.session_state['sudah_login'] = True

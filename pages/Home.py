@@ -74,10 +74,12 @@ with col2:
         st.image(logo, width=250)
 
 st.title("Prakiraan Cuaca Indonesia dan Lokal")
+st.write('')
 
 # Selamat datang ke aplikasi
 if "show_welcome" in st.session_state and st.session_state.show_welcome:
     st.success(f"Selamat datang {st.session_state.username}, semoga harimu menyenangkan.")
+    st.write('')
     st.session_state.show_welcome = False
 
 # --- LOAD DATA WILAYAH ---
