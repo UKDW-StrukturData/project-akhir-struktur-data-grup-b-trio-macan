@@ -15,6 +15,11 @@ from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import inch
 
+# untuk switch page Logout
+if st.session_state.get("do_logout"):
+    st.session_state.clear()
+    st.switch_page("main.py")
+
 # --- KONFIGURASI HALAMAN ---
 st.set_page_config(page_title="Hawa - Cuaca & Tips AI", page_icon="🌤️", layout="centered")
 
@@ -343,6 +348,25 @@ if ai_connected:
             )
 else:
     st.warning("Gemini AI belum terhubung (Cek API Key).")
+
+#Untuk LogOut
+@st.dialog('Konfirmasi Logout')
+def logut_dialog():
+    st.write('Apakah anda yakin ingin keluar?')
+    st.write('')
+
+    if st.button('ya', use_container_width=True):
+        st.session_state.do_logout = True
+        st.rerun()
+
+        try:
+            st.switch_page("pages/Masuk.py")
+        except:
+            st.rerun()
+
+st.write('')
+if st.button('LogOut', type='primary'):
+    logut_dialog()
 
 # --- FOOTER ---
 st.markdown("---")

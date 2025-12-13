@@ -9,6 +9,12 @@ from reportlab.lib.utils import ImageReader
 from io import BytesIO
 from PIL import Image
 
+
+# untuk switch page Logout
+if st.session_state.get("do_logout"):
+    st.session_state.clear()
+    st.switch_page("main.py")
+
 logo = Image.open("image.png")
 icon = Image.open("image.png")
 st.logo(image=logo,size="large",icon_image=icon)
@@ -254,8 +260,24 @@ if st.button("Bandingkan Cuaca Saat Ini", type="primary"):
                 use_container_width=True
             )
 
-if st.button("Kembali", type="primary"):
-    st.switch_page("main.py")
+#Untuk LogOut
+@st.dialog('Konfirmasi Logout')
+def logut_dialog():
+    st.write('Apakah anda yakin ingin keluar?')
+    st.write('')
+
+    if st.button('ya', use_container_width=True):
+        st.session_state.do_logout = True
+        st.rerun()
+
+        try:
+            st.switch_page("main.py")
+        except:
+            st.rerun()
+
+st.write('')
+if st.button('LogOut', type='primary'):
+    logut_dialog()
 
 st.markdown(
     """
