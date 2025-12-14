@@ -266,18 +266,24 @@ def logut_dialog():
     st.write('Apakah anda yakin ingin keluar?')
     st.write('')
 
-    if st.button('ya', use_container_width=True):
-        st.session_state.do_logout = True
-        st.rerun()
-
-        try:
-            st.switch_page("main.py")
-        except:
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button('ya', type='primary', use_container_width=True):
+            st.session_state.clear()
+            st.switch_page("pages/Masuk.py")
+    with col2:
+        if st.button('tidak'):
             st.rerun()
 
-st.write('')
-if st.button('LogOut', type='primary'):
-    logut_dialog()
+st.write('---')
+col1, col2, space = st.columns([1, 1, 5])
+with col1:
+    if st.button('Kembali'):
+        st.switch_page('pages/Home.py')
+with col2:
+    if st.button('LogOut', type='primary'):
+        logut_dialog()
+
 
 st.markdown(
     """
