@@ -1,5 +1,6 @@
 import streamlit as st
 from PIL import Image
+import time
 import re
 import sqlite3
 
@@ -44,23 +45,43 @@ with col_tengah:
     confirm_password = st.text_input('Konfirmasi Password', type='password')
     
     st.write("")
-
-    bcol1, bcol2, bcol3 = st.columns([1, 1, 1])
+    pesan_placeholder = st.empty()
+    bcol1, bcol2, bcol3 = st.columns([1, 1, 2])
     with bcol1:
         if st.button('Kembali'):
             st.switch_page('pages/Masuk.py')
     with bcol2:
-        daftar = st.button('Daftar')
+        daftar = st.button('Daftar', type='primary')
         if daftar:
             if not email_valid(email_input):
-                st.error("Format email tidak valid.")
-            elif password_input != confirm_password:
-                st.error("Password dan konfirmasi password tidak sesuai.")
+                pesan_placeholder.error("Format email tidak valid.")
+            elif not username_input:
+                pesan_placeholder.error('Username masih kosong')
+            elif not password_input:
+                pesan_placeholder.error('Password masih kosong')
             elif len(password_input) < 6:
-                st.error("Password harus terdiri dari minimal 6 karakter.")
+                pesan_placeholder.error("Password harus terdiri dari minimal 6 karakter.")
+            elif not confirm_password:
+                pesan_placeholder.error('Konfirmasi password masih kosong')
+            elif password_input != confirm_password:
+                pesan_placeholder.error("Password dan konfirmasi password tidak sesuai.")
             else:
-                daftar_baru(username_input, email_input, password_input)
-                st.success("Akun berhasil dibuat! Silakan klik kembali dan masuk.")
+                conn_check = sqlite3.connect('database.db')
+                c_check = conn_check.cursor()
+
+                c_check.execute("SELECT username, email FROM users WHERE username = ? OR email = ?", (username_input, email_input))
+                data_exist = c_check.fetchone()
+                conn_check.close()
+                if data_exist:
+                    if data_exist[0] == username_input:
+                        pesan_placeholder.error("Username sudah terdaftar!\n\n Silakan gunakan username lain.")
+                    elif data_exist[1] == email_input:
+                        pesan_placeholder.error("Email sudah terdaftar! Silakan gunakan email lain.")
+                else:
+                    daftar_baru(username_input, email_input, password_input)
+                    pesan_placeholder.success("Akun berhasil dibuat!")
+                    time.sleep(2)
+                    st.switch_page('pages/Masuk.py')
 st.markdown(
     """
     <div style='text-align: center; color: grey; font-size: 0.8em; margin-top: 50px;'>
