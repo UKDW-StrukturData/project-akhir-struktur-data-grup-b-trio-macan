@@ -30,7 +30,7 @@ with col2:
     password_input = st.text_input('Kata Sandi', type= 'password')
 
     st.write('')
-    message_placeholder = st.empty()
+    pesan_placeholder = st.empty()
     col1, col2, space = st.columns([2, 2, 3])
     with col1:
         if st.button('Masuk', type='primary'):
@@ -38,11 +38,11 @@ with col2:
                 st.session_state['sudah_login'] = True
                 st.session_state.username = username_input
                 st.session_state.show_welcome = True
-                message_placeholder.success("Berhasil masuk!")
+                pesan_placeholder.success("Berhasil masuk!")
                 time.sleep(2)
                 st.switch_page('pages/Home.py')
             else:
-                st.error("Username atau password salah!")
+                pesan_placeholder.error("Username atau password salah!")
     with col2:
         if st.button('Kembali'):
             st.switch_page('main.py')
