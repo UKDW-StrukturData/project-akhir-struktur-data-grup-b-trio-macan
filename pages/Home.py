@@ -320,6 +320,7 @@ except:
     API_KEY = ''
 
 ai_connected = False
+model = None
 try:
     if API_KEY:
         genai.configure(api_key=API_KEY)
