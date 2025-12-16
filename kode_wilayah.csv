@@ -616,3 +616,1259 @@
 33.72.05.1013,Banyuanyar,adm4
 33.72.05.1014,Banjarsari,adm4
 33.72.05.1015,Joglo,adm4
+31,DKI JAKARTA,adm1
+31.01,KAB. ADM. KEP. SERIBU,adm2
+31.01.01,Kepulauan Seribu Utara,adm3
+31.01.01.1001,Pulau Panggang,adm4
+31.01.01.1002,Pulau Kelapa,adm4
+31.01.01.1003,Pulau Harapan,adm4
+31.01.02,Kepulauan Seribu Selatan,adm3
+31.01.02.1001,Pulau Untung Jawa,adm4
+31.01.02.1002,Pulau Tidung,adm4
+31.01.02.1003,Pulau Pari,adm4
+31.01.02.1004,Pulau Pramuka,adm4
+31.71,KOTA ADM. JAKARTA PUSAT,adm2
+31.71.01,Gambir,adm3
+31.71.01.1001,Gambir,adm4
+31.71.01.1002,Cideng,adm4
+31.71.01.1003,Petojo Utara,adm4
+31.71.01.1004,Petojo Selatan,adm4
+31.71.01.1005,Kebon Kelapa,adm4
+31.71.01.1006,Duri Pulo,adm4
+31.71.02,Sawah Besar,adm3
+31.71.02.1001,Pasar Baru,adm4
+31.71.02.1002,Karang Anyar,adm4
+31.71.02.1003,Kartini,adm4
+31.71.02.1004,Gunung Sahari Utara,adm4
+31.71.02.1005,Mangga Dua Selatan,adm4
+31.71.03,Kemayoran,adm3
+31.71.03.1001,Kemayoran,adm4
+31.71.03.1002,Kebon Kosong,adm4
+31.71.03.1003,Harapan Mulia,adm4
+31.71.03.1004,Serdang,adm4
+31.71.03.1005,Gunung Sahari Selatan,adm4
+31.71.03.1006,Cempaka Baru,adm4
+31.71.03.1007,Sumur Batu,adm4
+31.71.03.1008,Utan Panjang,adm4
+31.71.04,Senen,adm3
+31.71.04.1001,Senen,adm4
+31.71.04.1002,Kenari,adm4
+31.71.04.1003,Paseban,adm4
+31.71.04.1004,Kramat,adm4
+31.71.04.1005,Kwitang,adm4
+31.71.04.1006,Bungur,adm4
+31.71.05,Cempaka Putih,adm3
+31.71.05.1001,Cempaka Putih Timur,adm4
+31.71.05.1002,Cempaka Putih Barat,adm4
+31.71.05.1003,Rawasari,adm4
+31.71.06,Menteng,adm3
+31.71.06.1001,Menteng,adm4
+31.71.06.1002,Pegangsaan,adm4
+31.71.06.1003,Cikini,adm4
+31.71.06.1004,Gondangdia,adm4
+31.71.06.1005,Kebon Sirih,adm4
+31.71.07,Tanah Abang,adm3
+31.71.07.1001,Gelora,adm4
+31.71.07.1002,Bendungan Hilir,adm4
+31.71.07.1003,Karet Tengsin,adm4
+31.71.07.1004,Petamburan,adm4
+31.71.07.1005,Kebon Melati,adm4
+31.71.07.1006,Kebon Kacang,adm4
+31.71.07.1007,Kampung Bali,adm4
+31.71.08,Johar Baru,adm3
+31.71.08.1001,Johar Baru,adm4
+31.71.08.1002,Kampung Rawa,adm4
+31.71.08.1003,Galur,adm4
+31.71.08.1004,Tanah Tinggi,adm4
+31.72,KOTA ADM. JAKARTA UTARA,adm2
+31.72.01,Penjaringan,adm3
+31.72.01.1001,Penjaringan,adm4
+31.72.01.1002,Kamal Muara,adm4
+31.72.01.1003,Kapuk Muara,adm4
+31.72.01.1004,Pejagalan,adm4
+31.72.01.1005,Pluit,adm4
+31.72.02,Tanjung Priok,adm3
+31.72.02.1001,Tanjung Priok,adm4
+31.72.02.1002,Sunter Jaya,adm4
+31.72.02.1003,Papanggo,adm4
+31.72.02.1004,Sungai Bambu,adm4
+31.72.02.1005,Kebon Bawang,adm4
+31.72.02.1006,Sunter Agung,adm4
+31.72.02.1007,Warakas,adm4
+31.72.03,Koja,adm3
+31.72.03.1001,Koja,adm4
+31.72.03.1002,Tugu Utara,adm4
+31.72.03.1003,Lagoa,adm4
+31.72.03.1004,Rawa Badak Utara,adm4
+31.72.03.1005,Tugu Selatan,adm4
+31.72.03.1006,Rawa Badak Selatan,adm4
+31.72.04,Cilincing,adm3
+31.72.04.1001,Cilincing,adm4
+31.72.04.1002,Sukapura,adm4
+31.72.04.1003,Marunda,adm4
+31.72.04.1004,Kalibaru,adm4
+31.72.04.1005,Semper Timur,adm4
+31.72.04.1006,Rorotan,adm4
+31.72.04.1007,Semper Barat,adm4
+31.72.05,Pademangan,adm3
+31.72.05.1001,Pademangan Timur,adm4
+31.72.05.1002,Pademangan Barat,adm4
+31.72.05.1003,Ancol,adm4
+31.72.06,Kelapa Gading,adm3
+31.72.06.1001,Kelapa Gading Timur,adm4
+31.72.06.1002,Pegangsaan Dua,adm4
+31.72.06.1003,Kelapa Gading Barat,adm4
+31.73,KOTA ADM. JAKARTA BARAT,adm2
+31.73.01,Cengkareng,adm3
+31.73.01.1001,Cengkareng Barat,adm4
+31.73.01.1002,Duri Kosambi,adm4
+31.73.01.1003,Rawa Buaya,adm4
+31.73.01.1004,Kedaung Kali Angke,adm4
+31.73.01.1005,Kapuk,adm4
+31.73.01.1006,Cengkareng Timur,adm4
+31.73.02,Grogol Petamburan,adm3
+31.73.02.1001,Grogol,adm4
+31.73.02.1002,Tanjung Duren Utara,adm4
+31.73.02.1003,Tomang,adm4
+31.73.02.1004,Jelambar,adm4
+31.73.02.1005,Tanjung Duren Selatan,adm4
+31.73.02.1006,Jelambar Baru,adm4
+31.73.02.1007,Wijaya Kusuma,adm4
+31.73.03,Taman Sari,adm3
+31.73.03.1001,Taman Sari,adm4
+31.73.03.1002,Krukut,adm4
+31.73.03.1003,Maphar,adm4
+31.73.03.1004,Tangki,adm4
+31.73.03.1005,Mangga Besar,adm4
+31.73.03.1006,Keagungan,adm4
+31.73.03.1007,Glodok,adm4
+31.73.03.1008,Pinangsia,adm4
+31.73.04,Tambora,adm3
+31.73.04.1001,Tambora,adm4
+31.73.04.1002,Kali Anyar,adm4
+31.73.04.1003,Duri Utara,adm4
+31.73.04.1004,Tanah Sereal,adm4
+31.73.04.1005,Krendang,adm4
+31.73.04.1006,Jembatan Besi,adm4
+31.73.04.1007,Angke,adm4
+31.73.04.1008,Jembatan Lima,adm4
+31.73.04.1009,Pekojan,adm4
+31.73.04.1010,Roa Malaka,adm4
+31.73.04.1011,Duri Selatan,adm4
+31.73.05,Kebon Jeruk,adm3
+31.73.05.1001,Kebon Jeruk,adm4
+31.73.05.1002,Sukabumi Utara,adm4
+31.73.05.1003,Sukabumi Selatan,adm4
+31.73.05.1004,Kelapa Dua,adm4
+31.73.05.1005,Duri Kepa,adm4
+31.73.05.1006,Kedoya Utara,adm4
+31.73.05.1007,Kedoya Selatan,adm4
+31.73.06,Kalideres,adm3
+31.73.06.1001,Kalideres,adm4
+31.73.06.1002,Semanan,adm4
+31.73.06.1003,Tegal Alur,adm4
+31.73.06.1004,Kamal,adm4
+31.73.06.1005,Pegadungan,adm4
+31.73.07,Pal Merah,adm3
+31.73.07.1001,Palmerah,adm4
+31.73.07.1002,Slipi,adm4
+31.73.07.1003,Kota Bambu Utara,adm4
+31.73.07.1004,Jatipulo,adm4
+31.73.07.1005,Kemanggisan,adm4
+31.73.07.1006,Kota Bambu Selatan,adm4
+31.73.07.1007,Tomang,adm4
+31.73.08,Kembangan,adm3
+31.73.08.1001,Kembangan Utara,adm4
+31.73.08.1002,Meruya Utara,adm4
+31.73.08.1003,Meruya Selatan,adm4
+31.73.08.1004,Srengseng,adm4
+31.73.08.1005,Joglo,adm4
+31.73.08.1006,Kembangan Selatan,adm4
+31.74,KOTA ADM. JAKARTA SELATAN,adm2
+31.74.01,Tebet,adm3
+31.74.01.1001,Tebet Timur,adm4
+31.74.01.1002,Tebet Barat,adm4
+31.74.01.1003,Menteng Dalam,adm4
+31.74.01.1004,Kebon Baru,adm4
+31.74.01.1005,Bukit Duri,adm4
+31.74.01.1006,Manggarai Selatan,adm4
+31.74.01.1007,Manggarai,adm4
+31.74.02,Setiabudi,adm3
+31.74.02.1001,Setia Budi,adm4
+31.74.02.1002,Karet Semanggi,adm4
+31.74.02.1003,Karet Kuningan,adm4
+31.74.02.1004,Karet,adm4
+31.74.02.1005,Menteng Atas,adm4
+31.74.02.1006,Pasar Manggis,adm4
+31.74.02.1007,Guntur,adm4
+31.74.02.1008,Kuningan Timur,adm4
+31.74.03,Mampang Prapatan,adm3
+31.74.03.1001,Mampang Prapatan,adm4
+31.74.03.1002,Bangka,adm4
+31.74.03.1003,Pela Mampang,adm4
+31.74.03.1004,Tegal Parang,adm4
+31.74.03.1005,Kuningan Barat,adm4
+31.74.04,Pasar Minggu,adm3
+31.74.04.1001,Pasar Minggu,adm4
+31.74.04.1002,Jati Padang,adm4
+31.74.04.1003,Cilandak Timur,adm4
+31.74.04.1004,Ragunan,adm4
+31.74.04.1005,Pejaten Timur,adm4
+31.74.04.1006,Pejaten Barat,adm4
+31.74.04.1007,Kebagusan,adm4
+31.74.05,Kebayoran Lama,adm3
+31.74.05.1001,Kebayoran Lama Utara,adm4
+31.74.05.1002,Pondok Pinang,adm4
+31.74.05.1003,Cipulir,adm4
+31.74.05.1004,Grogol Utara,adm4
+31.74.05.1005,Grogol Selatan,adm4
+31.74.05.1006,Kebayoran Lama Selatan,adm4
+31.74.06,Cilandak,adm3
+31.74.06.1001,Cilandak Barat,adm4
+31.74.06.1002,Lebak Bulus,adm4
+31.74.06.1003,Pondok Labu,adm4
+31.74.06.1004,Gandaria Selatan,adm4
+31.74.06.1005,Cipete Selatan,adm4
+31.74.07,Kebayoran Baru,adm3
+31.74.07.1001,Melawai,adm4
+31.74.07.1002,Gunung,adm4
+31.74.07.1003,Kramat Pela,adm4
+31.74.07.1004,Selong,adm4
+31.74.07.1005,Rawa Barat,adm4
+31.74.07.1006,Senayan,adm4
+31.74.07.1007,Pulo,adm4
+31.74.07.1008,Petogogan,adm4
+31.74.07.1009,Gandaria Utara,adm4
+31.74.07.1010,Cipete Utara,adm4
+31.74.08,Pancoran,adm3
+31.74.08.1001,Pancoran,adm4
+31.74.08.1002,Kalibata,adm4
+31.74.08.1003,Rawajati,adm4
+31.74.08.1004,Duren Tiga,adm4
+31.74.08.1005,Pengadegan,adm4
+31.74.08.1006,Cikoko,adm4
+31.74.09,Jagakarsa,adm3
+31.74.09.1001,Jagakarsa,adm4
+31.74.09.1002,Srengseng Sawah,adm4
+31.74.09.1003,Ciganjur,adm4
+31.74.09.1004,Lenteng Agung,adm4
+31.74.09.1005,Tanjung Barat,adm4
+31.74.09.1006,Cipedak,adm4
+31.74.10,Pesanggrahan,adm3
+31.74.10.1001,Pesanggrahan,adm4
+31.74.10.1002,Bintaro,adm4
+31.74.10.1003,Petukangan Utara,adm4
+31.74.10.1004,Petukangan Selatan,adm4
+31.74.10.1005,Ulujami,adm4
+31.75,KOTA ADM. JAKARTA TIMUR,adm2
+31.75.01,Matraman,adm3
+31.75.01.1001,Pisangan Baru,adm4
+31.75.01.1002,Utan Kayu Utara,adm4
+31.75.01.1003,Kayu Manis,adm4
+31.75.01.1004,Palmeriam,adm4
+31.75.01.1005,Kebon Manggis,adm4
+31.75.01.1006,Utan Kayu Selatan,adm4
+31.75.02,Pulogadung,adm3
+31.75.02.1001,Pulo Gadung,adm4
+31.75.02.1002,Pisangan Timur,adm4
+31.75.02.1003,Cipinang,adm4
+31.75.02.1004,Jatinegara Kaum,adm4
+31.75.02.1005,Rawamangun,adm4
+31.75.02.1006,Kayu Putih,adm4
+31.75.02.1007,Jati,adm4
+31.75.03,Jatinegara,adm3
+31.75.03.1001,Kampung Melayu,adm4
+31.75.03.1002,Bidara Cina,adm4
+31.75.03.1003,Bali Mester,adm4
+31.75.03.1004,Rawa Bunga,adm4
+31.75.03.1005,Cipinang Cempedak,adm4
+31.75.03.1006,Cipinang Muara,adm4
+31.75.03.1007,Cipinang Besar Selatan,adm4
+31.75.03.1008,Cipinang Besar Utara,adm4
+31.75.04,Kramatjati,adm3
+31.75.04.1001,Kramatjati,adm4
+31.75.04.1002,Tengah,adm4
+31.75.04.1003,Dukuh,adm4
+31.75.04.1004,Batu Ampar,adm4
+31.75.04.1005,Balekambang,adm4
+31.75.04.1006,Cililitan,adm4
+31.75.04.1007,Cawang,adm4
+31.75.05,Pasar Rebo,adm3
+31.75.05.1001,Gedong
+31.75.05.1002,Baru
+31.75.05.1003,Cijantung
+31.75.05.1004,Kalisari
+31.75.05.1005,Pekayon
+31.75.06,Cakung
+31.75.06.1001,Jatinegara
+31.75.06.1002,Rawa Terate
+31.75.06.1003,Penggilingan
+31.75.06.1004,Cakung Timur
+31.75.06.1005,Pulo Gebang
+31.75.06.1006,Ujung Menteng
+31.75.06.1007,Cakung Barat
+31.75.07,Duren Sawit
+31.75.07.1001,Duren Sawit
+31.75.07.1002,Pondok Bambu
+31.75.07.1003,Klender
+31.75.07.1004,Pondok Kelapa
+31.75.07.1005,Malaka Sari
+31.75.07.1006,Malaka Jaya
+31.75.07.1007,Pondok Kopi
+31.75.08,Makasar
+31.75.08.1001,Makasar
+31.75.08.1002,Pinangranti
+31.75.08.1003,Kebon Pala
+31.75.08.1004,Halim Perdana Kusuma
+31.75.08.1005,Cipinang Melayu
+31.75.09,Ciracas
+31.75.09.1001,Ciracas
+31.75.09.1002,Cibubur
+31.75.09.1003,Kelapa Dua Wetan
+31.75.09.1004,Susukan
+31.75.09.1005,Rambutan
+31.75.10,Cipayung
+31.75.10.1001,Cipayung
+31.75.10.1002,Cilangkap
+31.75.10.1003,Pondok Ranggon
+31.75.10.1004,Munjul
+31.75.10.1005,Setu
+31.75.10.1006,Bambu Apus
+31.75.10.1007,Lubang Buaya
+31.75.10.1008,Ceger
+32,JAWA BARAT
+32.01,KAB. BOGOR
+32.01.01,Cibinong
+32.01.01.1001,Pondok Rajeg
+32.01.01.1002,Karadenan
+32.01.01.1003,Harapanjaya
+32.01.01.1004,Nanggewer
+32.01.01.1005,Nanggewer Mekar
+32.01.01.1006,Cibinong
+32.01.01.1007,Pakansari
+32.01.01.1008,Tengah
+32.01.01.1009,Sukahati
+32.01.01.1010,Ciriung
+32.01.01.1011,Cirimekar
+32.01.01.1012,Pabuaran
+32.01.01.1013,Pabuaran Mekar
+32.01.02,Gunung Putri
+32.01.02.2001,Wanaherang
+32.01.02.2002,Bojong Kulur
+32.01.02.2003,Ciangsana
+32.01.02.2004,Gunung Putri
+32.01.02.2005,Bojong Nangka
+32.01.02.2006,Tlajung Udik
+32.01.02.2007,Cicadas
+32.01.02.2008,Cikeas Udik
+32.01.02.2009,Nagrak
+32.01.02.2010,Karanggan
+32.01.03,Citeureup
+32.01.03.2001,Puspasari
+32.01.03.2002,Citeureup
+32.01.03.2003,Leuwinutug
+32.01.03.2004,Tajur
+32.01.03.2005,Sanja
+32.01.03.1006,Puspanegara
+32.01.03.1007,Karang Asem Barat
+32.01.03.2008,Karang Asem Timur
+32.01.03.2009,Tarikolot
+32.01.03.2010,Gunungsari
+32.01.03.2011,Tangkil
+32.01.03.2012,Sukahati
+32.01.03.2013,Hambalang
+32.01.03.2014,Pasirmukti
+32.01.04,Sukaraja
+32.01.04.2001,Gununggeulis
+32.01.04.2002,Cilebut Timur
+32.01.04.2003,Cilebut Barat
+32.01.04.2004,Cibanon
+32.01.04.2005,Nagrak
+32.01.04.2006,Sukatani
+32.01.04.2007,Sukaraja
+32.01.04.2008,Cikeas
+32.01.04.2009,Pasir Jambu
+32.01.04.2010,Cimandala
+32.01.04.2011,Cijujung
+32.01.04.2012,Cadasngampar
+32.01.04.2013,Pasirlaja
+32.01.05,Babakan Madang
+32.01.05.2001,Cijayanti
+32.01.05.2002,Sumurbatu
+32.01.05.2003,Sentul
+32.01.05.2004,Karangtengah
+32.01.05.2005,Cipambuan
+32.01.05.2006,Kadumanggu
+32.01.05.2007,Citaringgul
+32.01.05.2008,Babakan Madang
+32.01.05.2009,Bojong Koneng
+32.01.06,Jonggol
+32.01.06.2001,Sukamaju
+32.01.06.2002,Sirnagalih
+32.01.06.2003,Singajaya
+32.01.06.2004,Sukasirna
+32.01.06.2005,Sukanegara
+32.01.06.2006,Sukamanah
+32.01.06.2007,Weninggalih
+32.01.06.2008,Cibodas
+32.01.06.2009,Jonggol
+32.01.06.2010,Bendungan
+32.01.06.2011,Singasari
+32.01.06.2012,Balekambang
+32.01.06.2013,Sukajaya
+32.01.06.2014,Sukagalih
+32.01.07,Cileungsi
+32.01.07.2001,Pasirangin
+32.01.07.2002,Mekarsari
+32.01.07.2003,Mampir
+32.01.07.2004,Dayeuh
+32.01.07.2005,Gandoang
+32.01.07.2006,Jatisari
+32.01.07.2007,Cileungsi Kidul
+32.01.07.2008,Cipeucang
+32.01.07.2009,Situsari
+32.01.07.2010,Cipenjo
+32.01.07.2011,Limusnunggal
+32.01.07.2012,Cileungsi
+32.01.08,Cariu
+32.01.08.2001,Karyamekar
+32.01.08.2002,Babakanraden
+32.01.08.2003,Cikutamahi
+32.01.08.2004,Kutamekar
+32.01.08.2005,Cariu
+32.01.08.2006,Mekarwangi
+32.01.08.2007,Bantarkuning
+32.01.08.2008,Sukajadi
+32.01.08.2009,Tegalpanjang
+32.01.08.2010,Cibatutiga
+32.01.09,Sukamakmur
+32.01.09.2001,Wargajaya
+32.01.09.2002,Pabuaran
+32.01.09.2003,Sukadamai
+32.01.09.2004,Sukawangi
+32.01.09.2005,Cibadak
+32.01.09.2006,Sukaresmi
+32.01.09.2007,Sukamulya
+32.01.09.2008,Sukaharja
+32.01.09.2009,Sirnajaya
+32.01.09.2010,Sukamakmur
+32.01.10,Parung
+32.01.10.2001,Parung
+32.01.10.2002,Iwul
+32.01.10.2003,Bojongsempu
+32.01.10.2004,Waru
+32.01.10.2005,Cogreg
+32.01.10.2006,Pamegarsari
+32.01.10.2007,Warujaya
+32.01.10.2008,Bojongindah
+32.01.10.2009,Jabonmekar
+32.01.11,Gunung Sindur
+32.01.11.2001,Cidokom
+32.01.11.2002,Padurenan
+32.01.11.2003,Pengasinan
+32.01.11.2004,Curug
+32.01.11.2005,Gunungsindur
+32.01.11.2006,Jampang
+32.01.11.2007,Cibadung
+32.01.11.2008,Cibinong
+32.01.11.2009,Rawakalong
+32.01.11.2010,Pabuaran
+32.01.12,Kemang
+32.01.12.2001,Bojong
+32.01.12.2002,Parakanjaya
+32.01.12.2003,Kemang
+32.01.12.2004,Pabuaran
+32.01.12.2005,Semplak Barat
+32.01.12.1006,Atang Senjaya
+32.01.12.2007,Jampang
+32.01.12.2008,Pondok Udik
+32.01.12.2009,Tegal
+32.01.13,Bojong Gede
+32.01.13.2001,Bojongbaru
+32.01.13.2002,Cimanggis
+32.01.13.2003,Susukan
+32.01.13.2004,Ragajaya
+32.01.13.2005,Kedungwaringin
+32.01.13.2006,Waringinjaya
+32.01.13.1007,Pabuaran
+32.01.13.2008,Rawapanjang
+32.01.13.2009,Bojonggede
+32.01.14,Leuwiliang
+32.01.14.2001,Leuwiliang
+32.01.14.2002,Purasari
+32.01.14.2003,Karyasari
+32.01.14.2004,Pabangbon
+32.01.14.2005,Karacak
+32.01.14.2006,Barengkok
+32.01.14.2007,Leuwimekar
+32.01.14.2008,Puraseda
+32.01.14.2009,Cibeber I
+32.01.14.2010,Cibeber II
+32.01.14.2011,Karehkel
+32.01.15,Ciampea
+32.01.15.2001,Ciampea
+32.01.15.2002,Cinangka
+32.01.15.2003,Cihideungudik
+32.01.15.2004,Bojongjengkol
+32.01.15.2005,Tegalwaru
+32.01.15.2006,Cibuntu
+32.01.15.2007,Cicadas
+32.01.15.2008,Cibadak
+32.01.15.2009,Bojongrangkas
+32.01.15.2010,Cihideunghilir
+32.01.15.2011,Cibanteng
+32.01.15.2012,Benteng
+32.01.15.2013,Ciampea Udik
+32.01.16,Cibungbulang
+32.01.16.2001,Situ Udik
+32.01.16.2002,Situ Ilir
+32.01.16.2003,Cemplang
+32.01.16.2004,Cibatok I
+32.01.16.2005,Ciaruteun Udik
+32.01.16.2006,Leuweungkolot
+32.01.16.2007,Cimanggu I
+32.01.16.2008,Cimanggu II
+32.01.16.2009,Dukuh
+32.01.16.2010,Cijujung
+32.01.16.2011,Ciaruteun Ilir
+32.01.16.2012,Cibatok II
+32.01.16.2013,Sukamaju
+32.01.16.2014,Galuga
+32.01.16.2015,Girimulya
+32.01.17,Pamijahan
+32.01.17.2001,Purwabakti
+32.01.17.2002,Cibunian
+32.01.17.2003,Cibitungwetan
+32.01.17.2004,Gunungmenyan
+32.01.17.2005,Gunungbunder II
+32.01.17.2006,Pasarean
+32.01.17.2007,Cimayang
+32.01.17.2008,Pamijahan
+32.01.17.2009,Cibening
+32.01.17.2010,Gunungbunder I
+32.01.17.2011,Cibitung Kulon
+32.01.17.2012,Gunung Picung
+32.01.17.2013,Ciasihan
+32.01.17.2014,Gunungsari
+32.01.17.2015,Ciasmara
+32.01.18,Rumpin
+32.01.18.2001,Rumpin
+32.01.18.2002,Leuwibatu
+32.01.18.2003,Cidokom
+32.01.18.2004,Gobang
+32.01.18.2005,Cibodas
+32.01.18.2006,Rabak
+32.01.18.2007,Kampungsawah
+32.01.18.2008,Cipinang
+32.01.18.2009,Sukasari
+32.01.18.2010,Tamansari
+32.01.18.2011,Kertajaya
+32.01.18.2012,Sukamulya
+32.01.18.2013,Mekarsari
+32.01.18.2014,Mekarjaya
+32.01.19,Jasinga
+32.01.19.2001,Curug
+32.01.19.2002,Pangradin
+32.01.19.2003,Kalongsawah
+32.01.19.2004,Sipak
+32.01.19.2005,Jasinga
+32.01.19.2006,Koleang
+32.01.19.2007,Cikopomayak
+32.01.19.2008,Setu
+32.01.19.2009,Barengkok
+32.01.19.2010,Bagoang
+32.01.19.2011,Pangaur
+32.01.19.2012,Pamagersari
+32.01.19.2013,Jugala Jaya
+32.01.19.2014,Tegalwangi
+32.01.19.2015,Neglasari
+32.01.19.2016,Wirajaya
+32.01.20,Parung Panjang
+32.01.20.2001,Jagabaya
+32.01.20.2002,Gorowong
+32.01.20.2003,Dago
+32.01.20.2004,Pingku
+32.01.20.2005,Cikuda
+32.01.20.2006,Parungpanjang
+32.01.20.2007,Lumpang
+32.01.20.2008,Cibunar
+32.01.20.2009,Jagabita
+32.01.20.2010,Gintungcilejet
+32.01.20.2011,Kabasiran
+32.01.21,Nanggung
+32.01.21.2001,Malasari
+32.01.21.2002,Curugbitung
+32.01.21.2003,Cisarua
+32.01.21.2004,Bantarkaret
+32.01.21.2005,Hambaro
+32.01.21.2006,Kalongliud
+32.01.21.2007,Nanggung
+32.01.21.2008,Parakanmuncang
+32.01.21.2009,Pangkaljaya
+32.01.21.2010,Sukaluyu
+32.01.21.2011,Batu Tulis
+32.01.22,Cigudeg
+32.01.22.2001,Sukamaju
+32.01.22.2002,Cigudeg
+32.01.22.2003,Bunar
+32.01.22.2004,Banyuresmi
+32.01.22.2005,Cintamanik
+32.01.22.2006,Argapura
+32.01.22.2007,Bangunjaya
+32.01.22.2008,Rengasjajar
+32.01.22.2009,Batujajar
+32.01.22.2010,Wargajaya
+32.01.22.2011,Sukaraksa
+32.01.22.2012,Banyuwangi
+32.01.22.2013,Banyuasih
+32.01.22.2014,Mekarjaya
+32.01.22.2015,Tegallega
+32.01.23,Tenjo
+32.01.23.2001,Tapos
+32.01.23.2002,Ciomas
+32.01.23.2003,Batok
+32.01.23.2004,Babakan
+32.01.23.2005,Tenjo
+32.01.23.2006,Cilaku
+32.01.23.2007,Singabraja
+32.01.23.2008,Singabangsa
+32.01.23.2009,Bojong
+32.01.24,Ciawi
+32.01.24.2001,Cileungsi
+32.01.24.2002,Citapen
+32.01.24.2003,Cibedug
+32.01.24.2004,Jambuluwuk
+32.01.24.2005,Banjarsari
+32.01.24.2006,Teluk Pinang
+32.01.24.2007,Banjar Waru
+32.01.24.2008,Bendungan
+32.01.24.2009,Pandan Sari
+32.01.24.2010,Bojong Murni
+32.01.24.2011,Banjar Wangi
+32.01.24.2012,Ciawi
+32.01.24.2013,Bitungsari
+32.01.25,Cisarua
+32.01.25.2001,Batulayang
+32.01.25.2002,Jogjogan
+32.01.25.2003,Cibeureum
+32.01.25.2004,Cilember
+32.01.25.2005,Citeko
+32.01.25.2006,Tugu Selatan
+32.01.25.2007,Leuwimalang
+32.01.25.2008,Kopo
+32.01.25.2009,Tugu Utara
+32.01.25.1010,Cisarua
+32.01.26,Megamendung
+32.01.26.2001,Sukamaju
+32.01.26.2002,Kuta
+32.01.26.2003,Gadog
+32.01.26.2004,Sukakarya
+32.01.26.2005,Megamendung
+32.01.26.2006,Cipayung Datar
+32.01.26.2007,Sukamanah
+32.01.26.2008,Sukagalih
+32.01.26.2009,Cipayung Girang
+32.01.26.2010,Sukamahi
+32.01.26.2011,Sukaresmi
+32.01.26.2012,Pasir Angin
+32.01.27,Caringin
+32.01.27.2001,Pasir Muncang
+32.01.27.2002,Cimande Hilir
+32.01.27.2003,Ciderum
+32.01.27.2004,Caringin
+32.01.27.2005,Ciherang Pondok
+32.01.27.2006,Cinagara
+32.01.27.2007,Cimande
+32.01.27.2008,Pancawati
+32.01.27.2009,Muara Jaya
+32.01.27.2010,Basir Buncir
+32.01.27.2011,Lemah Duhur
+32.01.27.2012,Tangkil
+32.01.28,Cijeruk
+32.01.28.2001,Cijeruk
+32.01.28.2002,Cipelang
+32.01.28.2003,Warung Menteng
+32.01.28.2004,Tajur Halang
+32.01.28.2005,Cipicung
+32.01.28.2006,Cibalung
+32.01.28.2007,Sukaharja
+32.01.28.2008,Palasari
+32.01.28.2009,Tanjungsari
+32.01.29,Ciomas
+32.01.29.2001,Mekarjaya
+32.01.29.2002,Sukaharja
+32.01.29.1003,Padasuka
+32.01.29.2004,Parakan
+32.01.29.2005,Ciomas
+32.01.29.2006,Pagelaran
+32.01.29.2007,Sukamakmur
+32.01.29.2008,Ciapus
+32.01.29.2009,Kota Batu
+32.01.29.2010,Laladon
+32.01.29.2011,Ciomas Rahayu
+32.01.30,Dramaga
+32.01.30.2001,Sukadamai
+32.01.30.2002,Ciherang
+32.01.30.2003,Sinarsari
+32.01.30.2004,Sukawening
+32.01.30.2005,Petir
+32.01.30.2006,Purwasari
+32.01.30.2007,Cikarawang
+32.01.30.2008,Babakan
+32.01.30.2009,Dramaga
+32.01.30.2010,Neglasari
+32.01.31,Tamansari
+32.01.31.2001,Sukamantri
+32.01.31.2002,Sirnagalih
+32.01.31.2003,Pasireurih
+32.01.31.2004,Tamansari
+32.01.31.2005,Sukaluyu
+32.01.31.2006,Sukaresmi
+32.01.31.2007,Sukajaya
+32.01.31.2008,Sukajadi
+32.01.32,Klapanunggal
+32.01.32.2001,Klapanunggal
+32.01.32.2002,Bojong
+32.01.32.2003,Nambo
+32.01.32.2004,Lulut
+32.01.32.2005,Cikahuripan
+32.01.32.2006,Kembang Kuning
+32.01.32.2007,Bantar Jati
+32.01.32.2008,Leuwikaret
+32.01.32.2009,Ligarmukti
+32.01.33,Ciseeng
+32.01.33.2001,Putat Nutug
+32.01.33.2002,Ciseeng
+32.01.33.2003,Parigi Mekar
+32.01.33.2004,Cibentang
+32.01.33.2005,Cibeuteung Udik
+32.01.33.2006,Karihkil
+32.01.33.2007,Babakan
+32.01.33.2008,Cihoe
+32.01.33.2009,Cibeuteung Muara
+32.01.33.2010,Kuripan
+32.01.34,Ranca Bungur
+32.01.34.2001,Bantarjaya
+32.01.34.2002,Bantarsari
+32.01.34.2003,Pasirgaok
+32.01.34.2004,Rancabungur
+32.01.34.2005,Mekarsari
+32.01.34.2006,Candali
+32.01.34.2007,Cimulang
+32.01.35,Sukajaya
+32.01.35.2001,Cisarua
+32.01.35.2002,Kiarasari
+32.01.35.2003,Sukajaya
+32.01.35.2004,Sipayung
+32.01.35.2005,Cileuksa
+32.01.35.2006,Kiarapandak
+32.01.35.2007,Harkatjaya
+32.01.35.2008,Sukamulih
+32.01.35.2009,Pasir Madang
+32.01.35.2010,Urug
+32.01.35.2011,Jayaraharja
+32.01.36,Tanjungsari
+32.01.36.2001,Tanjungsari
+32.01.36.2002,Selawangi
+32.01.36.2003,Tanjungrasa
+32.01.36.2004,Antajaya
+32.01.36.2005,Pasir Tanjung
+32.01.36.2006,Cibadak
+32.01.36.2007,Sukarasa
+32.01.36.2008,Sirnasari
+32.01.36.2009,Buanajaya
+32.01.36.2010,Sirnarasa
+32.01.37,Tajurhalang
+32.01.37.2001,Tajurhalang
+32.01.37.2002,Citayam
+32.01.37.2003,Sasak Panjang
+32.01.37.2004,Nanggerang
+32.01.37.2005,Sukmajaya
+32.01.37.2006,Tonjong
+32.01.37.2007,Kalisuren
+32.01.38,Cigombong
+32.01.38.2001,Cigombong
+32.01.38.2002,Watesjaya
+32.01.38.2003,Ciburuy
+32.01.38.2004,Srogol
+32.01.38.2005,Cisalada
+32.01.38.2006,Tugujaya
+32.01.38.2007,Pasirjaya
+32.01.38.2008,Ciburayut
+32.01.38.2009,Ciadeg
+32.01.39,Leuwisadeng
+32.01.39.2001,Leuwisadeng
+32.01.39.2002,Babakan Sadeng
+32.01.39.2003,Sadeng Kolot
+32.01.39.2004,Wangunjaya
+32.01.39.2005,Kalong I
+32.01.39.2006,Kalong II
+32.01.39.2007,Sadeng
+32.01.39.2008,Sibanteng
+32.01.40,Tenjolaya
+32.01.40.2001,Tapos I
+32.01.40.2002,Tapos II
+32.01.40.2003,Cibitung Tengah
+32.01.40.2004,Situdaun
+32.01.40.2005,Cinangneng
+32.01.40.2006,Gunung Malang
+32.01.40.2007,Gunung Mulya
+32.02,KAB. SUKABUMI
+32.02.01,Palabuhanratu
+32.02.01.1001,Palabuhanratu
+32.02.01.2002,Tonjong
+32.02.01.2003,Citepus
+32.02.01.2004,Buniwangi
+32.02.01.2005,Cibodas
+32.02.01.2006,Pasirsuren
+32.02.01.2007,Cikadu
+32.02.01.2008,Citarik
+32.02.01.2009,Cimanggu
+32.02.01.2010,Jayanti
+32.02.02,Simpenan
+32.02.02.2001,Cidadap
+32.02.02.2002,Loji
+32.02.02.2003,Kertajaya
+32.02.02.2004,Cihaur
+32.02.02.2005,Cibuntu
+32.02.02.2006,Mekarasih
+32.02.02.2007,Sangrawayang
+32.02.03,Cikakak
+32.02.03.2001,Cikakak
+32.02.03.2002,Cimaja
+32.02.03.2003,Ridogalih
+32.02.03.2004,Sukamaju
+32.02.03.2005,Cileungsing
+32.02.03.2006,Margalaksana
+32.02.03.2007,Sirnarasa
+32.02.03.2008,Gandasoli
+32.02.03.2009,Cirendang
+32.02.04,Bantargadung
+32.02.04.2001,Bantargadung
+32.02.04.2002,Mangunjaya
+32.02.04.2003,Bojonggaling
+32.02.04.2004,Limusnunggal
+32.02.04.2005,Bantargebang
+32.02.04.2006,Buanajaya
+32.02.04.2007,Boyongsari
+32.02.05,Cisolok
+32.02.05.2001,Cisolok
+32.02.05.2002,Pasir Baru
+32.02.05.2003,Cikahuripan
+32.02.05.2004,Cikelat
+32.02.05.2005,Caringin
+32.02.05.2006,Gunungkaramat
+32.02.05.2007,Gunungtanjung
+32.02.05.2008,Karangpapak
+32.02.05.2009,Sirnaresmi
+32.02.05.2010,Cicadas
+32.02.05.2011,Wanajaya
+32.02.05.2012,Wangunsari
+32.02.05.2013,Sukarame
+32.02.06,Cikidang
+32.02.06.2001,Cikidang
+32.02.06.2002,Cikiray
+32.02.06.2003,Gunungmalang
+32.02.06.2004,Pangkalan
+32.02.06.2005,Cicareuh
+32.02.06.2006,Taman Sari
+32.02.06.2007,Bumi Sari
+32.02.06.2008,Sampora
+32.02.06.2009,Nangkakoneng
+32.02.06.2010,Mekarnangka
+32.02.06.2011,Cijambe
+32.02.06.2012,Cikarae Thoyyibah
+32.02.07,Lengkong
+32.02.07.2001,Lengkong
+32.02.07.2002,Cilangkap
+32.02.07.2003,Tegallega
+32.02.07.2004,Neglasari
+32.02.07.2005,Langkapjaya
+32.02.08,Jampangtengah
+32.02.08.2001,Jampangtengah
+32.02.08.2002,Padabeunghar
+32.02.08.2003,Bantarpanjang
+32.02.08.2004,Bojongjengkol
+32.02.08.2005,Nangerang
+32.02.08.2006,Tanjungsari
+32.02.08.2007,Sindangresmi
+32.02.08.2008,Panumbangan
+32.02.08.2009,Cijulang
+32.02.08.2010,Bantaragung
+32.02.08.2011,Bojongtipar
+32.02.09,Warungkiara
+32.02.09.2001,Warungkiara
+32.02.09.2002,Bojongkerta
+32.02.09.2003,Girijaya
+32.02.09.2004,Bantarkalong
+32.02.09.2005,Hegarmanah
+32.02.09.2006,Ubrug
+32.02.09.2007,Sirnajaya
+32.02.09.2008,Sukaharja
+32.02.09.2009,Kertamukti
+32.02.09.2010,Mekarjaya
+32.02.09.2011,Damarraja
+32.02.09.2012,Tarisi
+32.02.10,Cikembar
+32.02.10.2001,Cikembar
+32.02.10.2002,Parakanlima
+32.02.10.2003,Bojong
+32.02.10.2004,Cimanggu
+32.02.10.2005,Bojongkembar
+32.02.10.2006,Sukamaju
+32.02.10.2007,Cibatu
+32.02.10.2008,Kertaraharja
+32.02.10.2009,Sukamulya
+32.02.10.2010,Bojongraharja
+32.02.11,Cibadak
+32.02.11.1001,Cibadak
+32.02.11.2002,Sekarwangi
+32.02.11.2003,Pamuruyan
+32.02.11.2004,Karangtengah
+32.02.11.2005,Neglasari
+32.02.11.2006,Warnajati
+32.02.11.2007,Tenjojaya
+32.02.11.2008,Ciheulang Tonggoh
+32.02.11.2009,Sukasirna
+32.02.11.2010,Batununggal
+32.02.12,Nagrak
+32.02.12.2001,Kalaparea
+32.02.12.2002,Pawenang
+32.02.12.2003,Nagrak Utara
+32.02.12.2004,Cisarua
+32.02.12.2009,Balekambang
+32.02.12.2010,Babakan Panjang
+32.02.12.2011,Darmareja
+32.02.12.2012,Cihanyawar
+32.02.12.2013,Nagrak Selatan
+32.02.12.2014,Girijaya
+32.02.13,Parungkuda
+32.02.13.2001,Parungkuda
+32.02.13.2002,Palasari Hilir
+32.02.13.2003,Kompa
+32.02.13.2004,Pondokkaso Landeuh
+32.02.13.2005,Sundawenang
+32.02.13.2006,Bojongkokosan
+32.02.13.2007,Langensari
+32.02.13.2008,Babakanjaya
+32.02.14,Bojonggenteng
+32.02.14.2001,Bojonggenteng
+32.02.14.2002,Cibodas
+32.02.14.2003,Berekah
+32.02.14.2004,Cipanengah
+32.02.14.2005,Bojonggaling
+32.02.15,Parakansalak
+32.02.15.2001,Parakansalak
+32.02.15.2002,Bojonglongok
+32.02.15.2003,Sukakersa
+32.02.15.2004,Sukatani
+32.02.15.2005,Bojongasih
+32.02.15.2006,Lebaksari
+32.02.16,Cicurug
+32.02.16.1001,Cicurug
+32.02.16.2002,Nyangkowek
+32.02.16.2003,Tenjolaya
+32.02.16.2004,Benda
+32.02.16.2005,Pasawahan
+32.02.16.2006,Cisaat
+32.02.16.2007,Purwasari
+32.02.16.2008,Caringin
+32.02.16.2009,Tenjoayu
+32.02.16.2010,Kutajaya
+32.02.16.2011,Mekarsari
+32.02.16.2012,Bangbayang
+32.02.16.2013,Nanggerang
+32.02.17,Cidahu
+32.02.17.2001,Pondokaso Tonggoh
+32.02.17.2002,Babakanpari
+32.02.17.2003,Pondokaso Tengah
+32.02.17.2004,Cidahu
+32.02.17.2005,Tangkil
+32.02.17.2006,Jayabakti
+32.02.17.2007,Girijaya
+32.02.17.2008,Pasirdoton
+32.02.18,Kalapanunggal
+32.02.18.2001,Kalapanunggal
+32.02.18.2002,Palasari Girang
+32.02.18.2003,Pulosari
+32.02.18.2004,Makasari
+32.02.18.2005,Kadununggal
+32.02.18.2006,Walang Sari
+32.02.18.2007,Gunungendut
+32.02.19,Kabandungan
+32.02.19.2001,Kabandungan
+32.02.19.2002,Cipeuteuy
+32.02.19.2003,Cihamerang
+32.02.19.2004,Tugubandung
+32.02.19.2005,Mekarjaya
+32.02.19.2006,Cianaga
+32.02.20,Waluran
+32.02.20.2001,Waluran
+32.02.20.2002,Sukamukti
+32.02.20.2003,Caringinnunggal
+32.02.20.2004,Mekarmukti
+32.02.20.2005,Mangunjaya
+32.02.20.2006,Waluran Mandiri
+32.02.21,Jampangkulon
+32.02.21.1001,Jampangkulon
+32.02.21.2002,Bojonggenteng
+32.02.21.2003,Cikarang
+32.02.21.2005,Bojongsari
+32.02.21.2007,Nagraksari
+32.02.21.2008,Mekarjaya
+32.02.21.2009,Tanjung
+32.02.21.2011,Ciparay
+32.02.21.2013,Padajaya
+32.02.21.2014,Karanganyar
+32.02.21.2016,Cikaranggeusan
+32.02.22,Ciemas
+32.02.22.2001,Ciemas
+32.02.22.2002,Cibenda
+32.02.22.2003,Ciwaru
+32.02.22.2004,Mekarjaya
+32.02.22.2005,Girimukti
+32.02.22.2006,Tamanjaya
+32.02.22.2007,Mandrajaya
+32.02.22.2008,Sidamulya
+32.02.22.2009,Mekarsakti
+32.02.23,Kalibunder
+32.02.23.2001,Kalibunder
+32.02.23.2002,Bojong
+32.02.23.2003,Cimahpar
+32.02.23.2004,Sekarsari
+32.02.23.2005,Sukaluyu
+32.02.23.2006,Balekambang
+32.02.23.2007,Mekarwangi
+32.02.24,Surade
+32.02.24.2001,Jagamukti
+32.02.24.2002,Citanglar
+32.02.24.2003,Wanasari
+32.02.24.2005,Sirnasari
+32.02.24.2006,Kadaleman
+32.02.24.2007,Gunungsungging
+32.02.24.2008,Cipeundeuy
+32.02.24.2009,Pasiripis
+32.02.24.2010,Buniwangi
+32.02.24.2011,Sukatani
+32.02.24.2012,Kademangan
+32.02.24.1013,Surade
+32.02.25,Cibitung
+32.02.25.2001,Talagamurni
+32.02.25.2002,Banyumurni
+32.02.25.2003,Cibitung
+32.02.25.2004,Cidahu
+32.02.25.2005,Cibodas
+32.02.25.2006,Banyuwangi
+32.02.26,Ciracap
+32.02.26.2001,Ciracap
+32.02.26.2002,Cikangkung
+32.02.26.2003,Gunungbatu
+32.02.26.2004,Purwasedar
+32.02.26.2005,Pasirpanjang
+32.02.26.2006,Mekarsari
+32.02.26.2007,Ujunggenteng
+32.02.26.2008,Pangumbahan
+32.02.27,Gunungguruh
+32.02.27.2001,Cikujang
+32.02.27.2002,Gunungguruh
+32.02.27.2003,Cibentang
+32.02.27.2004,Sirnaresmi
+32.02.27.2005,Kebonmanggu
+32.02.27.2006,Cibolang
+32.02.27.2007,Mangkalaya
+32.02.28,Cicantayan
+32.02.28.2001,Cicantayan
+32.02.28.2002,Lembursawah
+32.02.28.2003,Cijalingan
+32.02.28.2004,Cisande
+32.02.28.2005,Cimahi
+32.02.28.2006,Hegarmanah
+32.02.28.2007,Sikadamai
+32.02.28.2008,Cimanggis
+32.02.29,Cisaat
+32.02.29.2001,Gunungjaya
+32.02.29.2002,Sukasari
+32.02.29.2003,Sukamanah
+32.02.29.2004,Cisaat
+32.02.29.2005,Nagrak
+32.02.29.2006,Babakan
+32.02.29.2007,Sukamantri
+32.02.29.2008,Cibatu
+32.02.29.2009,Selajambe
+32.02.29.2010,Padaasih
+32.02.29.2011,Cibolang Kaler
+32.02.29.2012,Kutasirna
+32.02.29.2013,Sukaresmi
+32.02.30,Kadudampit
+32.02.30.2001,Kadudampit
+32.02.30.2002,Citamiang
+32.02.30.2003,Muaradua
+32.02.30.2004,Gedepangrango
+32.02.30.2005,Sukamanis
+32.02.30.2006,Undrusbinangun
+32.02.30.2007,Cipetir
+32.02.30.2008,Sukamaju
+32.02.30.2009,Cikahuripan
+32.02.31,Caringin
+32.02.31.2001,Caringin Wetan
+32.02.31.2002,Sukamulya
+32.02.31.2003,Caringin Kulon
+32.02.31.2004,Seuseupan
+32.02.31.2005,Cijengkol
+32.02.31.2006,Mekarjaya
+32.02.31.2007,Talaga
+32.02.31.2008,Cikembang
+32.02.31.2009,Pasir Datar Indah
+32.02.32,Sukabumi
+32.02.32.2001,Parungseah
+32.02.32.2002,Sudajayagirang
+32.02.32.2003,Karawang
+32.02.32.2004,Warnasari
+32.02.32.2005,Sukajaya
+32.02.32.2006,Perbawati
+32.02.33,Sukaraja
+32.02.33.2001,Pasirhalang
+32.02.33.2002,Selawi
+32.02.33.2003,Langensari
+32.02.33.2004,Sukaraja
+32.02.33.2005,Limbangan
+32.02.33.2006,Cisarua
+32.02.33.2007,Sukamekar
+32.02.33.2008,Selawangi
+32.02.33.2009,Margaluyu
+32.02.34,Kebonpedes
+32.02.34.2001,Kebonpedes
+32.02.34.2002,Cikaret
+32.02.34.2003,Bojongsawah
+32.02.34.2004,Sasagaran
+32.02.34.2005,Jambenenggang
+32.02.35,Cireunghas
+32.02.35.2001,Cireunghas
+32.02.35.2002,Cipurut
+32.02.35.2003,Bencoy
+32.02.35.2004,Cikurutug
+32.02.35.2005,Tegalpanjang
+32.02.36,Sukalarang
+32.02.36.2001,Sukalarang
+32.02.36.2002,Sukamaju
+32.02.36.2003,Cimangkok
+32.02.36.2004,Titisan
+32.02.36.2005,Semplak
+32.02.36.2006,Prianganjaya
+32.02.37,Pabuaran
+32.02.37.2001,Pabuaran
+32.02.37.2002,Ciwalat
+32.02.37.2003,Sirnasari
+32.02.37.2004,Bantarsari
+32.02.37.2005,Sukajaya
+32.02.37.2006,Cibadak
+32.02.37.2007,Lembur Sawah
+32.02.38,Purabaya
+32.02.38.2001,Purabaya
+32.02.38.2002,Neglasari
+32.02.38.2003,Pagelaran
+32.02.38.2004,Cimerang
+32.02.38.2005,Citamiang
+32.02.38.2006,Margaluyu
+32.02.38.2007,Cicukang
+32.02.39,Nyalindung
+32.02.39.2001,Nyalindung
+32.02.39.2002,Neglasari
+32.02.39.2003,Sukamaju
+32.02.39.2004,Bojongkalong
+32.02.39.2005,Cijangkar
+32.02.39.2006,Mekarsari
+32.02.39.2007,Wangunreja
+32.02.39.2008,Cisitu
+32.02.39.2009,Bojongsari
+32.02.39.2010,Kertaangsana
+32.02.40,Gegerbitung
+32.02.40.2001,Gegerbitung
+32.02.40.2002,Cijurey
+32.02.40.2003,Ciengang
+32.02.40.2004,Karangjaya
+32.02.40.2005,Caringin
+32.02.40.2006,Sukamanah
+32.02.40.2007,Buniwangi
+32.02.41,Sagaranten
+32.02.41.2001,Sagaranten
+32.02.41.2002,Curugluhur
+32.02.41.2003,Cibaregbeg
+32.02.41.2004,Pasanggrahan
+32.02.41.2005,Datarnangka
+32.02.41.2006,Puncakmanggis
+32.02.41.2007,Hegarmanah
+32.02.41.2008,Gunungbentang
+32.02.41.2009,Sinarbentang
+32.02.41.2010,Cibitung
+32.02.41.2011,Margaluyu
+32.02.41.2012,Mekarsari
+32.02.42,Curugkembar
+32.02.42.2001,Curugkembar
+32.02.42.2002,Cimenteng
+32.02.42.2003,Tanjungsari
+32.02.42.2004,Sindangraja
+32.02.42.2005,Mekartanjung
+32.02.42.2006,Nagrakjaya
+32.02.42.2007,Bojongtugu
+32.02.43,Cidolog
+32.02.43.2001,Cidolog
+32.02.43.2002,Cipamingkis
+32.02.43.2003,Cikarang
+32.02.43.2004,Tegallega
+32.02.43.2005,Mekarjaya
+32.02.44,Cidadap
+32.02.44.2001,Padasenang
+32.02.44.2002,Cidadap
+32.02.44.2003,Banjarsari
+32.02.44.2004,Hegarmulya
+32.02.44.2005,Tenjolaut
+32.02.44.2006,Mekartani
+32.02.45,Tegalbuleud
+32.02.45.2001,Tegalbuleud
+32.02.45.2002,Bangbayang
+32.02.45.2003,Sumberjaya
+32.02.45.2004,Calingcing
+32.02.45.2005,Nangela
+32.02.45.2006,Rambay
+32.02.45.2007,Buniasih
+32.02.45.2008,Sirnamekar
+32.02.46,Cimanggu
+32.02.46.2001,Cimanggu
+32.02.46.2002,Sukamaju
+32.02.46.2003,Sukajadi
+32.02.46.2004,Karangmekar
+32.02.46.2005,Boregahindah
+32.02.46.2006,Sukamanah
+32.02.47,Ciambar
+32.02.47.2001,Ciambar
+32.02.47.2002,Ginanjar
+32.02.47.2003,Wangunjaya
+32.02.47.2004,Munjul
+32.02.47.2005,Ambarjaya
+32.02.47.2006,Cibunarjaya
+32.03,KAB. CIANJUR
+32.03.01,Cianjur
+32.03.01.2001,Babakan Karet
+32.03.01.2002,Nagrak
+32.03.01.2003,Sukamaju
+32.03.01.2004,Mekarsari
+32.03.01.2005,Limbangansari
+32.03.01.1006,Pamoyanan
+32.03.01.1007,Sawahgede
+32.03.01.1008,Bojongherang
+32.03.01.1009,Sayang
+32.03.01.1010,Solokpandan
+32.03.01.1011,Muka
+32.03.02,Warungkondang
+32.03.02.2002,Jambudipa
+32.03.02.2006,Cisarandi
+32.03.02.2007,Cikaroya
+32.03.02.2008,Bunikasih
+32.03.02.2009,Ciwalen
+32.03.02.2010,Tegallega
+32.03.02.2011,Sukawangi
+32.03.02.2014,Bunisari
+32.03.02.2016,Sukamulya
+32.03.02.2017,Cieundeur
+32.03.02.2018,Mekarwangi
