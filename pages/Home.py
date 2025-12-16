@@ -314,9 +314,12 @@ if wilayah_pilihan:
 st.divider()
 
 # --- GEMINI AI TIPS ---
-API_KEY = None
-ai_connected = False
+try:
+    API_KEY = st.secrets("GEMINI_API_KEY")
+except:
+    API_KEY = ''
 
+ai_connected = False
 try:
     if "GEMINI_API_KEY" in st.secrets:
         API_KEY = st.secrets["GEMINI_API_KEY"]
@@ -330,12 +333,15 @@ if not API_KEY:
 if API_KEY:
     try:
         genai.configure(api_key=API_KEY)
-        model = genai.GenerativeModel("gemini-2.5-flash-preview-09-2025")
+        model = genai.GenerativeModel("models/gemini-2.5-flash")
         ai_connected = True
     except Exception as e:
         st.error(f"⚠️ API Key ada, tapi koneksi ditolak: {e}")
         
 def get_simple_tips(kota, suhu, kondisi):
+
+    if model is None: st.error("model gemini belum tersambung"); return;
+
     prompt = f"""
     Berikan tips singkat bahasa Indonesia untuk cuaca di {kota}, suhu {suhu}°C, kondisi {kondisi}.
     Format:
@@ -353,18 +359,15 @@ st.subheader("💡 Tips AI")
 
 if ai_connected:
     if st.button("✨ Minta Tips Cuaca", use_container_width=True):
-        if kota == '-' or suhu == '-':
-            st.warning('Mohon pilih wilayah terlebih dahulu')
-        else:
-            with st.spinner("Sedang membuat tips..."):
-                tips = get_simple_tips(kota, suhu, kondisi)
-                st.markdown(
-                    f"""
-                    <div style='background-color:#e8f5e9;padding:15px;border-radius:10px;border-left:5px solid #2e7d32;'>
-                    {tips}
-                    </div>
-                    """, unsafe_allow_html=True
-                )
+        with st.spinner("Sedang membuat tips..."):
+            tips = get_simple_tips(kota, suhu, kondisi)
+            st.markdown(
+                f"""
+                <div style='background-color:#e8f5e9;padding:15px;border-radius:10px;border-left:5px solid #2e7d32;'>
+                {tips}
+                </div>
+                """, unsafe_allow_html=True
+            )
 else:
     st.warning("Gemini AI belum terhubung (Cek API Key).")
 
@@ -384,24 +387,22 @@ with col_pindah2:
         except Exception as e:
             st.error(f"Halaman tidak ditemukan.")
 
+st.write("---")
 #Untuk LogOut
-st.write('')
 @st.dialog('Konfirmasi Logout')
-def logut_dialog():
+def logout_dialog():
     st.write('Apakah anda yakin ingin keluar?')
-    st.write('')
+    if st.button('Ya', type='primary', use_container_width=True):
+        st.session_state.clear()
+        st.switch_page("pages/Masuk.py")
+    if st.button('Tidak', use_container_width=True):
+        st.rerun()
 
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button('ya', type='primary', use_container_width=True):
-            st.session_state.clear()
-            st.switch_page("pages/Masuk.py")
-    with col2:
-        if st.button('tidak'):
-            st.rerun()
-st.write('')
-if st.button('Logout', type='primary'):
-    logut_dialog()
+col1, col2, col3 = st.columns([1, 0.8, 1])
+with col2:
+    if st.button('Logout', type='primary', use_container_width=True):
+        logout_dialog()
+
 st.markdown(
     """
     <div style='text-align: center; color: grey; font-size: 0.8em; margin-top: 50px;'>

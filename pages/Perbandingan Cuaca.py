@@ -260,29 +260,26 @@ if st.button("Bandingkan Cuaca Saat Ini", type="primary"):
                 use_container_width=True
             )
 
+st.write("---")
 #Untuk LogOut
 @st.dialog('Konfirmasi Logout')
-def logut_dialog():
+def logout_dialog():
     st.write('Apakah anda yakin ingin keluar?')
-    st.write('')
+    if st.button('Ya', type='primary', use_container_width=True):
+        st.session_state.clear()
+        st.switch_page("pages/Masuk.py")
+    if st.button('Tidak', use_container_width=True):
+        st.rerun()
 
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button('ya', type='primary', use_container_width=True):
-            st.session_state.clear()
-            st.switch_page("pages/Masuk.py")
-    with col2:
-        if st.button('tidak'):
-            st.rerun()
+col1, col2, col3 = st.columns([1, 0.8, 1])
+with col2:
+    if st.button('Logout', type='primary', use_container_width=True):
+        logout_dialog()
 
-st.write('---')
-col1, col2, space = st.columns([1, 1, 5])
+col1, col2, space = st.columns([1, 0.8, 5])
 with col1:
     if st.button('Kembali'):
         st.switch_page('pages/Home.py')
-with col2:
-    if st.button('LogOut', type='primary'):
-        logut_dialog()
 
 
 st.markdown(
