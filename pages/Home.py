@@ -323,7 +323,7 @@ ai_connected = False
 try:
     if API_KEY:
         genai.configure(api_key=API_KEY)
-        model = genai.GenerativeModel("models/gemini-2.0-flash")
+        model = genai.GenerativeModel("models/gemini-2.5-flash")
         ai_connected = True
 except:
     st.error(f'Error konfigurasi AI {e}')
