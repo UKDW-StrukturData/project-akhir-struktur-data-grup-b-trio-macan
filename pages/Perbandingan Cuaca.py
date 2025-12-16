@@ -25,13 +25,7 @@ with col2:
 
 if 'sudah_login' not in st.session_state or st.session_state['sudah_login'] == False:
     st.error("Akses Ditolak!")
-    st.markdown("Silakan login terlebih dahulu untuk membandingkan cuaca.")
-    col_b1, col_b2 = st.columns([1, 4])
-    with col_b1:
-        if st.button("Kembali ke Menu Utama"):
-            st.switch_page("main.py")
-
-    
+    st.markdown("Silakan login terlebih dahulu untuk membandingkan cuaca.")    
     st.stop()
 
 # Style CSS agar mirip screenshot (Dark Mode support)
@@ -271,15 +265,17 @@ def logout_dialog():
     if st.button('Tidak', use_container_width=True):
         st.rerun()
 
+col1, col2, space = st.columns([1, 0.8, 5])
+with col1:
+    if st.button('Kembali'):
+        st.switch_page('pages/Home.py')
+        
 col1, col2, col3 = st.columns([1, 0.8, 1])
 with col2:
     if st.button('Logout', type='primary', use_container_width=True):
         logout_dialog()
 
-col1, col2, space = st.columns([1, 0.8, 5])
-with col1:
-    if st.button('Kembali'):
-        st.switch_page('pages/Home.py')
+
 
 
 st.markdown(
