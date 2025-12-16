@@ -315,11 +315,12 @@ st.divider()
 
 # --- GEMINI AI TIPS ---
 try:
-    API_KEY = st.secrets("GEMINI_API_KEY")
+    API_KEY = st.secrets["GEMINI_API_KEY"]
 except:
     API_KEY = ''
 
 ai_connected = False
+model = None
 try:
     if API_KEY:
         genai.configure(api_key=API_KEY)
@@ -329,6 +330,9 @@ except:
     st.error(f'Error konfigurasi AI {e}')
 
 def get_simple_tips(kota, suhu, kondisi):
+
+    if model is None: st.error("model gemini belum tersambung"); return;
+
     prompt = f"""
     Berikan tips singkat bahasa Indonesia untuk cuaca di {kota}, suhu {suhu}°C, kondisi {kondisi}.
     Format:
@@ -344,19 +348,17 @@ def get_simple_tips(kota, suhu, kondisi):
 
 st.subheader("💡 Tips AI")
 
-if ai_connected:
-    if st.button("✨ Minta Tips Cuaca", use_container_width=True):
-        with st.spinner("Sedang membuat tips..."):
-            tips = get_simple_tips(kota, suhu, kondisi)
-            st.markdown(
-                f"""
-                <div style='background-color:#e8f5e9;padding:15px;border-radius:10px;border-left:5px solid #2e7d32;'>
-                {tips}
-                </div>
-                """, unsafe_allow_html=True
-            )
-else:
-    st.warning("Gemini AI belum terhubung (Cek API Key).")
+print(ai_connected)
+if st.button("✨ Minta Tips Cuaca", use_container_width=True):
+    with st.spinner("Sedang membuat tips..."):
+        tips = get_simple_tips(kota, suhu, kondisi)
+        st.markdown(
+            f"""
+            <div style='background-color:#e8f5e9;padding:15px;border-radius:10px;border-left:5px solid #2e7d32;'>
+            {tips}
+            </div>
+            """, unsafe_allow_html=True
+        )
 
 # --- FOOTER ---
 st.markdown("---")
