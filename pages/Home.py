@@ -365,7 +365,7 @@ if ai_connected:
             tips = get_simple_tips(kota, suhu, kondisi)
             st.markdown(
                 f"""
-                <div style='background-color:#e8f5e9;padding:15px;border-radius:10px;border-left:5px solid #2e7d32;'>
+                <div style='background-color:#6F4E37;padding:15px;border-radius:10px;border-left:5px solid #2e7d32;'>
                 {tips}
                 </div>
                 """, unsafe_allow_html=True
