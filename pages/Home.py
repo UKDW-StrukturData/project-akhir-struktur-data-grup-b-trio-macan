@@ -319,7 +319,7 @@ try:
 except:
     API_KEY = ''
 
-ai_connected = False
+ai_connected = 1
 try:
     if API_KEY:
         genai.configure(api_key=API_KEY)
