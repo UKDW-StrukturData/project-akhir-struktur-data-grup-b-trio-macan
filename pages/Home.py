@@ -314,15 +314,19 @@ if wilayah_pilihan:
 st.divider()
 
 # --- GEMINI AI TIPS ---
-API_KEY = st.session_state.get('token_api', '') 
+try:
+    API_KEY = st.secrets("GEMINI_API_KEY")
+except:
+    API_KEY = ''
+
 ai_connected = False
 try:
     if API_KEY:
         genai.configure(api_key=API_KEY)
-        model = genai.GenerativeModel("gemini-2.5-flash-preview-09-2025")
+        model = genai.GenerativeModel("models/gemini-2.5-flash")
         ai_connected = True
 except:
-    pass
+    st.error(f'Error konfigurasi AI {e}')
 
 def get_simple_tips(kota, suhu, kondisi):
     prompt = f"""
@@ -335,8 +339,8 @@ def get_simple_tips(kota, suhu, kondisi):
     try:
         response = model.generate_content(prompt)
         return response.text if response.text else "AI tidak merespons."
-    except:
-        return "Gagal terhubung ke AI."
+    except Exception as e:
+        return f"Gagal terhubung ke AI: {e}"
 
 st.subheader("💡 Tips AI")
 
