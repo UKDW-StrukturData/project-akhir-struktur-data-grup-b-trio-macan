@@ -54,26 +54,6 @@ with col2:
     if st.button('Belum punya akun ?', type='primary'):
         buat_akun()
 
-
-
-    st.write('')
-    pesan_placeholder = st.empty()
-    col1, col2, space = st.columns([2, 2, 3])
-    with col1:
-        if st.button('Masuk', type='primary'):
-            if (login(username_input, password_input)):
-                st.session_state['sudah_login'] = True
-                st.session_state.username = username_input
-                st.session_state.show_welcome = True
-                pesan_placeholder.success("Berhasil masuk!")
-                time.sleep(2)
-                st.switch_page('pages/Home.py')
-            else:
-                pesan_placeholder.error("Username atau password salah!")
-    with col2:
-        if st.button('Kembali'):
-            st.switch_page('main.py')
-
 st.markdown(
     """
     <div style='text-align: center; color: grey; font-size: 0.8em; margin-top: 50px;'>
