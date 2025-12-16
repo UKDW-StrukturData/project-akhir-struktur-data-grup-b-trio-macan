@@ -315,20 +315,29 @@ st.divider()
 
 # --- GEMINI AI TIPS ---
 try:
-    API_KEY = st.secrets["GEMINI_API_KEY"]
+    API_KEY = st.secrets("GEMINI_API_KEY")
 except:
     API_KEY = ''
 
 ai_connected = False
-model = None
 try:
-    if API_KEY:
+    if "GEMINI_API_KEY" in st.secrets:
+        API_KEY = st.secrets["GEMINI_API_KEY"]
+except Exception:
+    # Jika secrets gagal total, abaikan dulu, lanjut cek session_state
+    pass
+
+if not API_KEY:
+    API_KEY = st.session_state.get('token_api', None)
+
+if API_KEY:
+    try:
         genai.configure(api_key=API_KEY)
         model = genai.GenerativeModel("models/gemini-2.5-flash")
         ai_connected = True
-except:
-    st.error(f'Error konfigurasi AI {e}')
-
+    except Exception as e:
+        st.error(f"⚠️ API Key ada, tapi koneksi ditolak: {e}")
+        
 def get_simple_tips(kota, suhu, kondisi):
 
     if model is None: st.error("model gemini belum tersambung"); return;
@@ -344,21 +353,23 @@ def get_simple_tips(kota, suhu, kondisi):
         response = model.generate_content(prompt)
         return response.text if response.text else "AI tidak merespons."
     except Exception as e:
-        return f"Gagal terhubung ke AI: {e}"
+        return f"Gagal generate konten: {e}"
 
 st.subheader("💡 Tips AI")
 
-print(ai_connected)
-if st.button("✨ Minta Tips Cuaca", use_container_width=True):
-    with st.spinner("Sedang membuat tips..."):
-        tips = get_simple_tips(kota, suhu, kondisi)
-        st.markdown(
-            f"""
-            <div style='background-color:#e8f5e9;padding:15px;border-radius:10px;border-left:5px solid #2e7d32;'>
-            {tips}
-            </div>
-            """, unsafe_allow_html=True
-        )
+if ai_connected:
+    if st.button("✨ Minta Tips Cuaca", use_container_width=True):
+        with st.spinner("Sedang membuat tips..."):
+            tips = get_simple_tips(kota, suhu, kondisi)
+            st.markdown(
+                f"""
+                <div style='background-color:#e8f5e9;padding:15px;border-radius:10px;border-left:5px solid #2e7d32;'>
+                {tips}
+                </div>
+                """, unsafe_allow_html=True
+            )
+else:
+    st.warning("Gemini AI belum terhubung (Cek API Key).")
 
 # --- FOOTER ---
 st.markdown("---")
