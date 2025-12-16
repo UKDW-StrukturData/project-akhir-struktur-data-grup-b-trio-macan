@@ -100,7 +100,7 @@ try:
     )
     df_kode = df_kode[df_kode["level"] == "adm4"]
     
-    st.caption("Masukkan wilayah Desa/Kelurahan yang anda inginkan. Contoh: Kemayoran.")
+    st.caption("Masukkan wilayah Desa/Kelurahan yang anda inginkan. Contoh: Klitren.")
     wilayah_pilihan = st.selectbox(
         "Pilih Desa/Kelurahan", 
         df_kode["nama"].tolist(),
