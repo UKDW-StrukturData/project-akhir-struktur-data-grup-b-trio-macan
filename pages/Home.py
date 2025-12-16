@@ -315,7 +315,7 @@ st.divider()
 
 # --- GEMINI AI TIPS ---
 try:
-    API_KEY = st.secrets("GEMINI_API_KEY")
+    API_KEY = st.secrets["GEMINI_API_KEY"]
 except:
     API_KEY = ''
 
