@@ -218,7 +218,7 @@ if wilayah_pilihan:
             df_tampil = df.copy()
             df_tampil.columns = ["Jam", "Cuaca", "Suhu (°C)", "Kelembapan (%)", "Angin (km/j)"]
 
-            st.subheader("Prakiraan Per 3 Jam")
+            st.subheader("Prakiraan 3 hari kedepan")
             st.dataframe(df_tampil, use_container_width=True)
             
             # Grafik Matplotlib
