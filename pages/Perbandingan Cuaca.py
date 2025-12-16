@@ -127,7 +127,7 @@ if st.button("Bandingkan Cuaca Saat Ini", type="primary"):
             st.error("Data cuaca tidak ditemukan.")
         else:
             # === TAMPILAN DI LAYAR ===
-            st.success(f"Estimasi Waktu Data: {data_w1['Jam Referensi']}")
+            st.success(f"Berhasil membandingkan, waktu prakiraan terdekat : {data_w1['Jam Referensi']}")
             
             col1, col2 = st.columns(2)
             with col1:
