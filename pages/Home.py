@@ -330,6 +330,9 @@ except:
     st.error(f'Error konfigurasi AI {e}')
 
 def get_simple_tips(kota, suhu, kondisi):
+
+    if model is None: st.error("model gemini belum tersambung"); return;
+
     prompt = f"""
     Berikan tips singkat bahasa Indonesia untuk cuaca di {kota}, suhu {suhu}°C, kondisi {kondisi}.
     Format:
