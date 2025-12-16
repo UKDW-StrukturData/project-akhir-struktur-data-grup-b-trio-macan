@@ -350,26 +350,6 @@ if ai_connected:
 else:
     st.warning("Gemini AI belum terhubung (Cek API Key).")
 
-#Untuk LogOut
-st.write('')
-@st.dialog('Konfirmasi Logout')
-def logut_dialog():
-    st.write('Apakah anda yakin ingin keluar?')
-    st.write('')
-
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button('ya', type='primary', use_container_width=True):
-            st.session_state.clear()
-            st.switch_page("pages/Masuk.py")
-    with col2:
-        if st.button('tidak'):
-            st.rerun()
-
-st.write('')
-if st.button('Logout', type='primary'):
-    logut_dialog()
-
 # --- FOOTER ---
 st.markdown("---")
 col_pindah1, col_pindah2 = st.columns([3, 1])
@@ -386,6 +366,24 @@ with col_pindah2:
         except Exception as e:
             st.error(f"Halaman tidak ditemukan.")
 
+#Untuk LogOut
+st.write('')
+@st.dialog('Konfirmasi Logout')
+def logut_dialog():
+    st.write('Apakah anda yakin ingin keluar?')
+    st.write('')
+
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button('ya', type='primary', use_container_width=True):
+            st.session_state.clear()
+            st.switch_page("pages/Masuk.py")
+    with col2:
+        if st.button('tidak'):
+            st.rerun()
+st.write('')
+if st.button('Logout', type='primary'):
+    logut_dialog()
 st.markdown(
     """
     <div style='text-align: center; color: grey; font-size: 0.8em; margin-top: 50px;'>
