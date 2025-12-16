@@ -5,6 +5,7 @@ import google.generativeai as genai
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from datetime import datetime
+from zoneinfo import ZoneInfo
 from PIL import Image
 from io import BytesIO
 
@@ -192,9 +193,8 @@ if wilayah_pilihan:
             with col2:
                 st.write(f"**Lintang/Bujur**: {lokasi.get('lat', '-')}, {lokasi.get('lon', '-')}")
                 st.write(f"**Zona Waktu**: {lokasi.get('timezone', '-')}")
-                from zoneinfo import ZoneInfo
-                now_utc = datetime.now(tz=ZoneInfo("UTC")).strftime("%Y-%m-%d %H:%M:%S")
-                st.write(f"**Waktu Akses Data (UTC)**: {now_utc} WIB")
+                jam_skrg = datetime.now(ZoneInfo("Asia/Jakarta"))
+                st.write(f"**Waktu Akses Data**: {jam_skrg('%Y-%m-%d %H:%M:%S WIB')}")
 
         # Prakiraan Per 3 Jam
         if forecast:
