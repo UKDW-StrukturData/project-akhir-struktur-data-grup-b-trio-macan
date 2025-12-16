@@ -192,7 +192,9 @@ if wilayah_pilihan:
             with col2:
                 st.write(f"**Lat/Lon**: {lokasi.get('lat', '-')}, {lokasi.get('lon', '-')}")
                 st.write(f"**Zona Waktu**: {lokasi.get('timezone', '-')}")
-                st.write(f"**Analysis Date (UTC)**: {data.get('analysis_date', '-')}")
+                from zoneinfo import ZoneInfo
+                now_utc = datetime.now(tz=ZoneInfo("UTC")).strftime("%Y-%m-%d %H:%M:%S")
+                st.write(f"**Waktu Akses Data (UTC)**: {now_utc} WIB")
 
         # Prakiraan Per 3 Jam
         if forecast:
