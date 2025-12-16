@@ -194,7 +194,7 @@ if wilayah_pilihan:
                 st.write(f"**Lintang/Bujur**: {lokasi.get('lat', '-')}, {lokasi.get('lon', '-')}")
                 st.write(f"**Zona Waktu**: {lokasi.get('timezone', '-')}")
                 jam_skrg = datetime.now(ZoneInfo("Asia/Jakarta"))
-                st.write(f"**Waktu Akses Data**: {jam_skrg('%Y-%m-%d %H:%M:%S WIB')}")
+                st.write(f"**Waktu Akses Data**: {jam_skrg.strftime('%Y-%m-%d %H:%M:%S WIB')}")
 
         # Prakiraan Per 3 Jam
         if forecast:
