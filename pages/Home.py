@@ -319,7 +319,7 @@ try:
 except:
     API_KEY = ''
 
-ai_connected = 1
+ai_connected = False
 try:
     if API_KEY:
         genai.configure(api_key=API_KEY)
@@ -344,19 +344,17 @@ def get_simple_tips(kota, suhu, kondisi):
 
 st.subheader("💡 Tips AI")
 
-if ai_connected:
-    if st.button("✨ Minta Tips Cuaca", use_container_width=True):
-        with st.spinner("Sedang membuat tips..."):
-            tips = get_simple_tips(kota, suhu, kondisi)
-            st.markdown(
-                f"""
-                <div style='background-color:#e8f5e9;padding:15px;border-radius:10px;border-left:5px solid #2e7d32;'>
-                {tips}
-                </div>
-                """, unsafe_allow_html=True
-            )
-else:
-    st.warning("Gemini AI belum terhubung (Cek API Key).")
+print(ai_connected)
+if st.button("✨ Minta Tips Cuaca", use_container_width=True):
+    with st.spinner("Sedang membuat tips..."):
+        tips = get_simple_tips(kota, suhu, kondisi)
+        st.markdown(
+            f"""
+            <div style='background-color:#e8f5e9;padding:15px;border-radius:10px;border-left:5px solid #2e7d32;'>
+            {tips}
+            </div>
+            """, unsafe_allow_html=True
+        )
 
 # --- FOOTER ---
 st.markdown("---")
