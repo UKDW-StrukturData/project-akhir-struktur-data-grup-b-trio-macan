@@ -275,9 +275,6 @@ with col2:
     if st.button('Logout', type='primary', use_container_width=True):
         logout_dialog()
 
-
-
-
 st.markdown(
     """
     <div style='text-align: center; color: grey; font-size: 0.8em; margin-top: 50px;'>
