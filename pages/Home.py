@@ -190,7 +190,7 @@ if wilayah_pilihan:
                 st.write(f"**Kota/Kabupaten**: {lokasi.get('kotkab', '-')}")
                 st.write(f"**Provinsi**: {lokasi.get('provinsi', '-')}")
             with col2:
-                st.write(f"**Lat/Lon**: {lokasi.get('lat', '-')}, {lokasi.get('lon', '-')}")
+                st.write(f"**Lintang/Bujur**: {lokasi.get('lat', '-')}, {lokasi.get('lon', '-')}")
                 st.write(f"**Zona Waktu**: {lokasi.get('timezone', '-')}")
                 from zoneinfo import ZoneInfo
                 now_utc = datetime.now(tz=ZoneInfo("UTC")).strftime("%Y-%m-%d %H:%M:%S")
