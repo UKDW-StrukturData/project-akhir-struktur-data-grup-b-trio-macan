@@ -28,7 +28,7 @@ with col2:
     st.markdown("<h2 style='text-align:center;'>Halaman Masuk</h2>", unsafe_allow_html=True)
     username_input = st.text_input('Username')
     password_input = st.text_input('Kata Sandi', type= 'password')
-    if st.button('Masuk'):
+    if st.button('Masuk', type='primary', use_container_width=True):
         if (login(username_input, password_input)):
             st.session_state['sudah_login'] = True
             st.session_state.username = username_input
@@ -38,6 +38,22 @@ with col2:
             st.switch_page('pages/Home.py')
         else:
             st.error("Username atau password salah!")
+
+@st.dialog('Konfirmasi pembuatan akun')
+def buat_akun():
+    st.write('Apakah anda ingin membuat akun baru ?')
+    if st.button('Ya', use_container_width=True, type='primary'):
+        st.switch_page("pages/Mendaftar.py")
+    if st.button('Tidak', use_container_width=True):
+        st.rerun()  # Tutup dialog
+
+
+col1, col2, col3 = st.columns([1, 0.8, 1])
+with col2:
+    if st.button('Belum punya akun ?', type='primary'):
+        buat_akun()
+
+
 st.markdown(
     """
     <div style='text-align: center; color: grey; font-size: 0.8em; margin-top: 50px;'>

@@ -38,7 +38,6 @@ with col2:
     st.markdown("""
     **HAWA** - informasi cuaca terkini, akurat, dan terpercaya untuk seluruh wilayah Indonesia.
     """)
-
     st.divider() # Garis pemisah estetis
     
     # Layout Tombol
