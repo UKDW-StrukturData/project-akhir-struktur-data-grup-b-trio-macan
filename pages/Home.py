@@ -263,18 +263,22 @@ if wilayah_pilihan:
 
                 if "hari_index" not in st.session_state:
                     st.session_state["hari_index"] = 0 
-
+                    
+                hari_ke = st.session_state["hari_index"]
+                hari_terakhir = len(cuaca_harian) - 1
                 col_nav1, col_nav2 = st.columns(2)
                 with col_nav1:
-                    if st.button("⬅️ Hari Sebelumnya", use_container_width=True):
-                        if st.session_state["hari_index"] > 0:
-                            st.session_state["hari_index"] -= 1
-                            st.rerun()
+                    if hari_ke > 0:
+                        if st.button("⬅️ Hari Sebelumnya", use_container_width=True):
+                            if st.session_state["hari_index"] > 0:
+                                st.session_state["hari_index"] -= 1
+                                st.rerun()
                 with col_nav2:
-                    if st.button("Hari Berikutnya ➡️", use_container_width=True):
-                        if st.session_state["hari_index"] < len(cuaca_harian) - 1:
-                            st.session_state["hari_index"] += 1
-                            st.rerun()
+                    if hari_ke < hari_terakhir:
+                        if st.button("Hari Berikutnya ➡️", use_container_width=True):
+                            if st.session_state["hari_index"] < len(cuaca_harian) - 1:
+                                st.session_state["hari_index"] += 1
+                                st.rerun()
 
                 hari_ke = st.session_state["hari_index"]
                 node_hari = hari_list.get(hari_ke)
