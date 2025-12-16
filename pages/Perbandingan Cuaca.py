@@ -260,6 +260,7 @@ if st.button("Bandingkan Cuaca Saat Ini", type="primary"):
                 use_container_width=True
             )
 
+st.write("---")
 #Untuk LogOut
 @st.dialog('Konfirmasi Logout')
 def logout_dialog():
@@ -272,7 +273,8 @@ def logout_dialog():
 
 col1, col2, col3 = st.columns([1, 0.8, 1])
 with col2:
-    logout_dialog()
+    if st.button('Logout', type='primary', use_container_width=True):
+        logout_dialog()
 
 col1, col2, space = st.columns([1, 0.8, 5])
 with col1:

@@ -370,6 +370,7 @@ with col_pindah2:
         except Exception as e:
             st.error(f"Halaman tidak ditemukan.")
 
+st.write("---")
 #Untuk LogOut
 @st.dialog('Konfirmasi Logout')
 def logout_dialog():
@@ -382,7 +383,8 @@ def logout_dialog():
 
 col1, col2, col3 = st.columns([1, 0.8, 1])
 with col2:
-    logout_dialog()
+    if st.button('Logout', type='primary', use_container_width=True):
+        logout_dialog()
 
 st.markdown(
     """
