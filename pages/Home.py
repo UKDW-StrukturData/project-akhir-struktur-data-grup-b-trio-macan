@@ -363,6 +363,8 @@ if ai_connected:
     if st.button("✨ Minta Tips Cuaca", use_container_width=True):
         with st.spinner("Sedang membuat tips..."):
             tips = get_simple_tips(kota, suhu, kondisi)
+            tips = tips.replace("</div", "").replace("</div>", "")
+
             st.markdown(
                 f"""
                 <div style='background-color:#6E72D;padding:15px;border-radius:10px;border-left:5px solid #2e7d32;'>
