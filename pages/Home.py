@@ -367,7 +367,7 @@ if ai_connected:
                 f"""
                 <div style='background-color:#6E72D;padding:15px;border-radius:10px;border-left:5px solid #2e7d32;'>
                 {tips}
-                </div
+                </div>
                 """, unsafe_allow_html=True
             )
 else:
