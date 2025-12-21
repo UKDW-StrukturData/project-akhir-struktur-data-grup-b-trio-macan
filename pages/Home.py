@@ -92,9 +92,9 @@ if "show_welcome" in st.session_state and st.session_state.show_welcome:
 # --- LOAD DATA WILAYAH ---
 try:
     df_kode = pd.read_csv(
-        "kode_wilayah.csv", 
+        "data_wilayah_final.csv", 
         header=None, 
-        names=["kode", "nama", "level"], 
+        names=["kode", "nama", "level", "tampilan"], 
         dtype={"kode": str},
         on_bad_lines='skip' 
     )
